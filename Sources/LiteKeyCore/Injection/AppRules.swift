@@ -37,14 +37,18 @@ public struct AppRule: Equatable, Sendable {
     /// Keys always go through untouched, as in an excluded app: remote desktop and VM clients forward keys
     /// to another machine, whose own input method types Vietnamese. Injected text arrives garbled there.
     public var passThrough = false
+    /// Experimental: replace words through Accessibility, with key events as the fallback
+    /// (`AppRules.axEditApps`)
+    public var axEdit = false
 
     public init(emptyChar: UInt16 = 0x202F, chromiumFix: Bool = false, autocompleteFix: Bool = true,
-                delays: InjectionDelays = .none, passThrough: Bool = false) {
+                delays: InjectionDelays = .none, passThrough: Bool = false, axEdit: Bool = false) {
         self.emptyChar = emptyChar
         self.chromiumFix = chromiumFix
         self.autocompleteFix = autocompleteFix
         self.delays = delays
         self.passThrough = passThrough
+        self.axEdit = axEdit
     }
 
     public static let standard = AppRule()
@@ -108,6 +112,7 @@ public struct AppRules: Sendable {
         for id in niceSpaceApps { table[id, default: base].emptyChar = 0x200C }
         for id in chromiumFixApps { table[id, default: base].chromiumFix = true }
         for id in slowApps { table[id, default: base].delays = .slow }
+        for id in axEditApps { table[id, default: base].axEdit = true }
         for id in terminalApps {
             table[id, default: base].delays = .slow
             table[id, default: base].autocompleteFix = false
@@ -130,6 +135,10 @@ public struct AppRules: Sendable {
         "com.vivaldi.Vivaldi", "com.operasoftware.Opera", "com.operasoftware.OperaGX",
         "company.thebrowser.Browser",
     ]
+
+    /// Experimental: replace words through Accessibility. In overlay launchers an inline suggestion races the
+    /// Shift+Left selection; one AX edit replaces the word and the suggestion together, wherever the caret is.
+    static let axEditApps = [spotlight, "com.raycast.macos", "com.runningwithcrayons.Alfred"]
 
     /// Remote desktop and VM clients, and the iOS Simulator: the other side handles text input
     static let passThroughApps = [
@@ -176,6 +185,10 @@ public struct AppContext: Equatable, Sendable {
     public var sessionOnConsole = true
     /// Suspend all processing (while recording the switch hotkey in the control panel)
     public var suspended = false
+    /// `AppRule.axEdit` of the overlay launcher with focus, while `spotlightActive`
+    public var overlayAXEdit = false
+    /// Process owning the focused element (FocusProbe); 0 = unknown. The AX edit goes to this process only.
+    public var focusedPID: Int32 = 0
 
     public init(bundleID: String? = nil, rule: AppRule = .standard, isExcluded: Bool = false) {
         self.bundleID = bundleID
@@ -199,5 +212,10 @@ public struct AppContext: Equatable, Sendable {
     /// Typing into Spotlight, Raycast or Alfred: replace via selection instead of the empty-char prefix
     public var isSpotlight: Bool {
         spotlightActive || AppRules.isOverlayLauncher(bundleID)
+    }
+
+    /// Experimental AX edit for the app receiving the keys: the overlay launcher's rule while it has focus
+    public var axEdit: Bool {
+        spotlightActive ? overlayAXEdit : rule.axEdit
     }
 }

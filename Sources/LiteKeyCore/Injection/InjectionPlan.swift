@@ -10,6 +10,36 @@ public enum InjectionStep: Equatable, Sendable {
     case repostOriginal
 }
 
+/// Experimental (`AppRule.axEdit`): the same replacement done through Accessibility instead of key events.
+public struct AXEdit: Equatable, Sendable {
+    /// UTF-16 units to delete before the caret
+    public var deleting: Int
+    /// Replacement text: `plan.text[textStart ..< textStart + textCount]`
+    public var textStart: Int
+    public var textCount: Int
+    /// `steps[..<fallbackEnd]` make the same edit with key events: skipped when the AX edit succeeds, run
+    /// when it fails. The steps after them always run.
+    public var fallbackEnd: Int
+
+    public init(deleting: Int, textStart: Int, textCount: Int, fallbackEnd: Int) {
+        self.deleting = deleting
+        self.textStart = textStart
+        self.textCount = textCount
+        self.fallbackEnd = fallbackEnd
+    }
+
+    /// The range to replace, from the field state read through AX (UTF-16 offsets): the `deleting` units
+    /// before the caret plus any selection after it (an auto-selected inline suggestion). `nil` when the
+    /// numbers are inconsistent or there are fewer units before the caret than we typed. Only counts are
+    /// checked, not content: like the backspaces it replaces, it trusts the engine's view of the word.
+    public static func replaceRange(caret: Int, selection: Int, total: Int?,
+                                    deleting: Int) -> (location: Int, length: Int)? {
+        guard deleting > 0, caret >= deleting, selection >= 0 else { return nil }
+        if let total, caret + selection > total { return nil }
+        return (caret - deleting, deleting + selection)
+    }
+}
+
 /// The injection steps for one key press. Reused across keys (`reset()` keeps capacity) so the key
 /// handling path does not allocate.
 public struct InjectionPlan: Equatable, Sendable {
@@ -19,6 +49,8 @@ public struct InjectionPlan: Equatable, Sendable {
     /// Time (µs) the app needs to process this plan before the next real key is let through. Not a step:
     /// `SettleGate` only waits if the next key arrives earlier.
     public var settle: UInt32 = 0
+    /// Set when the replacement may be done through Accessibility (`AppRule.axEdit`)
+    public var axEdit: AXEdit?
 
     /// Maximum UTF-16 units per event
     public static let maxUnitsPerEvent = 16
@@ -34,6 +66,7 @@ public struct InjectionPlan: Equatable, Sendable {
         steps.removeAll(keepingCapacity: true)
         text.removeAll(keepingCapacity: true)
         settle = 0
+        axEdit = nil
     }
 
     public mutating func key(_ code: UInt16, flags: ModifierFlags = [], times: Int = 1) {
