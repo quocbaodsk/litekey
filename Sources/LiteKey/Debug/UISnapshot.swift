@@ -40,7 +40,7 @@ final class UISnapshot: NSObject, NSApplicationDelegate {
         UserDefaults.standard.removePersistentDomain(forName: suite)
         model = ControlPanelModel(preferences: PreferencesModel(store: store))
         window = NSWindow(contentViewController: NSHostingController(rootView: ControlPanelView(model: model)))
-        window.title = "LiteKey 1.0.0 -Bộ gõ Tiếng Việt"
+        window.title = "LiteKey 1.0.1 -Bộ gõ Tiếng Việt"
         window.styleMask = [.titled, .closable, .miniaturizable]
         window.center()
         window.makeKeyAndOrderFront(nil)
