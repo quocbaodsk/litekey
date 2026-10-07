@@ -24,14 +24,16 @@ public final class StepExecutor {
         }
     }
 
-    public func execute(_ plan: InjectionPlan, original: CGEvent, proxy: CGEventTapProxy) {
+    /// Runs `plan.steps[first...]`. Without `proxy` (outside the tap callback) events are posted after the
+    /// session taps, so they reach the app ahead of any real key still waiting in our tap.
+    public func execute(_ plan: InjectionPlan, from first: Int = 0, original: CGEvent?, proxy: CGEventTapProxy?) {
         lastSleep = 0
-        for step in plan.steps {
+        for step in plan.steps[first...] {
             switch step {
             case let .key(code, flags):
                 if code == KeyCode.delete && flags.isEmpty, let backspaceDown, let backspaceUp {
-                    backspaceDown.tapPostEvent(proxy)
-                    backspaceUp.tapPostEvent(proxy)
+                    send(backspaceDown, proxy: proxy)
+                    send(backspaceUp, proxy: proxy)
                 } else {
                     tap(code, flags: CGEventFlags(rawValue: flags.rawValue), proxy: proxy)
                 }
@@ -40,7 +42,7 @@ public final class StepExecutor {
             case let .sleep(microseconds):
                 lastSleep += Self.sleep(microseconds)
             case .repostOriginal:
-                if let copy = original.copy() { post(copy, proxy: proxy) }
+                if let copy = original?.copy() { post(copy, proxy: proxy) }
             }
         }
     }
@@ -53,7 +55,7 @@ public final class StepExecutor {
         return UInt32(truncatingIfNeeded: (DispatchTime.now().uptimeNanoseconds - start) / 1000)
     }
 
-    private func tap(_ key: CGKeyCode, flags: CGEventFlags, proxy: CGEventTapProxy) {
+    private func tap(_ key: CGKeyCode, flags: CGEventFlags, proxy: CGEventTapProxy?) {
         guard let down = CGEvent(keyboardEventSource: source, virtualKey: key, keyDown: true),
               let up = CGEvent(keyboardEventSource: source, virtualKey: key, keyDown: false) else { return }
         down.flags = flags
@@ -62,7 +64,7 @@ public final class StepExecutor {
         post(up, proxy: proxy)
     }
 
-    private func type(_ text: [UInt16], start: Int, count: Int, proxy: CGEventTapProxy) {
+    private func type(_ text: [UInt16], start: Int, count: Int, proxy: CGEventTapProxy?) {
         guard count > 0,
               let down = CGEvent(keyboardEventSource: source, virtualKey: 0, keyDown: true),
               let up = CGEvent(keyboardEventSource: source, virtualKey: 0, keyDown: false) else { return }
@@ -75,8 +77,16 @@ public final class StepExecutor {
         post(up, proxy: proxy)
     }
 
-    private func post(_ event: CGEvent, proxy: CGEventTapProxy) {
+    private func post(_ event: CGEvent, proxy: CGEventTapProxy?) {
         event.setIntegerValueField(.eventSourceUserData, value: EventMarker.value)
-        event.tapPostEvent(proxy)
+        send(event, proxy: proxy)
+    }
+
+    private func send(_ event: CGEvent, proxy: CGEventTapProxy?) {
+        if let proxy {
+            event.tapPostEvent(proxy)
+        } else {
+            event.post(tap: .cgAnnotatedSessionEventTap)
+        }
     }
 }

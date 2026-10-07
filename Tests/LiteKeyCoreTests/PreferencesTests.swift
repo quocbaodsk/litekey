@@ -56,6 +56,7 @@ final class PreferencesTests: XCTestCase {
         XCTAssertTrue(p.showPanelOnStartup)
         XCTAssertFalse(p.fixChromiumBrowser)
         XCTAssertFalse(p.sendKeyStepByStep)
+        XCTAssertTrue(p.fixOverlayLauncher)
         XCTAssertFalse(p.layoutCompatibility)
         XCTAssertEqual(p.excludedApps, [])
         XCTAssertTrue(p.useMacro)
@@ -63,6 +64,16 @@ final class PreferencesTests: XCTestCase {
         XCTAssertFalse(p.autoCapsMacro)
         // Restoring invalid words is on by default
         XCTAssertTrue(p.restoreIfWrong)
+    }
+
+    func testFixOverlayLauncherDecoding() throws {
+        // Settings saved before the option existed get it on
+        let old = try JSONDecoder().decode(Preferences.self, from: Data(#"{"version":3}"#.utf8))
+        XCTAssertTrue(old.fixOverlayLauncher)
+        var p = Preferences()
+        p.fixOverlayLauncher = false
+        let decoded = try JSONDecoder().decode(Preferences.self, from: JSONEncoder().encode(p))
+        XCTAssertFalse(decoded.fixOverlayLauncher)
     }
 
     func testV1ConfigMigratesHotkey() throws {

@@ -13,6 +13,9 @@ import LiteKeyEngine
 /// 4. Type the new text (16 UTF-16 units per event), or send key by key
 /// 5. Invalid word ended by a control key: repost the original key
 ///
+/// Experimental: with `fixOverlayLauncher` on, apps with `AppContext.axEdit` also get `plan.axEdit` for a replacement with backspaces (not
+/// macros, not key by key); the key event steps then serve as the fallback.
+///
 /// Apps listed in `AppRules` (terminals, JetBrains) also get `AppRule.delays` pauses between steps and a
 /// `plan.settle` for the next real key.
 public enum InjectionPlanner {
@@ -74,9 +77,15 @@ public enum InjectionPlanner {
                 if restore.unit == 0 { plan.repostOriginal() } else { typeOne(restore, into: &plan) }
             }
         } else {
+            let textStart = plan.text.count
             for ch in output.characters where ch.unit != 0 { plan.append(ch.unit) }
             if let restore = output.restoreKey, restore.unit != 0 { plan.append(restore.unit) }
             plan.flushText(gap: rule.delays.text)
+            // The steps so far stay as the fallback; the original key is reposted after either path
+            if preferences.fixOverlayLauncher && context.axEdit && output.backspaces > 0 && output.backspaces < maxBackspaces {
+                plan.axEdit = AXEdit(deleting: output.backspaces, textStart: textStart,
+                                     textCount: plan.text.count - textStart, fallbackEnd: plan.steps.count)
+            }
             if output.resendKey {
                 if plan.hasText { plan.sleep(rule.delays.text) }
                 plan.repostOriginal()

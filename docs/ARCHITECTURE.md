@@ -40,7 +40,7 @@ Dependencies only go one way: App → Platform → Core → Engine.
 |---|---|
 | `LiteKeyEngine` | Vietnamese typing state machine (`VietnameseEngine`), data tables, macro table. Input: key code, caps state, modifiers. Output: `EngineOutput` (backspaces, characters, restore key, empty-char suppression). |
 | `LiteKeyCore` | `Preferences`, `Hotkey` + `HotkeyStateMachine`, `KeyEventProcessor` (one key in → pass/swallow + injection steps out), `InjectionPlanner` (`EngineOutput` + `AppContext` + `Preferences` → `[InjectionStep]`), `AppRules`, `SettleGate`, `PerAppLanguageStore`, `TapHealth`, `OtherInputMethods`, layout compatibility. |
-| `LiteKeyPlatform` | `EventTap`, `EventNormalizer` (CGEvent → `KeyEvent`), `KeyboardPipeline`, `StepExecutor` (runs injection steps as CGEvents), `FocusProbe` (AX), monitors (permission, input source, Secure Input, other input methods), `LoginItem`, `Diagnostics`. |
+| `LiteKeyPlatform` | `EventTap`, `EventNormalizer` (CGEvent → `KeyEvent`), `KeyboardPipeline`, `StepExecutor` (runs injection steps as CGEvents), `AXTextEditor` (experimental AX edit, own thread), `FocusProbe` (AX), monitors (permission, input source, Secure Input, other input methods), `LoginItem`, `Diagnostics`. |
 | `LiteKey` (app) | `main`, `AppDelegate` (composition root), menu bar, control panel (SwiftUI), permission window, `PreferencesStore`. |
 
 `Package.swift` declares `LiteKeyPlatform` and the app only under `#if os(macOS)`, so
@@ -96,8 +96,28 @@ source, keyboard layout map, console session) is computed outside the callback a
   Delete first: it removes an auto-selected inline suggestion, which would otherwise absorb the first
   Shift+←. Only while the caret is known to be at the end: any key other than typing (arrows, ⌃/⌘
   shortcuts, Tab, Esc, Return, a click) disables it until End, ⌘→, ⌘↓ or Spotlight opens again. Not in
-  Raycast/Alfred, whose windows also host notes. Editing the field through AX instead would put AX calls in
-  the callback.
+  Raycast/Alfred, whose windows also host notes. In these launchers this is now the fallback of the
+  experimental AX edit below.
+- Experimental AX edit (apps in `AppRules.axEditApps`: Spotlight, Raycast, Alfred; switch "Sửa lỗi
+  Spotlight, Raycast, Alfred", `Preferences.fixOverlayLauncher`, on by default, off = key events
+  everywhere, applies at once): a replacement with backspaces is
+  done through Accessibility, which replaces the word and an auto-selected suggestion in one edit, from the
+  real caret position (so also mid-text in a Raycast note).
+  This changes the earlier rule of no AX for editing, at the owner's request, without putting AX in the
+  callback: the callback hands the edit to `AXTextEditor`'s own thread and returns. The next key (not a
+  keyUp) waits for the edit, like `SettleGate`, so keys stay in order. That wait is a deliberate delay
+  inside the callback, the same kind as the per-app pauses: usually a few ms, and only when the next key
+  comes before the edit is done. Every AX call goes to the focused process (PID from FocusProbe) with a
+  25 ms timeout, nothing is written after a 50 ms read budget, and the wait is capped at
+  `AXTextEditor.maxDuration` (175 ms). On failure, including a write the field reports as done but
+  ignores, the selection is put back and the usual key events run. After 3 failures in a row in the same
+  app, that app goes back to key events until relaunch. An edit that runs past the cap (AX timeouts not
+  honored) stops holding keys, gives up AX in that app, and its leftover steps are dropped, with a new
+  word started, rather than replayed after later keys; that key can be lost. A write that times out counts
+  as done, since the app may still apply it. The edit goes to the field focused when it runs,
+  a few ms after the key, so a click to another field in between can misplace it. Only the focused element is touched: its selected range, character count and
+  selected text. No tree walk, roles or DOM attributes, which slow Chrome/Electron down. LiteKey's own
+  windows never get it. Macros and "send key by key" keep key events.
 - Send keys one by one (opt-in): one event per character instead of one string.
 - Misspelled word ended by a control key: repost a copy of the original event, modifiers included.
 - Macros: empty-char prefix when the autocomplete fix is on, unlimited backspaces (selection in Spotlight), the
@@ -112,7 +132,8 @@ source, keyboard layout map, console session) is computed outside the callback a
 
 ### Focus probing
 
-`FocusProbe` only asks AX for the PID of the focused element, to tell when Spotlight has focus. It never walks
+`FocusProbe` only asks AX for the PID of the focused element, to tell when Spotlight has focus (the PID also
+tells the AX edit which process to talk to). It never walks
 the AX tree or reads roles: frequent AX queries can switch Chrome/Electron into accessibility mode and slow them
 down. It re-probes after modifier+Space, and while Spotlight is open after ⌘+key, Esc, Enter, clicks and every
 0.5 s. Until it answers, `KeyEventProcessor` assumes Spotlight for 0.5 s after a plain ⌘Space (ended early by
@@ -189,7 +210,7 @@ binary `macroData` format used for importing (byte for byte). LiteKey itself sto
 `Preferences` is stored as JSON under the `Preferences` key and carries a format `version`; `migrated()` upgrades
 older configurations (for example, an untouched old default hotkey becomes the current default ⌃⇧). Defaults:
 spelling restore on, autocomplete fix on, smart per-app switching on, disable Vietnamese for non-English input
-sources on. "Restore defaults" keeps the current Vietnamese/English mode and the excluded app list.
+sources on, launcher AX edit on. "Restore defaults" keeps the current Vietnamese/English mode and the excluded app list.
 
 "Import settings from OpenKey" reads the `com.tuyenmai.openkey` domain with `CFPreferencesCopyAppValue`
 (input type, hotkey from `SwitchKeyStatus`, options and `macroData`). The per-app mode table (`smartSwitchKey`)

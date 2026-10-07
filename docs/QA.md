@@ -34,7 +34,7 @@ grant the permission again.
 | T1 | TextEdit: `Tooi ddang gox tieesng Vieejt, thuwr nghieejm: class string window.` | `Tôi đang gõ tiếng Việt, thử nghiệm: class string window.` |
 | T2 | Type T1 very fast, several times | No lost or self-deleted letters; no tap-disabled lines in the log |
 | T3 | `tieengs<<ng` (`<` = Delete) | `tiếng` |
-| T4 | Fast: `tooi laf baor pro ddang laf gox trong laf laf as` in VS Code, Chrome, Safari, TextEdit, Slack | `tôi là bảo pro đang là gõ trong là là á` |
+| T4 | Fast: `tooi ddang thuwr gox trong laf laf as` in VS Code, Chrome, Safari, TextEdit, Slack | `tôi đang thử gõ trong là là á` |
 | T5 | `sapce maf`, Delete ×6, `pace`, Space | `sâpce ` |
 | T6 | Accented word, Space, next word, Delete back into the previous word, add letters, Space | No letters of the previous word are lost |
 | T7 | `baanfk`, click elsewhere in the same field, `as` | `á` |
@@ -54,6 +54,7 @@ grant the permission again.
 | # | App | Action | Expected |
 |---|---|---|---|
 | A1 | Chrome/Safari/Arc address bar | `vnexpress`, `tieengs vieetj` while suggestions show | No letters eaten by autocomplete, no extra characters |
+| A1b | Firefox (also LibreWolf, Zen if installed): address bar while suggestions show, then a search field and a text area inside a page | Fast: `tieengs vieetj`, `ddi hocj`, `dichj` | `tiếng việt`, `đi học`, `dịch` everywhere; no eaten or doubled letters (`diịch`, `goõ`), no visible empty char |
 | A2 | Chrome address bar, Chromium fix on | `tieengs vieetj` | `tiếng việt` |
 | A3 | Chrome search field and address bar | Fast: `tooi ddax awn cows chuwa ` | `tôi đã ăn cơm chưa `, spaces intact |
 | A4 | Google Docs, Google Sheets | T1 | No lost or doubled letters |
@@ -75,6 +76,12 @@ grant the permission again.
 | A17 | Microsoft Remote Desktop / Jump / Parallels / iOS Simulator | Type `tieengs` | Letters arrive untouched (`tieengs`); the remote side's own input method decides |
 | A18 | TextEdit | Hold `o` for a second, then type `s`; hold Backspace over `tiếng`, then type `as` | `oooo…s`, no flicker between `ô` and `oo`; `á` after the deletion |
 | A19 | Spotlight over an excluded Terminal | Type `tieengs`; Esc, type the same in Terminal | Spotlight `tiếng`; Terminal `tieengs` |
+| A20 | Spotlight, Raycast, Alfred, AX edit (default) with `DebugLogging` on | Repeat A8, A9b, A9c and A10; type `thuwj nghieejm gox nhanh` as fast as you can | Same results, `thực nghiệm gõ nhanh`; log shows `AX edit replaced in …ms` with `keyWaited=` near 0 when typing at normal speed; no `failed` or `ran past its time limit` lines |
+| A21 | Spotlight while it is still searching (type right after ⌘Space, long query) | `tieengs vieetj nam` | Correct text; any `failed, used key events` line is followed by correct output |
+| A22 | Spotlight, Raycast note, AX edit | `vieetj`, then ⌘Z | Undo behaves acceptably (note whether it undoes one letter, the word or the whole query) |
+| A22b | Raycast note, caret mid-text | Type `vieetj` between two existing words | `việt`, nothing after the caret deleted |
+| A22c | Raycast, Alfred search fields | `tieengs`, `dduwowcj`, `thuwr` | No doubled word (`tiếngtiếng`) and no leftover letters; log shows `replaced`, not `failed` |
+| A23 | Compare | Hệ thống → turn off "Sửa lỗi Spotlight, Raycast, Alfred", repeat A20 without relaunching; turn it back on | Off: no `AX edit` lines, behaves as 1.0.1. Note which feels better and any difference in output |
 
 ## Macros
 

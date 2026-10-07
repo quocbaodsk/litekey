@@ -303,6 +303,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         ctx.spotlightActive = focus.focus.isSpotlight
         ctx.overlayBundleID = focus.focus.isSpotlight ? focus.focus.bundleID : nil
         ctx.spotlightSuggestions = focus.focus.isAppleSpotlight
+        ctx.overlayAXEdit = focus.focus.isSpotlight && rules.rule(for: focus.focus.bundleID).axEdit
+        ctx.focusedPID = focus.focus.pid
         ctx.inputSourceIsEnglish = inputSource.isEnglish
         ctx.layoutMap = inputSource.layoutMap
         ctx.sessionOnConsole = focus.sessionOnConsole
