@@ -54,6 +54,7 @@ grant the permission again.
 | # | App | Action | Expected |
 |---|---|---|---|
 | A1 | Chrome/Safari/Arc address bar | `vnexpress`, `tieengs vieetj` while suggestions show | No letters eaten by autocomplete, no extra characters |
+| A1b | Firefox (also LibreWolf, Zen if installed): address bar while suggestions show, then a search field and a text area inside a page | Fast: `tieengs vieetj`, `ddi hocj`, `dichj` | `tiếng việt`, `đi học`, `dịch` everywhere; no eaten or doubled letters (`diịch`, `goõ`), no visible empty char |
 | A2 | Chrome address bar, Chromium fix on | `tieengs vieetj` | `tiếng việt` |
 | A3 | Chrome search field and address bar | Fast: `tooi ddax awn cows chuwa ` | `tôi đã ăn cơm chưa `, spaces intact |
 | A4 | Google Docs, Google Sheets | T1 | No lost or doubled letters |
@@ -80,7 +81,7 @@ grant the permission again.
 | A22 | Spotlight, Raycast note, AX edit | `vieetj`, then ⌘Z | Undo behaves acceptably (note whether it undoes one letter, the word or the whole query) |
 | A22b | Raycast note, caret mid-text | Type `vieetj` between two existing words | `việt`, nothing after the caret deleted |
 | A22c | Raycast, Alfred search fields | `tieengs`, `dduwowcj`, `thuwr` | No doubled word (`tiếngtiếng`) and no leftover letters; log shows `replaced`, not `failed` |
-| A23 | Compare | `defaults write com.litekey.app AXEdit -bool NO`, relaunch, repeat A20; then `defaults delete com.litekey.app AXEdit`, relaunch | Note which feels better and any difference in output |
+| A23 | Compare | Hệ thống → turn off "Sửa lỗi Spotlight, Raycast, Alfred", repeat A20 without relaunching; turn it back on | Off: no `AX edit` lines, behaves as 1.0.1. Note which feels better and any difference in output |
 
 ## Macros
 
