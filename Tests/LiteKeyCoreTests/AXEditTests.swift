@@ -103,6 +103,14 @@ final class AXEditTests: XCTestCase {
         XCTAssertNotNil(plan(replace(InjectionPlanner.maxBackspaces - 1, "a")).axEdit)
     }
 
+    func testSwitchOffKeepsKeyEvents() {
+        prefs.fixOverlayLauncher = false
+        let p = plan(replace(2, "ấy"), clear: true)
+        XCTAssertNil(p.axEdit)
+        // Same steps as before the AX edit existed
+        XCTAssertEqual(p.readable, [forwardDelete, shiftLeft, shiftLeft, .text("ấy")])
+    }
+
     func testNoAXEditKeyByKey() {
         prefs.sendKeyStepByStep = true
         XCTAssertNil(plan(replace(1, "â")).axEdit)

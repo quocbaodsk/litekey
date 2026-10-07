@@ -15,7 +15,7 @@ public final class KeyboardPipeline<Engine: TypingEngine> {
     private var settleGate = SettleGate()
     private let diagnostics: Diagnostics
     private var tap: EventTap!
-    // Experimental AX edit (`AppContext.axEdit`), main thread only. `nil` when turned off.
+    // Experimental AX edit (`Preferences.fixOverlayLauncher`, `AppContext.axEdit`), main thread only
     private var axEditor: AXTextEditor?
     /// Plan of the edit in flight: its fallback or remaining steps run once the edit finishes
     private var axPlan = InjectionPlan()
@@ -38,15 +38,12 @@ public final class KeyboardPipeline<Engine: TypingEngine> {
     /// The key recipient may have changed (called inside the callback; must return immediately)
     public var onFocusHint: (() -> Void)?
 
-    public init(engine: Engine, preferences: Preferences, context: AppContext, diagnostics: Diagnostics,
-                axEdit: Bool = false) {
+    public init(engine: Engine, preferences: Preferences, context: AppContext, diagnostics: Diagnostics) {
         processor = KeyEventProcessor(engine: engine, preferences: preferences, context: context)
         self.diagnostics = diagnostics
-        if axEdit {
-            // Edit done with no key waiting for it: finish on main
-            axEditor = AXTextEditor { [weak self] in
-                DispatchQueue.main.async { self?.finishAXEdit(proxy: nil, waitingUpTo: 0) }
-            }
+        // Edit done with no key waiting for it: finish on main
+        axEditor = AXTextEditor { [weak self] in
+            DispatchQueue.main.async { self?.finishAXEdit(proxy: nil, waitingUpTo: 0) }
         }
         tap = EventTap(handler: { [unowned self] proxy, type, event in
             self.handle(proxy: proxy, type: type, event: event)

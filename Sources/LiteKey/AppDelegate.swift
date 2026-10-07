@@ -41,15 +41,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                                       enabled: UserDefaults.standard.bool(forKey: Diagnostics.defaultsKey))
         // Before the tap starts: two copies would both rewrite every word
         diagnostics.olderCopiesQuit(OlderCopies.quit())
-        // Experimental AX edit: on unless turned off for comparison
-        let axEdit = UserDefaults.standard.object(forKey: AXTextEditor.defaultsKey) == nil
-            || UserDefaults.standard.bool(forKey: AXTextEditor.defaultsKey)
         pipeline = KeyboardPipeline(engine: VietnameseEngine(config: prefs.engineConfig),
                                     preferences: prefs,
                                     context: currentContext(),
-                                    diagnostics: diagnostics,
-                                    axEdit: axEdit)
-        diagnostics.note("Experimental AX edit: \(axEdit ? "on" : "off")")
+                                    diagnostics: diagnostics)
         pipeline.update(macros: macroModel.table)
         macroModel.onChange = { [weak self] table in self?.pipeline.update(macros: table) }
         pipeline.onLanguageToggled = { [weak self] vietnamese in self?.languageToggledByHotkey(vietnamese) }

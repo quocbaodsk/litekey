@@ -98,8 +98,9 @@ source, keyboard layout map, console session) is computed outside the callback a
   shortcuts, Tab, Esc, Return, a click) disables it until End, ⌘→, ⌘↓ or Spotlight opens again. Not in
   Raycast/Alfred, whose windows also host notes. In these launchers this is now the fallback of the
   experimental AX edit below.
-- Experimental AX edit (apps in `AppRules.axEditApps`: Spotlight, Raycast, Alfred; on by default, off
-  with `defaults write com.litekey.app AXEdit -bool NO` and a relaunch): a replacement with backspaces is
+- Experimental AX edit (apps in `AppRules.axEditApps`: Spotlight, Raycast, Alfred; switch "Sửa lỗi
+  Spotlight, Raycast, Alfred", `Preferences.fixOverlayLauncher`, on by default, off = key events
+  everywhere, applies at once): a replacement with backspaces is
   done through Accessibility, which replaces the word and an auto-selected suggestion in one edit, from the
   real caret position (so also mid-text in a Raycast note).
   This changes the earlier rule of no AX for editing, at the owner's request, without putting AX in the
@@ -209,7 +210,7 @@ binary `macroData` format used for importing (byte for byte). LiteKey itself sto
 `Preferences` is stored as JSON under the `Preferences` key and carries a format `version`; `migrated()` upgrades
 older configurations (for example, an untouched old default hotkey becomes the current default ⌃⇧). Defaults:
 spelling restore on, autocomplete fix on, smart per-app switching on, disable Vietnamese for non-English input
-sources on. "Restore defaults" keeps the current Vietnamese/English mode and the excluded app list.
+sources on, launcher AX edit on. "Restore defaults" keeps the current Vietnamese/English mode and the excluded app list.
 
 "Import settings from OpenKey" reads the `com.tuyenmai.openkey` domain with `CFPreferencesCopyAppValue`
 (input type, hotkey from `SwitchKeyStatus`, options and `macroData`). The per-app mode table (`smartSwitchKey`)

@@ -55,6 +55,9 @@ public struct Preferences: Codable, Equatable, Sendable {
     public var fixChromiumBrowser = false
     /// Send key by key (for apps that mishandle bulk text events)
     public var sendKeyStepByStep = false
+    /// Replace words in Spotlight, Raycast and Alfred through Accessibility (`AppRules.axEditApps`); off =
+    /// key events everywhere
+    public var fixOverlayLauncher = true
     /// Telex compatibility on other layouts (Dvorak, Colemak...)
     public var layoutCompatibility = false
     public var showIconOnDock = false
@@ -128,7 +131,7 @@ public struct Preferences: Codable, Equatable, Sendable {
         case tempOffSpellingWithControl, tempOffEngineWithCommand
         case useMacro, useMacroInEnglishMode, autoCapsMacro
         case rememberPerApp, disableOnNonEnglishInputSource, fixRecommendBrowser, fixChromiumBrowser
-        case sendKeyStepByStep, layoutCompatibility, showIconOnDock, showPanelOnStartup, modernMenuIcon, excludedApps
+        case sendKeyStepByStep, fixOverlayLauncher, layoutCompatibility, showIconOnDock, showPanelOnStartup, modernMenuIcon, excludedApps
     }
 
     public init(from decoder: Decoder) throws {
@@ -163,6 +166,7 @@ public struct Preferences: Codable, Equatable, Sendable {
         read(.fixRecommendBrowser, &p.fixRecommendBrowser)
         read(.fixChromiumBrowser, &p.fixChromiumBrowser)
         read(.sendKeyStepByStep, &p.sendKeyStepByStep)
+        read(.fixOverlayLauncher, &p.fixOverlayLauncher)
         read(.layoutCompatibility, &p.layoutCompatibility)
         read(.showIconOnDock, &p.showIconOnDock)
         read(.showPanelOnStartup, &p.showPanelOnStartup)

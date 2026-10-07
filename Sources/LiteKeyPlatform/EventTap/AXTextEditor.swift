@@ -9,15 +9,13 @@ import LiteKeyCore
 /// process with a short timeout, and no call starts after `readBudget`, so an edit finishes within
 /// `maxDuration`. Only the focused element is touched: no tree walk, roles or DOM attributes, which push
 /// Chrome/Electron into their slower accessibility mode.
-public final class AXTextEditor {
+final class AXTextEditor {
     enum Outcome: Equatable {
         case replaced
         /// Nothing was changed (or the selection was put back): inject with key events instead
         case failed
     }
 
-    /// `defaults write <bundle ID> AXEdit -bool NO` turns the AX edit off (relaunch to apply)
-    public static let defaultsKey = "AXEdit"
     /// Failures in a row after which an app goes back to key events until relaunch
     static let maxFailures = 3
 

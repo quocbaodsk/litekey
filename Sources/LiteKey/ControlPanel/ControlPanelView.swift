@@ -232,6 +232,7 @@ struct ControlPanelView: View {
             SwitchRow("Sửa lỗi trên Chromium", isOn: p.fixChromiumBrowser)
                 .disabled(!prefs.preferences.fixRecommendBrowser)
             SwitchRow("Gửi từng phím (bật nếu bị lỗi)", isOn: p.sendKeyStepByStep)
+            SwitchRow("Sửa lỗi Spotlight, Raycast, Alfred", isOn: p.fixOverlayLauncher)
             ActionRow("Ứng dụng loại trừ...") { model.showExcludedApps = true }
             ActionRow("Nhập cài đặt từ OpenKey...") { confirmImport = true }
                 .disabled(!model.canImportOpenKey())
