@@ -42,11 +42,11 @@ LiteKey là bộ gõ tiếng Việt chạy trên thanh menu của macOS, viết 
 duyệt, VS Code, Slack hay Terminal cũng không bị mất chữ. LiteKey không bao giờ kết nối mạng.
 
 <p align="center">
-  <img src="docs/images/main.png" width="560" alt="Bảng điều khiển LiteKey, thẻ tuỳ chọn gõ">
+  <img src="docs/images/control-panel.png" width="560" alt="Bảng điều khiển LiteKey, thẻ tuỳ chọn gõ">
 </p>
 
 <p align="center">
-  <img src="docs/images/control-panel.png" width="560" alt="Bảng điều khiển LiteKey, thẻ thông tin">
+  <img src="docs/images/tab-info.png" width="560" alt="Bảng điều khiển LiteKey, thẻ thông tin">
 </p>
 
 ## Tính năng

@@ -43,11 +43,11 @@ millisecond, so fast typing in browsers, VS Code, Slack or Terminal doesn't lose
 the network.
 
 <p align="center">
-  <img src="docs/images/main.png" width="560" alt="LiteKey control panel, typing options tab">
+  <img src="docs/images/control-panel.png" width="560" alt="LiteKey control panel, typing options tab">
 </p>
 
 <p align="center">
-  <img src="docs/images/control-panel.png" width="560" alt="LiteKey control panel, info tab">
+  <img src="docs/images/tab-info.png" width="560" alt="LiteKey control panel, info tab">
 </p>
 
 ## Features
