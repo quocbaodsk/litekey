@@ -32,7 +32,7 @@
 
 > [!IMPORTANT]
 > LiteKey is in beta. It's a personal project that I use every day and share in case it's useful to
-> someone else. Expect bugs and changes between releases; there's no support commitment or roadmap.
+> someone else. Expect bugs and changes between releases.
 > Bug reports are welcome in [Issues](https://github.com/quocbaodsk/litekey/issues).
 
 ## Overview
@@ -53,22 +53,26 @@ the network.
 ## Features
 
 ### Typing
+
 - Telex, VNI, Simple Telex 1 and 2
 - Old-style (òa, úy) or new-style (oà, uý) tone placement, free tone marking
 - Spell checking with automatic restore of English words: typing `class` stays `class`
 - Quick Telex (cc → ch, gg → gi…), quick start/end consonants, auto-capitalize the first letter of a sentence
 
 ### Macros
+
 - Personal macro table, with capitalization following how you type the shortcut
 - Works in English mode too
 - Import and export files compatible with UniKey and OpenKey
 
 ### Per app
+
 - Remembers Vietnamese/English mode per app
 - List of apps that always type English
 - Pauses automatically when you switch to another system input source
 
 ### Other
+
 - Switch Vietnamese/English with ⌃⇧, ⌥Z, ⌃⌥ or ⌃Space; ⌥-click the menu bar icon to toggle
 - Tap ⌃ to turn spell checking off for the current word, or ⌘ to turn LiteKey off for it
 - Warns when a password field holds the keyboard (Secure Input) or another Vietnamese input method is running
@@ -103,12 +107,14 @@ is stored, and settings stay in UserDefaults on your Mac.
 
 Make sure the macOS input source (top right of the menu bar) is **ABC** and no other Vietnamese input method is
 running. If one is, LiteKey shows ⚠︎ on its icon and names the input method to quit.
+
 </details>
 
 <details>
 <summary><b>macOS says the app cannot be opened?</b></summary>
 
 Go to **System Settings → Privacy & Security** and click **Open Anyway** next to the LiteKey message.
+
 </details>
 
 <details>
@@ -116,12 +122,14 @@ Go to **System Settings → Privacy & Security** and click **Open Anyway** next 
 
 After an update macOS sometimes keeps the permission bound to the old build. Remove LiteKey from the
 Accessibility list with **−**, reopen LiteKey and grant the permission again.
+
 </details>
 
 <details>
 <summary><b>How do I uninstall LiteKey?</b></summary>
 
 Quit LiteKey from its menu, delete the app from Applications, then remove it from the Accessibility list.
+
 </details>
 
 ## Contributing

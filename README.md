@@ -32,7 +32,7 @@
 
 > [!IMPORTANT]
 > LiteKey đang ở giai đoạn beta. Đây là dự án cá nhân mình dùng hằng ngày và chia sẻ để ai cần thì dùng.
-> Có thể còn lỗi và thay đổi giữa các bản phát hành; không cam kết hỗ trợ hay lộ trình phát triển.
+> Có thể còn lỗi và thay đổi giữa các bản phát hành.
 > Báo lỗi xin gửi ở [Issues](https://github.com/quocbaodsk/litekey/issues).
 
 ## Giới thiệu
@@ -52,22 +52,26 @@ duyệt, VS Code, Slack hay Terminal cũng không bị mất chữ. LiteKey khô
 ## Tính năng
 
 ### Gõ phím
+
 - Telex, VNI, Simple Telex 1 và 2
 - Đặt dấu kiểu cũ (òa, úy) hoặc kiểu mới (oà, uý), bỏ dấu tự do
 - Kiểm tra chính tả, tự khôi phục từ tiếng Anh: gõ `class` vẫn ra `class`
 - Telex nhanh (cc → ch, gg → gi…), gõ tắt phụ âm đầu/cuối, tự viết hoa chữ đầu câu
 
 ### Gõ tắt
+
 - Bảng gõ tắt riêng, viết hoa theo cách bạn gõ từ tắt
 - Dùng được cả khi đang ở chế độ tiếng Anh
 - Nhập và xuất tệp tương thích UniKey và OpenKey
 
 ### Theo từng ứng dụng
+
 - Nhớ chế độ Việt/Anh cho từng ứng dụng
 - Danh sách ứng dụng luôn gõ tiếng Anh
 - Tự tạm dừng khi bạn chuyển sang nguồn nhập khác của hệ thống
 
 ### Khác
+
 - Chuyển Việt/Anh bằng ⌃⇧, ⌥Z, ⌃⌥ hoặc ⌃Space; ⌥-click vào biểu tượng trên thanh menu để bật/tắt
 - Nhấn ⌃ để tắt kiểm tra chính tả cho từ đang gõ, hoặc ⌘ để tắt LiteKey cho từ đó
 - Cảnh báo khi ô mật khẩu đang giữ bàn phím (Secure Input) hoặc có bộ gõ tiếng Việt khác đang chạy
@@ -102,12 +106,14 @@ chỉ nằm trong UserDefaults trên máy bạn.
 
 Kiểm tra nguồn nhập của macOS (góc trên bên phải thanh menu) đang là **ABC** và không có bộ gõ tiếng Việt nào
 khác đang chạy. Nếu có, LiteKey hiện ⚠︎ trên biểu tượng và cho biết tên bộ gõ cần thoát.
+
 </details>
 
 <details>
 <summary><b>macOS báo không thể mở ứng dụng?</b></summary>
 
 Vào **Cài đặt hệ thống → Quyền riêng tư & Bảo mật** và bấm **Vẫn mở** cạnh thông báo về LiteKey.
+
 </details>
 
 <details>
@@ -115,12 +121,14 @@ Vào **Cài đặt hệ thống → Quyền riêng tư & Bảo mật** và bấm
 
 Sau khi cập nhật, đôi khi macOS vẫn gắn quyền với bản build cũ. Xoá LiteKey khỏi danh sách Trợ năng bằng nút
 **−**, mở lại LiteKey và cấp quyền lần nữa.
+
 </details>
 
 <details>
 <summary><b>Gỡ cài đặt LiteKey thế nào?</b></summary>
 
 Thoát LiteKey từ menu của nó, xoá ứng dụng khỏi Applications, rồi xoá nó khỏi danh sách Trợ năng.
+
 </details>
 
 ## Đóng góp
