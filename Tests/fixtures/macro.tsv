@@ -1,0 +1,902 @@
+telex,macro	btw 	by the way 
+telex,macro	xin chaof btw nhes 	xin chào by the way nhé 
+telex,macro,autocaps	btw.	by the way.
+telex,macro,autocaps	xin chaof btw.nhes.	xin chào by the way.nhé.
+vni,macro	btw,	by the way,
+vni,macro	xin chaof btw,nhes,	xin chaof by the way,nhes,
+telex,macro,autocaps,upperfirst	btw⏎	by the way⏎
+telex,macro,autocaps,upperfirst	xin chaof btw⏎nhes⏎	xin chào by the way⏎Nhé⏎
+telex,macro,english	btw;	btw;
+telex,macro,english	xin chaof btw;nhes;	xin chaof btw;nhes;
+telex,macro,autocaps,english	btw 	by the way 
+telex,macro,autocaps,english	xin chaof btw nhes 	xin chaof by the way nhes 
+telex	btw 	btw 
+telex	xin chaof btw nhes 	xin chào btw nhé 
+telex,macro	ms.	millisecond.
+telex,macro	xin chaof ms.nhes.	xin chào millisecond.nhé.
+telex,macro,autocaps	ms,	millisecond,
+telex,macro,autocaps	xin chaof ms,nhes,	xin chào millisecond,nhé,
+vni,macro	ms⏎	millisecond⏎
+vni,macro	xin chaof ms⏎nhes⏎	xin chaof millisecond⏎nhes⏎
+telex,macro,autocaps,upperfirst	ms;	millisecond;
+telex,macro,autocaps,upperfirst	xin chaof ms;nhes;	xin chào millisecond;nhé;
+telex,macro,english	ms 	millisecond 
+telex,macro,english	xin chaof ms nhes 	xin chaof millisecond nhes 
+telex,macro,autocaps,english	ms 	millisecond 
+telex,macro,autocaps,english	xin chaof ms nhes 	xin chaof millisecond nhes 
+telex	ms.	ms.
+telex	xin chaof ms.nhes.	xin chào ms.nhé.
+telex,macro	vn,	Việt Nam,
+telex,macro	xin chaof vn,nhes,	xin chào Việt Nam,nhé,
+telex,macro,autocaps	vn⏎	Việt Nam⏎
+telex,macro,autocaps	xin chaof vn⏎nhes⏎	xin chào Việt Nam⏎nhé⏎
+vni,macro	vn;	Việt Nam;
+vni,macro	xin chaof vn;nhes;	xin chaof Việt Nam;nhes;
+telex,macro,autocaps,upperfirst	vn 	Việt Nam 
+telex,macro,autocaps,upperfirst	xin chaof vn nhes 	xin chào Việt Nam nhé 
+telex,macro,english	vn 	Việt Nam 
+telex,macro,english	xin chaof vn nhes 	xin chaof Việt Nam nhes 
+telex,macro,autocaps,english	vn.	vn.
+telex,macro,autocaps,english	xin chaof vn.nhes.	xin chaof vn.nhes.
+telex	vn,	vn,
+telex	xin chaof vn,nhes,	xin chào vn,nhé,
+telex,macro	hcm⏎	Thành phố Hồ Chí Minh⏎
+telex,macro	xin chaof hcm⏎nhes⏎	xin chào Thành phố Hồ Chí Minh⏎nhé⏎
+telex,macro,autocaps	hcm;	Thành phố Hồ Chí Minh;
+telex,macro,autocaps	xin chaof hcm;nhes;	xin chào Thành phố Hồ Chí Minh;nhé;
+vni,macro	hcm 	Thành phố Hồ Chí Minh 
+vni,macro	xin chaof hcm nhes 	xin chaof Thành phố Hồ Chí Minh nhes 
+telex,macro,autocaps,upperfirst	hcm 	Thành phố Hồ Chí Minh 
+telex,macro,autocaps,upperfirst	xin chaof hcm nhes 	xin chào Thành phố Hồ Chí Minh nhé 
+telex,macro,english	hcm.	hcm.
+telex,macro,english	xin chaof hcm.nhes.	xin chaof hcm.nhes.
+telex,macro,autocaps,english	hcm,	hcm,
+telex,macro,autocaps,english	xin chaof hcm,nhes,	xin chaof hcm,nhes,
+telex	hcm⏎	hcm⏎
+telex	xin chaof hcm⏎nhes⏎	xin chào hcm⏎nhé⏎
+telex,macro	dc;	được;
+telex,macro	xin chaof dc;nhes;	xin chào được;nhé;
+telex,macro,autocaps	dc 	được 
+telex,macro,autocaps	xin chaof dc nhes 	xin chào được nhé 
+vni,macro	dc 	được 
+vni,macro	xin chaof dc nhes 	xin chaof được nhes 
+telex,macro,autocaps,upperfirst	dc.	được.
+telex,macro,autocaps,upperfirst	xin chaof dc.nhes.	xin chào được.nhé.
+telex,macro,english	dc,	dc,
+telex,macro,english	xin chaof dc,nhes,	xin chaof dc,nhes,
+telex,macro,autocaps,english	dc⏎	dc⏎
+telex,macro,autocaps,english	xin chaof dc⏎nhes⏎	xin chaof dc⏎nhes⏎
+telex	dc;	dc;
+telex	xin chaof dc;nhes;	xin chào dc;nhé;
+telex,macro	ko 	không 
+telex,macro	xin chaof ko nhes 	xin chào không nhé 
+telex,macro,autocaps	ko 	không 
+telex,macro,autocaps	xin chaof ko nhes 	xin chào không nhé 
+vni,macro	ko.	không.
+vni,macro	xin chaof ko.nhes.	xin chaof không.nhes.
+telex,macro,autocaps,upperfirst	ko,	không,
+telex,macro,autocaps,upperfirst	xin chaof ko,nhes,	xin chào không,nhé,
+telex,macro,english	ko⏎	ko⏎
+telex,macro,english	xin chaof ko⏎nhes⏎	xin chaof ko⏎nhes⏎
+telex,macro,autocaps,english	ko;	ko;
+telex,macro,autocaps,english	xin chaof ko;nhes;	xin chaof ko;nhes;
+telex	ko 	ko 
+telex	xin chaof ko nhes 	xin chào ko nhé 
+telex,macro	cx 	cũng 
+telex,macro	xin chaof cx nhes 	xin chào cũng nhé 
+telex,macro,autocaps	cx.	cũng.
+telex,macro,autocaps	xin chaof cx.nhes.	xin chào cũng.nhé.
+vni,macro	cx,	cũng,
+vni,macro	xin chaof cx,nhes,	xin chaof cũng,nhes,
+telex,macro,autocaps,upperfirst	cx⏎	cũng⏎
+telex,macro,autocaps,upperfirst	xin chaof cx⏎nhes⏎	xin chào cũng⏎Nhé⏎
+telex,macro,english	cx;	cx;
+telex,macro,english	xin chaof cx;nhes;	xin chaof cx;nhes;
+telex,macro,autocaps,english	cx 	cũng 
+telex,macro,autocaps,english	xin chaof cx nhes 	xin chaof cũng nhes 
+telex	cx 	cx 
+telex	xin chaof cx nhes 	xin chào cx nhé 
+telex,macro	tks.	cảm ơn bạn nhiều.
+telex,macro	xin chaof tks.nhes.	xin chào cảm ơn bạn nhiều.nhé.
+telex,macro,autocaps	tks,	cảm ơn bạn nhiều,
+telex,macro,autocaps	xin chaof tks,nhes,	xin chào cảm ơn bạn nhiều,nhé,
+vni,macro	tks⏎	cảm ơn bạn nhiều⏎
+vni,macro	xin chaof tks⏎nhes⏎	xin chaof cảm ơn bạn nhiều⏎nhes⏎
+telex,macro,autocaps,upperfirst	tks;	cảm ơn bạn nhiều;
+telex,macro,autocaps,upperfirst	xin chaof tks;nhes;	xin chào cảm ơn bạn nhiều;nhé;
+telex,macro,english	tks 	cảm ơn bạn nhiều 
+telex,macro,english	xin chaof tks nhes 	xin chaof cảm ơn bạn nhiều nhes 
+telex,macro,autocaps,english	tks 	cảm ơn bạn nhiều 
+telex,macro,autocaps,english	xin chaof tks nhes 	xin chaof cảm ơn bạn nhiều nhes 
+telex	tks.	tks.
+telex	xin chaof tks.nhes.	xin chào tks.nhé.
+telex,macro	k,	không,
+telex,macro	xin chaof k,nhes,	xin chào không,nhé,
+telex,macro,autocaps	k⏎	không⏎
+telex,macro,autocaps	xin chaof k⏎nhes⏎	xin chào không⏎nhé⏎
+vni,macro	k;	không;
+vni,macro	xin chaof k;nhes;	xin chaof không;nhes;
+telex,macro,autocaps,upperfirst	k 	không 
+telex,macro,autocaps,upperfirst	xin chaof k nhes 	xin chào không nhé 
+telex,macro,english	k 	không 
+telex,macro,english	xin chaof k nhes 	xin chaof không nhes 
+telex,macro,autocaps,english	k.	k.
+telex,macro,autocaps,english	xin chaof k.nhes.	xin chaof k.nhes.
+telex	k,	k,
+telex	xin chaof k,nhes,	xin chào k,nhé,
+telex,macro	addr⏎	123 Nguyễn Huệ, Quận 1⏎
+telex,macro	xin chaof addr⏎nhes⏎	xin chào 123 Nguyễn Huệ, Quận 1⏎nhé⏎
+telex,macro,autocaps	addr;	123 Nguyễn Huệ, Quận 1;
+telex,macro,autocaps	xin chaof addr;nhes;	xin chào 123 Nguyễn Huệ, Quận 1;nhé;
+vni,macro	addr 	123 Nguyễn Huệ, Quận 1 
+vni,macro	xin chaof addr nhes 	xin chaof 123 Nguyễn Huệ, Quận 1 nhes 
+telex,macro,autocaps,upperfirst	addr 	123 Nguyễn Huệ, Quận 1 
+telex,macro,autocaps,upperfirst	xin chaof addr nhes 	xin chào 123 Nguyễn Huệ, Quận 1 nhé 
+telex,macro,english	addr.	addr.
+telex,macro,english	xin chaof addr.nhes.	xin chaof addr.nhes.
+telex,macro,autocaps,english	addr,	addr,
+telex,macro,autocaps,english	xin chaof addr,nhes,	xin chaof addr,nhes,
+telex	addr⏎	addr⏎
+telex	xin chaof addr⏎nhes⏎	xin chào addr⏎nhé⏎
+telex,macro	a;	anh;
+telex,macro	xin chaof a;nhes;	xin chào anh;nhé;
+telex,macro,autocaps	a 	anh 
+telex,macro,autocaps	xin chaof a nhes 	xin chào anh nhé 
+vni,macro	a 	anh 
+vni,macro	xin chaof a nhes 	xin chaof anh nhes 
+telex,macro,autocaps,upperfirst	a.	anh.
+telex,macro,autocaps,upperfirst	xin chaof a.nhes.	xin chào anh.nhé.
+telex,macro,english	a,	a,
+telex,macro,english	xin chaof a,nhes,	xin chaof a,nhes,
+telex,macro,autocaps,english	a⏎	a⏎
+telex,macro,autocaps,english	xin chaof a⏎nhes⏎	xin chaof a⏎nhes⏎
+telex	a;	a;
+telex	xin chaof a;nhes;	xin chào a;nhé;
+telex,macro	lt 	lập trình 
+telex,macro	xin chaof lt nhes 	xin chào lập trình nhé 
+telex,macro,autocaps	lt 	lập trình 
+telex,macro,autocaps	xin chaof lt nhes 	xin chào lập trình nhé 
+vni,macro	lt.	lập trình.
+vni,macro	xin chaof lt.nhes.	xin chaof lập trình.nhes.
+telex,macro,autocaps,upperfirst	lt,	lập trình,
+telex,macro,autocaps,upperfirst	xin chaof lt,nhes,	xin chào lập trình,nhé,
+telex,macro,english	lt⏎	lt⏎
+telex,macro,english	xin chaof lt⏎nhes⏎	xin chaof lt⏎nhes⏎
+telex,macro,autocaps,english	lt;	lt;
+telex,macro,autocaps,english	xin chaof lt;nhes;	xin chaof lt;nhes;
+telex	lt 	lt 
+telex	xin chaof lt nhes 	xin chào lt nhé 
+telex,macro	mail 	acct@example.com 
+telex,macro	xin chaof mail nhes 	xin chào acct@example.com nhé 
+telex,macro,autocaps	mail.	acct@example.com.
+telex,macro,autocaps	xin chaof mail.nhes.	xin chào acct@example.com.nhé.
+vni,macro	mail,	acct@example.com,
+vni,macro	xin chaof mail,nhes,	xin chaof acct@example.com,nhes,
+telex,macro,autocaps,upperfirst	mail⏎	acct@example.com⏎
+telex,macro,autocaps,upperfirst	xin chaof mail⏎nhes⏎	xin chào acct@example.com⏎Nhé⏎
+telex,macro,english	mail;	mail;
+telex,macro,english	xin chaof mail;nhes;	xin chaof mail;nhes;
+telex,macro,autocaps,english	mail 	acct@example.com 
+telex,macro,autocaps,english	xin chaof mail nhes 	xin chaof acct@example.com nhes 
+telex	mail 	mail 
+telex	xin chaof mail nhes 	xin chào mail nhé 
+telex,macro	ns.	nói.
+telex,macro	xin chaof ns.nhes.	xin chào nói.nhé.
+telex,macro,autocaps	ns,	nói,
+telex,macro,autocaps	xin chaof ns,nhes,	xin chào nói,nhé,
+vni,macro	ns⏎	nói⏎
+vni,macro	xin chaof ns⏎nhes⏎	xin chaof nói⏎nhes⏎
+telex,macro,autocaps,upperfirst	ns;	nói;
+telex,macro,autocaps,upperfirst	xin chaof ns;nhes;	xin chào nói;nhé;
+telex,macro,english	ns 	nói 
+telex,macro,english	xin chaof ns nhes 	xin chaof nói nhes 
+telex,macro,autocaps,english	ns 	nói 
+telex,macro,autocaps,english	xin chaof ns nhes 	xin chaof nói nhes 
+telex	ns.	ns.
+telex	xin chaof ns.nhes.	xin chào ns.nhé.
+telex,macro	toi,	Tôi,
+telex,macro	xin chaof toi,nhes,	xin chào Tôi,nhé,
+telex,macro,autocaps	toi⏎	Tôi⏎
+telex,macro,autocaps	xin chaof toi⏎nhes⏎	xin chào Tôi⏎nhé⏎
+vni,macro	toi;	Tôi;
+vni,macro	xin chaof toi;nhes;	xin chaof Tôi;nhes;
+telex,macro,autocaps,upperfirst	toi 	Tôi 
+telex,macro,autocaps,upperfirst	xin chaof toi nhes 	xin chào Tôi nhé 
+telex,macro,english	toi 	Tôi 
+telex,macro,english	xin chaof toi nhes 	xin chaof Tôi nhes 
+telex,macro,autocaps,english	toi.	toi.
+telex,macro,autocaps,english	xin chaof toi.nhes.	xin chaof toi.nhes.
+telex	toi,	toi,
+telex	xin chaof toi,nhes,	xin chào toi,nhé,
+telex,macro	Btw⏎	Btw⏎
+telex,macro	xin chaof Btw⏎nhes⏎	xin chào Btw⏎nhé⏎
+telex,macro,autocaps	Btw;	By the way;
+telex,macro,autocaps	xin chaof Btw;nhes;	xin chào By the way;nhé;
+vni,macro	Btw 	Btw 
+vni,macro	xin chaof Btw nhes 	xin chaof Btw nhes 
+telex,macro,autocaps,upperfirst	Btw 	By the way 
+telex,macro,autocaps,upperfirst	xin chaof Btw nhes 	xin chào By the way nhé 
+telex,macro,english	Btw.	Btw.
+telex,macro,english	xin chaof Btw.nhes.	xin chaof Btw.nhes.
+telex,macro,autocaps,english	Btw,	Btw,
+telex,macro,autocaps,english	xin chaof Btw,nhes,	xin chaof Btw,nhes,
+telex	Btw⏎	Btw⏎
+telex	xin chaof Btw⏎nhes⏎	xin chào Btw⏎nhé⏎
+telex,macro	BTW;	BTW;
+telex,macro	xin chaof BTW;nhes;	xin chào BTW;nhé;
+telex,macro,autocaps	BTW 	BY THE WAY 
+telex,macro,autocaps	xin chaof BTW nhes 	xin chào BY THE WAY nhé 
+vni,macro	BTW 	BTW 
+vni,macro	xin chaof BTW nhes 	xin chaof BTW nhes 
+telex,macro,autocaps,upperfirst	BTW.	BY THE WAY.
+telex,macro,autocaps,upperfirst	xin chaof BTW.nhes.	xin chào BY THE WAY.nhé.
+telex,macro,english	BTW,	BTW,
+telex,macro,english	xin chaof BTW,nhes,	xin chaof BTW,nhes,
+telex,macro,autocaps,english	BTW⏎	BTW⏎
+telex,macro,autocaps,english	xin chaof BTW⏎nhes⏎	xin chaof BTW⏎nhes⏎
+telex	BTW;	BTW;
+telex	xin chaof BTW;nhes;	xin chào BTW;nhé;
+telex,macro	Vn 	Vn 
+telex,macro	xin chaof Vn nhes 	xin chào Vn nhé 
+telex,macro,autocaps	Vn 	Việt Nam 
+telex,macro,autocaps	xin chaof Vn nhes 	xin chào Việt Nam nhé 
+vni,macro	Vn.	Vn.
+vni,macro	xin chaof Vn.nhes.	xin chaof Vn.nhes.
+telex,macro,autocaps,upperfirst	Vn,	Việt Nam,
+telex,macro,autocaps,upperfirst	xin chaof Vn,nhes,	xin chào Việt Nam,nhé,
+telex,macro,english	Vn⏎	Vn⏎
+telex,macro,english	xin chaof Vn⏎nhes⏎	xin chaof Vn⏎nhes⏎
+telex,macro,autocaps,english	Vn;	Vn;
+telex,macro,autocaps,english	xin chaof Vn;nhes;	xin chaof Vn;nhes;
+telex	Vn 	Vn 
+telex	xin chaof Vn nhes 	xin chào Vn nhé 
+telex,macro	VN 	VN 
+telex,macro	xin chaof VN nhes 	xin chào VN nhé 
+telex,macro,autocaps	VN.	VIỆT NAM.
+telex,macro,autocaps	xin chaof VN.nhes.	xin chào VIỆT NAM.nhé.
+vni,macro	VN,	VN,
+vni,macro	xin chaof VN,nhes,	xin chaof VN,nhes,
+telex,macro,autocaps,upperfirst	VN⏎	VIỆT NAM⏎
+telex,macro,autocaps,upperfirst	xin chaof VN⏎nhes⏎	xin chào VIỆT NAM⏎Nhé⏎
+telex,macro,english	VN;	VN;
+telex,macro,english	xin chaof VN;nhes;	xin chaof VN;nhes;
+telex,macro,autocaps,english	VN 	VIỆT NAM 
+telex,macro,autocaps,english	xin chaof VN nhes 	xin chaof VIỆT NAM nhes 
+telex	VN 	VN 
+telex	xin chaof VN nhes 	xin chào VN nhé 
+telex,macro	Dc.	Dc.
+telex,macro	xin chaof Dc.nhes.	xin chào Dc.nhé.
+telex,macro,autocaps	Dc,	Được,
+telex,macro,autocaps	xin chaof Dc,nhes,	xin chào Được,nhé,
+vni,macro	Dc⏎	Dc⏎
+vni,macro	xin chaof Dc⏎nhes⏎	xin chaof Dc⏎nhes⏎
+telex,macro,autocaps,upperfirst	Dc;	Được;
+telex,macro,autocaps,upperfirst	xin chaof Dc;nhes;	xin chào Được;nhé;
+telex,macro,english	Dc 	Dc 
+telex,macro,english	xin chaof Dc nhes 	xin chaof Dc nhes 
+telex,macro,autocaps,english	Dc 	Được 
+telex,macro,autocaps,english	xin chaof Dc nhes 	xin chaof Được nhes 
+telex	Dc.	Dc.
+telex	xin chaof Dc.nhes.	xin chào Dc.nhé.
+telex,macro	Ko,	Ko,
+telex,macro	xin chaof Ko,nhes,	xin chào Ko,nhé,
+telex,macro,autocaps	Ko⏎	Không⏎
+telex,macro,autocaps	xin chaof Ko⏎nhes⏎	xin chào Không⏎nhé⏎
+vni,macro	Ko;	Ko;
+vni,macro	xin chaof Ko;nhes;	xin chaof Ko;nhes;
+telex,macro,autocaps,upperfirst	Ko 	Không 
+telex,macro,autocaps,upperfirst	xin chaof Ko nhes 	xin chào Không nhé 
+telex,macro,english	Ko 	Ko 
+telex,macro,english	xin chaof Ko nhes 	xin chaof Ko nhes 
+telex,macro,autocaps,english	Ko.	Ko.
+telex,macro,autocaps,english	xin chaof Ko.nhes.	xin chaof Ko.nhes.
+telex	Ko,	Ko,
+telex	xin chaof Ko,nhes,	xin chào Ko,nhé,
+telex,macro	Hcm⏎	Hcm⏎
+telex,macro	xin chaof Hcm⏎nhes⏎	xin chào Hcm⏎nhé⏎
+telex,macro,autocaps	Hcm;	Thành phố Hồ Chí Minh;
+telex,macro,autocaps	xin chaof Hcm;nhes;	xin chào Thành phố Hồ Chí Minh;nhé;
+vni,macro	Hcm 	Hcm 
+vni,macro	xin chaof Hcm nhes 	xin chaof Hcm nhes 
+telex,macro,autocaps,upperfirst	Hcm 	Thành phố Hồ Chí Minh 
+telex,macro,autocaps,upperfirst	xin chaof Hcm nhes 	xin chào Thành phố Hồ Chí Minh nhé 
+telex,macro,english	Hcm.	Hcm.
+telex,macro,english	xin chaof Hcm.nhes.	xin chaof Hcm.nhes.
+telex,macro,autocaps,english	Hcm,	Hcm,
+telex,macro,autocaps,english	xin chaof Hcm,nhes,	xin chaof Hcm,nhes,
+telex	Hcm⏎	Hcm⏎
+telex	xin chaof Hcm⏎nhes⏎	xin chào Hcm⏎nhé⏎
+telex,macro	Tks;	Tks;
+telex,macro	xin chaof Tks;nhes;	xin chào Tks;nhé;
+telex,macro,autocaps	Tks 	Cảm ơn bạn nhiều 
+telex,macro,autocaps	xin chaof Tks nhes 	xin chào Cảm ơn bạn nhiều nhé 
+vni,macro	Tks 	Tks 
+vni,macro	xin chaof Tks nhes 	xin chaof Tks nhes 
+telex,macro,autocaps,upperfirst	Tks.	Cảm ơn bạn nhiều.
+telex,macro,autocaps,upperfirst	xin chaof Tks.nhes.	xin chào Cảm ơn bạn nhiều.nhé.
+telex,macro,english	Tks,	Tks,
+telex,macro,english	xin chaof Tks,nhes,	xin chaof Tks,nhes,
+telex,macro,autocaps,english	Tks⏎	Tks⏎
+telex,macro,autocaps,english	xin chaof Tks⏎nhes⏎	xin chaof Tks⏎nhes⏎
+telex	Tks;	Tks;
+telex	xin chaof Tks;nhes;	xin chào Tks;nhé;
+telex,macro	Addr 	Addr 
+telex,macro	xin chaof Addr nhes 	xin chào Addr nhé 
+telex,macro,autocaps	Addr 	123 Nguyễn Huệ, Quận 1 
+telex,macro,autocaps	xin chaof Addr nhes 	xin chào 123 Nguyễn Huệ, Quận 1 nhé 
+vni,macro	Addr.	Addr.
+vni,macro	xin chaof Addr.nhes.	xin chaof Addr.nhes.
+telex,macro,autocaps,upperfirst	Addr,	123 Nguyễn Huệ, Quận 1,
+telex,macro,autocaps,upperfirst	xin chaof Addr,nhes,	xin chào 123 Nguyễn Huệ, Quận 1,nhé,
+telex,macro,english	Addr⏎	Addr⏎
+telex,macro,english	xin chaof Addr⏎nhes⏎	xin chaof Addr⏎nhes⏎
+telex,macro,autocaps,english	Addr;	Addr;
+telex,macro,autocaps,english	xin chaof Addr;nhes;	xin chaof Addr;nhes;
+telex	Addr 	Addr 
+telex	xin chaof Addr nhes 	xin chào Addr nhé 
+telex,macro	Lt 	Lt 
+telex,macro	xin chaof Lt nhes 	xin chào Lt nhé 
+telex,macro,autocaps	Lt.	Lập trình.
+telex,macro,autocaps	xin chaof Lt.nhes.	xin chào Lập trình.nhé.
+vni,macro	Lt,	Lt,
+vni,macro	xin chaof Lt,nhes,	xin chaof Lt,nhes,
+telex,macro,autocaps,upperfirst	Lt⏎	Lập trình⏎
+telex,macro,autocaps,upperfirst	xin chaof Lt⏎nhes⏎	xin chào Lập trình⏎Nhé⏎
+telex,macro,english	Lt;	Lt;
+telex,macro,english	xin chaof Lt;nhes;	xin chaof Lt;nhes;
+telex,macro,autocaps,english	Lt 	Lập trình 
+telex,macro,autocaps,english	xin chaof Lt nhes 	xin chaof Lập trình nhes 
+telex	Lt 	Lt 
+telex	xin chaof Lt nhes 	xin chào Lt nhé 
+telex,macro	Toi.	Toi.
+telex,macro	xin chaof Toi.nhes.	xin chào Toi.nhé.
+telex,macro,autocaps	Toi,	Tôi,
+telex,macro,autocaps	xin chaof Toi,nhes,	xin chào Tôi,nhé,
+vni,macro	Toi⏎	Toi⏎
+vni,macro	xin chaof Toi⏎nhes⏎	xin chaof Toi⏎nhes⏎
+telex,macro,autocaps,upperfirst	Toi;	Tôi;
+telex,macro,autocaps,upperfirst	xin chaof Toi;nhes;	xin chào Tôi;nhé;
+telex,macro,english	Toi 	Toi 
+telex,macro,english	xin chaof Toi nhes 	xin chaof Toi nhes 
+telex,macro,autocaps,english	Toi 	Tôi 
+telex,macro,autocaps,english	xin chaof Toi nhes 	xin chaof Tôi nhes 
+telex	Toi.	Toi.
+telex	xin chaof Toi.nhes.	xin chào Toi.nhé.
+telex,macro	TOI,	TOI,
+telex,macro	xin chaof TOI,nhes,	xin chào TOI,nhé,
+telex,macro,autocaps	TOI⏎	TÔI⏎
+telex,macro,autocaps	xin chaof TOI⏎nhes⏎	xin chào TÔI⏎nhé⏎
+vni,macro	TOI;	TOI;
+vni,macro	xin chaof TOI;nhes;	xin chaof TOI;nhes;
+telex,macro,autocaps,upperfirst	TOI 	TÔI 
+telex,macro,autocaps,upperfirst	xin chaof TOI nhes 	xin chào TÔI nhé 
+telex,macro,english	TOI 	TOI 
+telex,macro,english	xin chaof TOI nhes 	xin chaof TOI nhes 
+telex,macro,autocaps,english	TOI.	TOI.
+telex,macro,autocaps,english	xin chaof TOI.nhes.	xin chaof TOI.nhes.
+telex	TOI,	TOI,
+telex	xin chaof TOI,nhes,	xin chào TOI,nhé,
+telex,macro	btW⏎	btW⏎
+telex,macro	xin chaof btW⏎nhes⏎	xin chào btW⏎nhé⏎
+telex,macro,autocaps	btW;	btW;
+telex,macro,autocaps	xin chaof btW;nhes;	xin chào btW;nhé;
+vni,macro	btW 	btW 
+vni,macro	xin chaof btW nhes 	xin chaof btW nhes 
+telex,macro,autocaps,upperfirst	btW 	btW 
+telex,macro,autocaps,upperfirst	xin chaof btW nhes 	xin chào btW nhé 
+telex,macro,english	btW.	btW.
+telex,macro,english	xin chaof btW.nhes.	xin chaof btW.nhes.
+telex,macro,autocaps,english	btW,	btW,
+telex,macro,autocaps,english	xin chaof btW,nhes,	xin chaof btW,nhes,
+telex	btW⏎	btW⏎
+telex	xin chaof btW⏎nhes⏎	xin chào btW⏎nhé⏎
+telex,macro	bTw;	bTw;
+telex,macro	xin chaof bTw;nhes;	xin chào bTw;nhé;
+telex,macro,autocaps	bTw 	bTw 
+telex,macro,autocaps	xin chaof bTw nhes 	xin chào bTw nhé 
+vni,macro	bTw 	bTw 
+vni,macro	xin chaof bTw nhes 	xin chaof bTw nhes 
+telex,macro,autocaps,upperfirst	bTw.	bTw.
+telex,macro,autocaps,upperfirst	xin chaof bTw.nhes.	xin chào bTw.nhé.
+telex,macro,english	bTw,	bTw,
+telex,macro,english	xin chaof bTw,nhes,	xin chaof bTw,nhes,
+telex,macro,autocaps,english	bTw⏎	bTw⏎
+telex,macro,autocaps,english	xin chaof bTw⏎nhes⏎	xin chaof bTw⏎nhes⏎
+telex	bTw;	bTw;
+telex	xin chaof bTw;nhes;	xin chào bTw;nhé;
+telex,macro	tooi 	tôi 
+telex,macro	xin chaof tooi nhes 	xin chào tôi nhé 
+telex,macro,autocaps	tooi 	tôi 
+telex,macro,autocaps	xin chaof tooi nhes 	xin chào tôi nhé 
+vni,macro	tooi.	tooi.
+vni,macro	xin chaof tooi.nhes.	xin chaof tooi.nhes.
+telex,macro,autocaps,upperfirst	tooi,	tôi,
+telex,macro,autocaps,upperfirst	xin chaof tooi,nhes,	xin chào tôi,nhé,
+telex,macro,english	tooi⏎	tooi⏎
+telex,macro,english	xin chaof tooi⏎nhes⏎	xin chaof tooi⏎nhes⏎
+telex,macro,autocaps,english	tooi;	tooi;
+telex,macro,autocaps,english	xin chaof tooi;nhes;	xin chaof tooi;nhes;
+telex	tooi 	tôi 
+telex	xin chaof tooi nhes 	xin chào tôi nhé 
+telex,macro	ddi 	đi 
+telex,macro	xin chaof ddi nhes 	xin chào đi nhé 
+telex,macro,autocaps	ddi.	đi.
+telex,macro,autocaps	xin chaof ddi.nhes.	xin chào đi.nhé.
+vni,macro	ddi,	ddi,
+vni,macro	xin chaof ddi,nhes,	xin chaof ddi,nhes,
+telex,macro,autocaps,upperfirst	ddi⏎	đi⏎
+telex,macro,autocaps,upperfirst	xin chaof ddi⏎nhes⏎	xin chào đi⏎Nhé⏎
+telex,macro,english	ddi;	ddi;
+telex,macro,english	xin chaof ddi;nhes;	xin chaof ddi;nhes;
+telex,macro,autocaps,english	ddi 	ddi 
+telex,macro,autocaps,english	xin chaof ddi nhes 	xin chaof ddi nhes 
+telex	ddi 	đi 
+telex	xin chaof ddi nhes 	xin chào đi nhé 
+telex,macro	vnn<.	Việt Nam.
+telex,macro	xin chaof vnn<.nhes.	xin chào Việt Nam.nhé.
+telex,macro,autocaps	vnn<,	Việt Nam,
+telex,macro,autocaps	xin chaof vnn<,nhes,	xin chào Việt Nam,nhé,
+vni,macro	vnn<⏎	Việt Nam⏎
+vni,macro	xin chaof vnn<⏎nhes⏎	xin chaof Việt Nam⏎nhes⏎
+telex,macro,autocaps,upperfirst	vnn<;	Việt Nam;
+telex,macro,autocaps,upperfirst	xin chaof vnn<;nhes;	xin chào Việt Nam;nhé;
+telex,macro,english	vnn< 	Việt Nam 
+telex,macro,english	xin chaof vnn< nhes 	xin chaof Việt Nam nhes 
+telex,macro,autocaps,english	vnn< 	Việt Nam 
+telex,macro,autocaps,english	xin chaof vnn< nhes 	xin chaof Việt Nam nhes 
+telex	vnn<.	vn.
+telex	xin chaof vnn<.nhes.	xin chào vn.nhé.
+telex,macro	vn<,	v,
+telex,macro	xin chaof vn<,nhes,	xin chào v,nhé,
+telex,macro,autocaps	vn<⏎	v⏎
+telex,macro,autocaps	xin chaof vn<⏎nhes⏎	xin chào v⏎nhé⏎
+vni,macro	vn<;	v;
+vni,macro	xin chaof vn<;nhes;	xin chaof v;nhes;
+telex,macro,autocaps,upperfirst	vn< 	v 
+telex,macro,autocaps,upperfirst	xin chaof vn< nhes 	xin chào v nhé 
+telex,macro,english	vn< 	v 
+telex,macro,english	xin chaof vn< nhes 	xin chaof v nhes 
+telex,macro,autocaps,english	vn<.	v.
+telex,macro,autocaps,english	xin chaof vn<.nhes.	xin chaof v.nhes.
+telex	vn<,	v,
+telex	xin chaof vn<,nhes,	xin chào v,nhé,
+telex,macro	kos⏎	kó⏎
+telex,macro	xin chaof kos⏎nhes⏎	xin chào kó⏎nhé⏎
+telex,macro,autocaps	kos;	kó;
+telex,macro,autocaps	xin chaof kos;nhes;	xin chào kó;nhé;
+vni,macro	kos 	kos 
+vni,macro	xin chaof kos nhes 	xin chaof kos nhes 
+telex,macro,autocaps,upperfirst	kos 	kó 
+telex,macro,autocaps,upperfirst	xin chaof kos nhes 	xin chào kó nhé 
+telex,macro,english	kos.	kos.
+telex,macro,english	xin chaof kos.nhes.	xin chaof kos.nhes.
+telex,macro,autocaps,english	kos,	kos,
+telex,macro,autocaps,english	xin chaof kos,nhes,	xin chaof kos,nhes,
+telex	kos⏎	kó⏎
+telex	xin chaof kos⏎nhes⏎	xin chào kó⏎nhé⏎
+telex,macro	dcs;	dcs;
+telex,macro	xin chaof dcs;nhes;	xin chào dcs;nhé;
+telex,macro,autocaps	dcs 	dcs 
+telex,macro,autocaps	xin chaof dcs nhes 	xin chào dcs nhé 
+vni,macro	dcs 	dcs 
+vni,macro	xin chaof dcs nhes 	xin chaof dcs nhes 
+telex,macro,autocaps,upperfirst	dcs.	dcs.
+telex,macro,autocaps,upperfirst	xin chaof dcs.nhes.	xin chào dcs.nhé.
+telex,macro,english	dcs,	dcs,
+telex,macro,english	xin chaof dcs,nhes,	xin chaof dcs,nhes,
+telex,macro,autocaps,english	dcs⏎	dcs⏎
+telex,macro,autocaps,english	xin chaof dcs⏎nhes⏎	xin chaof dcs⏎nhes⏎
+telex	dcs;	dcs;
+telex	xin chaof dcs;nhes;	xin chào dcs;nhé;
+telex,macro	a<a 	anh 
+telex,macro	xin chaof a<a nhes 	xin chào anh nhé 
+telex,macro,autocaps	a<a 	anh 
+telex,macro,autocaps	xin chaof a<a nhes 	xin chào anh nhé 
+vni,macro	a<a.	anh.
+vni,macro	xin chaof a<a.nhes.	xin chaof anh.nhes.
+telex,macro,autocaps,upperfirst	a<a,	anh,
+telex,macro,autocaps,upperfirst	xin chaof a<a,nhes,	xin chào anh,nhé,
+telex,macro,english	a<a⏎	a⏎
+telex,macro,english	xin chaof a<a⏎nhes⏎	xin chaof a⏎nhes⏎
+telex,macro,autocaps,english	a<a;	a;
+telex,macro,autocaps,english	xin chaof a<a;nhes;	xin chaof a;nhes;
+telex	a<a 	a 
+telex	xin chaof a<a nhes 	xin chào a nhé 
+telex,macro	btww 	btww 
+telex,macro	xin chaof btww nhes 	xin chào btww nhé 
+telex,macro,autocaps	btww.	btww.
+telex,macro,autocaps	xin chaof btww.nhes.	xin chào btww.nhé.
+vni,macro	btww,	btww,
+vni,macro	xin chaof btww,nhes,	xin chaof btww,nhes,
+telex,macro,autocaps,upperfirst	btww⏎	btww⏎
+telex,macro,autocaps,upperfirst	xin chaof btww⏎nhes⏎	xin chào btww⏎Nhé⏎
+telex,macro,english	btww;	btww;
+telex,macro,english	xin chaof btww;nhes;	xin chaof btww;nhes;
+telex,macro,autocaps,english	btww 	btww 
+telex,macro,autocaps,english	xin chaof btww nhes 	xin chaof btww nhes 
+telex	btww 	btww 
+telex	xin chaof btww nhes 	xin chào btww nhé 
+telex,macro	bt<tw.	by the way.
+telex,macro	xin chaof bt<tw.nhes.	xin chào by the way.nhé.
+telex,macro,autocaps	bt<tw,	by the way,
+telex,macro,autocaps	xin chaof bt<tw,nhes,	xin chào by the way,nhé,
+vni,macro	bt<tw⏎	by the way⏎
+vni,macro	xin chaof bt<tw⏎nhes⏎	xin chaof by the way⏎nhes⏎
+telex,macro,autocaps,upperfirst	bt<tw;	by the way;
+telex,macro,autocaps,upperfirst	xin chaof bt<tw;nhes;	xin chào by the way;nhé;
+telex,macro,english	bt<tw 	by the way 
+telex,macro,english	xin chaof bt<tw nhes 	xin chaof by the way nhes 
+telex,macro,autocaps,english	bt<tw 	by the way 
+telex,macro,autocaps,english	xin chaof bt<tw nhes 	xin chaof by the way nhes 
+telex	bt<tw.	btw.
+telex	xin chaof bt<tw.nhes.	xin chào btw.nhé.
+telex,macro	ms<s,	millisecond,
+telex,macro	xin chaof ms<s,nhes,	xin chào millisecond,nhé,
+telex,macro,autocaps	ms<s⏎	millisecond⏎
+telex,macro,autocaps	xin chaof ms<s⏎nhes⏎	xin chào millisecond⏎nhé⏎
+vni,macro	ms<s;	millisecond;
+vni,macro	xin chaof ms<s;nhes;	xin chaof millisecond;nhes;
+telex,macro,autocaps,upperfirst	ms<s 	millisecond 
+telex,macro,autocaps,upperfirst	xin chaof ms<s nhes 	xin chào millisecond nhé 
+telex,macro,english	ms<s 	millisecond 
+telex,macro,english	xin chaof ms<s nhes 	xin chaof millisecond nhes 
+telex,macro,autocaps,english	ms<s.	ms.
+telex,macro,autocaps,english	xin chaof ms<s.nhes.	xin chaof ms.nhes.
+telex	ms<s,	ms,
+telex	xin chaof ms<s,nhes,	xin chào ms,nhé,
+telex,macro	.v⏎	vân vân⏎
+telex,macro	xin chaof .v⏎nhes⏎	xin chào vân vân⏎nhé⏎
+telex,macro,autocaps	.v;	vân vân;
+telex,macro,autocaps	xin chaof .v;nhes;	xin chào vân vân;nhé;
+vni,macro	.v 	vân vân 
+vni,macro	xin chaof .v nhes 	xin chaof vân vân nhes 
+telex,macro,autocaps,upperfirst	.v 	vân vân 
+telex,macro,autocaps,upperfirst	xin chaof .v nhes 	xin chào vân vân nhé 
+telex,macro,english	.v.	.v.
+telex,macro,english	xin chaof .v.nhes.	xin chaof .v.nhes.
+telex,macro,autocaps,english	.v,	.v,
+telex,macro,autocaps,english	xin chaof .v,nhes,	xin chaof .v,nhes,
+telex	.v⏎	.v⏎
+telex	xin chaof .v⏎nhes⏎	xin chào .v⏎nhé⏎
+telex,macro	:);	😀 vui;
+telex,macro	xin chaof :);nhes;	xin chào 😀 vui;nhé;
+telex,macro,autocaps	:) 	😀 vui 
+telex,macro,autocaps	xin chaof :) nhes 	xin chào 😀 vui nhé 
+vni,macro	:) 	😀 vui 
+vni,macro	xin chaof :) nhes 	xin chaof 😀 vui nhes 
+telex,macro,autocaps,upperfirst	:).	😀 vui.
+telex,macro,autocaps,upperfirst	xin chaof :).nhes.	xin chào 😀 vui.nhé.
+telex,macro,english	:),	:),
+telex,macro,english	xin chaof :),nhes,	xin chaof :),nhes,
+telex,macro,autocaps,english	:)⏎	:)⏎
+telex,macro,autocaps,english	xin chaof :)⏎nhes⏎	xin chaof :)⏎nhes⏎
+telex	:);	:);
+telex	xin chaof :);nhes;	xin chào :);nhé;
+telex,macro	:a 	hai chấm a 
+telex,macro	xin chaof :a nhes 	xin chào hai chấm a nhé 
+telex,macro,autocaps	:a 	hai chấm a 
+telex,macro,autocaps	xin chaof :a nhes 	xin chào hai chấm a nhé 
+vni,macro	:a.	hai chấm a.
+vni,macro	xin chaof :a.nhes.	xin chaof hai chấm a.nhes.
+telex,macro,autocaps,upperfirst	:a,	hai chấm a,
+telex,macro,autocaps,upperfirst	xin chaof :a,nhes,	xin chào hai chấm a,nhé,
+telex,macro,english	:a⏎	:a⏎
+telex,macro,english	xin chaof :a⏎nhes⏎	xin chaof :a⏎nhes⏎
+telex,macro,autocaps,english	:a;	:a;
+telex,macro,autocaps,english	xin chaof :a;nhes;	xin chaof :a;nhes;
+telex	:a 	:a 
+telex	xin chaof :a nhes 	xin chào :a nhé 
+telex,macro	x 	x 
+telex,macro	xin chaof x nhes 	xin chào x nhé 
+telex,macro,autocaps	x.	x.
+telex,macro,autocaps	xin chaof x.nhes.	xin chào x.nhé.
+vni,macro	x,	x,
+vni,macro	xin chaof x,nhes,	xin chaof x,nhes,
+telex,macro,autocaps,upperfirst	x⏎	x⏎
+telex,macro,autocaps,upperfirst	xin chaof x⏎nhes⏎	xin chào x⏎Nhé⏎
+telex,macro,english	x;	x;
+telex,macro,english	xin chaof x;nhes;	xin chaof x;nhes;
+telex,macro,autocaps,english	x 	x 
+telex,macro,autocaps,english	xin chaof x nhes 	xin chaof x nhes 
+telex	x 	x 
+telex	xin chaof x nhes 	xin chào x nhé 
+telex,macro	pawnj⏎lengj phoong⏎btww;btww,dij ghuooc⏎	pặn⏎lẹng phông⏎btww;btww,dị ghuôc⏎
+telex,macro,autocaps	langf uwowmf⏎uaayj.ieeuj lt,a<a 	làng ườm⏎uậy.iệu lập trình,a 
+telex,macro,english	xaof.mail.cx,thoachj;lt din 	xaof.mail.cx,thoachj;lt din 
+vni,macro	ms<s;toa8c5 nghoa8n2,xe65;tui bt<tw⏎cu7o7m1 	millisecond;toặc nghoằn,xệ;tui by the way⏎cướm 
+telex,macro	quaangj.Lt<,Ko a.nhoawt,TOI.kos;	quậng.L,Ko anh.nhoăt,TOI.kó;
+telex,macro,autocaps	roawcj buychr⏎sangf x⏎Lt 	roặc buychr⏎sàng x⏎Lập trình 
+telex,macro,english	ghaangr dyeets,dc.	ghaangr dyeets,dc.
+vni,macro	ghu7i.mo7m2 lt tho6p5 	ghưi.mờm lập trình thộp 
+telex,macro	Ko.haanf lt.tooi;khoanr;vinh<<,Addr.	Ko.hần lập trình.tôi;khoản;vi,Addr.
+telex,macro,autocaps	Lt,nhieenr;cx;	Lập trình,nhiển;cx;
+telex,macro,english	phuwur ddoongj;muwa⏎phueef,noanh ms.	phuwur ddoongj;muwa⏎phueef,noanh ms.
+vni,macro	d9uye6t1;:).tham4<< x btww.	đuyết;:).th x btww.
+telex,macro	Tks chuwtr<.bacj,dcs⏎xuynhx 	Tks chưt.bạc,dcs⏎xuỹnh 
+telex,macro,autocaps	nghoawng phee quawp 	nghoăng phê quăp 
+telex,macro,english	beox.nguychr,ko⏎mail;	beox.nguychr,ko⏎mail;
+vni,macro	chye6u2⏎cx<<⏎coay3 pup1,k< giu7o7p5.nhye6u2,	chyều⏎⏎coảy púp, giượp.nhyều,
+telex,macro	nuwowcr<⏎thoonj,nuyeetr⏎Dc;VN saauj,phieenf,	nươc⏎thộn,nuyeetr⏎Dc;VN sậu,phiền,
+telex,macro,autocaps	ns TOI,bimr<< tuwowngs tawtj;truoong ms,	nói TÔI,b tướng tặt;truông millisecond,
+telex,macro,english	ghuootj,k VN;thuynhj;	ghuootj,k VN;thuynhj;
+vni,macro	nap1<.men5⏎btw nguc,veo3;ca8n4⏎	ná.mẹn⏎by the way nguc,vẻo;cẵn⏎
+telex,macro	guoongr,buwowm;xuee gioanhj⏎xuwowij.xets,	guổng,bươm;xuê gioạnh⏎xượi.xét,
+telex,macro,autocaps	tks :a kos,nghuyeenx,	cảm ơn bạn nhiều hai chấm a kó,nghuyễn,
+telex,macro,english	dduwowuf xoatx VN.	dduwowuf xoatx VN.
+vni,macro	addr.bTw cu7n4⏎btw⏎	123 Nguyễn Huệ, Quận 1.bTw cữn⏎by the way⏎
+telex,macro	chuoocx.buooix⏎thuytr vaix vnn< ripf;mail 	chuoocx.buỗi⏎thuytr vãi Việt Nam rìp;mail 
+telex,macro,autocaps	dcs⏎.v Tks.phaox⏎vuoongs ghoawcj;dcs;	dcs⏎vân vân Cảm ơn bạn nhiều.phão⏎vuống ghoặc;dcs;
+telex,macro,english	vanhr viu.quum⏎penr⏎Tks.	vanhr viu.quum⏎penr⏎Tks.
+vni,macro	nhup4.men4 BTW,giuych2<.bTw.tang,nghec2;	nhũp.mẽn BTW,giuỳc.bTw.tang,nghec2;
+telex,macro	guwowir :a.nghuoonx.thieengx a<a nhuwowtf dcs⏎	gưởi hai chấm a.nghuỗn.thiễng anh nhuwowtf dcs⏎
+telex,macro,autocaps	tiur,doawcf nguwr;vn< toi.	tỉu,doawcf ngử;v Tôi.
+telex,macro,english	khoaf mail⏎nhoe<.truoocx .v⏎maang Dc;	khoaf mail⏎nho.truoocx .v⏎maang Dc;
+vni,macro	sooc4<<.a<a nom4 Dc,Toi;thi,k.	sõ.a nõm Dc,Toi;thi,k.
+telex,macro	ghooij pheechf giaangx⏎trins 	ghội pheechf giẫng⏎trín 
+telex,macro,autocaps	phown Lt.Vn;xuooms;sos.noaij Dc⏎	phơn Lập trình.Vn;xuốm;só.noại Được⏎
+telex,macro,english	toi⏎a;hcm xeechs,cx,Btw.gaacj< 	toi⏎a;hcm xeechs,cx,Btw.gaac 
+vni,macro	ms<s⏎cu7a3,coanh;	millisecond⏎cửa,coanh;
+telex,macro	vomj,BTW⏎kaayx.chuees ms<s< Lt ns 	vọm,BTW⏎kẫy.chuế m Lt nói 
+telex,macro,autocaps	noawts⏎ox.vuoongx.lieems 	noắt⏎õ.vuỗng.liếm 
+telex,macro,english	giawmf.Btw⏎tks⏎	giawmf.Btw⏎tks⏎
+vni,macro	ms ms,goay2<<.sua6ng5 VN;rung3.bTw<<⏎	millisecond millisecond,gò.suậng VN;rủng.b⏎
+telex,macro	tawt phanf⏎kuwowcj gieemf;.v 	tăt phàn⏎kược giềm;.v 
+telex,macro,autocaps	thaayx Btw a<a 	thẫy By the way anh 
+telex,macro,english	giuyf<<;tans toi;Addr,bTw;koocx.	giu;tans toi;Addr,bTw;koocx.
+vni,macro	Hcm le6m3⏎pau3⏎voe2;tua6ng4.	Hcm lểm⏎pảu⏎vòe;tuẫng.
+telex,macro	btW;voawnr<< tayj hoongf;	btW;vo tạy hồng;
+telex,macro,autocaps	lyeenf ghawcr;queenhs⏎	lyền ghawcr;quếnh⏎
+telex,macro,english	quooij,ruyu⏎soaif 	quooij,ruyu⏎soaif 
+vni,macro	hup2 ta8t giuye6t4 lin1<;gha8ng3.BTW 	hùp tăt giuye6t4 lí;ghẳng.BTW 
+telex,macro	gowp Addr⏎bTw;poij,	gơp Addr⏎bTw;pọi,
+telex,macro,autocaps	toi giieec⏎ms.a⏎thengs<<.btw.mail,	Tôi giiêc⏎millisecond.a⏎thé.btw.mail,
+telex,macro,english	xuwowpx toets quuwownr,penj;ngueer nhocj,	xuwowpx toets quuwownr,penj;ngueer nhocj,
+vni,macro	me6n2;Ko,ddi;ngach1;tks,khong5 	mền;Ko,ddi;ngách;tks,khọng 
+telex,macro	nhuowx.quowtx<,TOI,thunf.thoawcf;.v.ms⏎	nhưỡ.quơt,TOI,thùn.thoawcf;.v.ms⏎
+telex,macro,autocaps	gheets,dc.ns,	ghết,dc.ns,
+telex,macro,english	voaif,beechf Lt cuaats xoos,quoocx ns.	voaif,beechf Lt cuaats xoos,quoocx ns.
+vni,macro	e6ch.nhuye6t4< ngho7n5 	êch.nhuyêt nghợn 
+telex,macro	roongj⏎Dc⏎ms<s;Dc,	rộng⏎Dc⏎millisecond;Dc,
+telex,macro,autocaps	cx luootr.btw,taayj Addr.mai.	cũng luootr.btw,tậy 123 Nguyễn Huệ, Quận 1.mai.
+telex,macro,english	giuwowtj ns⏎bawngs 	giuwowtj ns⏎bawngs 
+vni,macro	huyt thoat3.khia4;Lt,nha8c nga6ng1.	huyt thoat3.khĩa;Lt,nhăc ngấng.
+telex,macro	x<.lats.nuaangf⏎ms 	.lát.nuầng⏎millisecond 
+telex,macro,autocaps	ms btw nuyax,Btw,vieecj<.	millisecond by the way nuỹa,Btw,việ.
+telex,macro,english	troat vn troong 	troat Việt Nam troong 
+vni,macro	d9ao1 Ko.Ko 	đáo Ko.Ko 
+telex,macro	ngaatr rawtx gueechs a<a,bTw,	ngaatr rawtx guếch anh,bTw,
+telex,macro,autocaps	doif,VN⏎tks⏎TOI ruoocx 	dòi,VN⏎cảm ơn bạn nhiều⏎TOI ruoocx 
+telex,macro,english	ddis.tooi ms<s,	ddis.tooi ms,
+vni,macro	ye6n3 thoan2.lut5,poang1 tu7o7c4,kuye6n⏎:) 	yển thoàn.lụt,poáng tu7o7c4,kuyên⏎😀 vui 
+telex,macro	btW< hoanx.giuwown;thieeng 	bt hoãn.giươn;thiêng 
+telex,macro,autocaps	ko a<a quuwowp Btw.mecs<⏎puwaf.maanr 	không anh quươp By the way.mé⏎pừa.mẩn 
+telex,macro,english	dap Hcm taanr bieetf Tks bTw⏎puynhj<< 	dap Hcm taanr bieetf Tks bTw⏎puyn 
+vni,macro	vnn< ghua6n2,du7c5⏎Hcm 	Việt Nam ghuần,dực⏎Hcm 
+telex,macro	nhieecf btW.Ko⏎huwowus⏎vnn< 	nhieecf btW.Ko⏎hướu⏎Việt Nam 
+telex,macro,autocaps	Tks,Addr;dcs 	Cảm ơn bạn nhiều,Addr;dcs 
+telex,macro,english	dcs;cx thuootj;VN.	dcs;cx thuootj;VN.
+vni,macro	ms<s me6t ddi ma6p5<<,	millisecond mêt ddi m,
+telex,macro	trups<<,toonj<;koatj.pepr lt truaay.vnn<⏎	tr,tộ;koạt.pẻp lập trình truây.vn⏎
+telex,macro,autocaps	ddieecf<<;Ko⏎kos;ms<s uns ns.	điê;Ko⏎kó;ms ún nói.
+telex,macro,english	nghieemj suwowts⏎uwowux;quyeemr⏎troo;btW⏎	nghieemj suwowts⏎uwowux;quyeemr⏎troo;btW⏎
+vni,macro	Lt.:) TOI< x⏎	Lt.:) TO x⏎
+telex,macro	:a.oc<⏎linhr 	hai chấm a.o⏎lỉnh 
+telex,macro,autocaps	.v;VN ms<s<< 	vân vân;VN  
+telex,macro,english	Addr Vn.thuwc.	Addr Vn.thuwc.
+vni,macro	kos ddi⏎song1 tooi;	kos ddi⏎sóng tooi;
+telex,macro	cuaans< bieeuf,din;dduowx⏎ddeech .v gioet.	cuấ biều,din;đưỡ⏎đêch vân vân gioet.
+telex,macro,autocaps	Toi;gungr Toi⏎	Tôi;gủng Tôi⏎
+telex,macro,english	nghenx.hueechf,rooc,ns.Lt 	nghenx.hueechf,rooc,ns.Lt 
+vni,macro	d9e6n<,pheng2.Ko;huych4.vn< bTw;	đê,phèng.Ko;huych4.v bTw;
+telex,macro	rieepx⏎nghyj kos⏎tanf,buwus.lacf<;btww;	riễp⏎nghỵ kó⏎tàn,bứu.lac;btww;
+telex,macro,autocaps	chaam;vacj phet,TOI;btw 	châm;vạc phet,TOI;btw 
+telex,macro,english	mail⏎roawc;kos<.btw,ngoenr,boong,	mail⏎roawc;ko.btw,ngoenr,boong,
+vni,macro	thu7i5,du7o7c.d9ie6c1 eo4 	thựi,dươc.điếc ẽo 
+telex,macro	oes dc⏎leoj BTW Addr;hcm;	óe được⏎lẹo BTW Addr;hcm;
+telex,macro,autocaps	ken,ngheechr.muoois;Tks,hayr⏎daatr.mail⏎	ken,ngheechr.muối;Tks,hảy⏎daatr.mail⏎
+telex,macro,english	thuyt hoop,nhengs 	thuyt hoop,nhengs 
+vni,macro	ngua6ng2 ko6i2<;phu7ng5⏎xu7t4.nao2 VN 	nguầng kồ;phựng⏎xu7t4.nào VN 
+telex,macro	Lt,hcm<<,khowpx⏎nhecr.nhimr,btww⏎	Lt,h,khỡp⏎nhecr.nhỉm,btww⏎
+telex,macro,autocaps	xamr,k;.v⏎oms.nhamj.	xảm,k;.v⏎óm.nhạm.
+telex,macro,english	giuwowu⏎ms< bax,	giuwowu⏎m bax,
+vni,macro	kos< tooi Hcm BTW.	không tooi Hcm BTW.
+telex,macro	ddi⏎addr⏎chams,ns,bTw,ddaoj,ieenr⏎	đi⏎123 Nguyễn Huệ, Quận 1⏎chám,ns,bTw,đạo,iển⏎
+telex,macro,autocaps	khuootf.vnn< bTw,ms<s .v.phacj⏎	khuootf.vn bTw,ms vân vân.phạc⏎
+telex,macro,english	dc dowir boej,Dc,ghipr<<;a⏎vn<⏎	được dowir boej,Dc,ghi;a⏎v⏎
+vni,macro	muo6ng5 pie6p,bTw⏎	muộng piêp,bTw⏎
+telex,macro	treemj lt :a,ghoawnf⏎vitx.nucf nghepf.	trệm lập trình hai chấm a,ghoằn⏎vitx.nucf nghèp.
+telex,macro,autocaps	giowx Toi.mims,tooi;lems;quac 	giỡ Tôi.mím,tôi;lém;quac 
+telex,macro,english	btww<.ims rueechs.Lt Btw⏎ko 	btw.ims rueechs.Lt Btw⏎không 
+vni,macro	khu7o7t5<<,ms⏎quo6;:a;nhuye6n2⏎nye6m2 	khư,ms⏎quô;:a;nhuyền⏎nyềm 
+telex,macro	troet nupj⏎noaif,khoawcf;ddi 	troet nụp⏎noài,khoawcf;đi 
+telex,macro,autocaps	too ms<s nipr⏎mangr⏎kos;Btw<<,	tô millisecond nỉp⏎mảng⏎kó;B,
+telex,macro,english	towmx;hoetx dc.phinf,Dc;trongf.	towmx;hoetx dc.phinf,Dc;trongf.
+vni,macro	d9e65<<⏎kho64 nin4 bTw 	⏎khỗ nĩn bTw 
+telex,macro	nhacj⏎ns a<< thoongr xoos.phieeuj,	nhạc⏎nói thổng xố.phiệu,
+telex,macro,autocaps	ruyt⏎ms<s⏎mail;	ruyt⏎millisecond⏎mail;
+telex,macro,english	doacj nghoayr;khyeet⏎tuwowngf⏎mail⏎Dc,	doacj nghoayr;khyeet⏎tuwowngf⏎mail⏎Dc,
+vni,macro	Toi⏎:a khuy⏎	Toi⏎hai chấm a khuy⏎
+telex,macro	a kos,ghoanf.syeetx;	anh kó,ghoàn.syeetx;
+telex,macro,autocaps	tuooif Ko.ddi buoomr;	tuồi Không.đi buổm;
+telex,macro,english	puoots⏎tuyj.vaanj;	puoots⏎tuyj.vaanj;
+vni,macro	vnn<⏎x vn< khoa8t3 	Việt Nam⏎x v khoa8t3 
+telex,macro	hcm⏎khawms,vn rum.ms<s;	Thành phố Hồ Chí Minh⏎khắm,vn rum.ms;
+telex,macro,autocaps	ngaapf Btw kaaux.ghuaf;kos;	ngầp By the way kẫu.ghùa;kó;
+telex,macro,english	muw;rueechf⏎ddeeuj,Btw⏎	muw;rueechf⏎ddeeuj,Btw⏎
+vni,macro	nghap2<<,k co7m 	ngh,k cơm 
+telex,macro	mowps goons<;lt.	mớp gố;lt.
+telex,macro,autocaps	poanr⏎noocf,duwowng,	poản⏎noocf,dương,
+telex,macro,english	xin⏎btww⏎giyeemj vnn<⏎chuowr;:a 	xin⏎btww⏎giyeemj vn⏎chuowr;:a 
+vni,macro	se65;uo6n3.nhinh4;xup 	sệ;uổn.nhĩnh;xup 
+telex,macro	ddi;duychf<< nuwr.koaj⏎	đi;dùy nử.kọa⏎
+telex,macro,autocaps	chuooi hyeemr⏎khuaanr Dc,	chuôi hyểm⏎khuẩn Được,
+telex,macro,english	ns.ryeenj nhoawngx⏎tooi;gueenhx⏎Addr;	ns.ryeenj nhoawngx⏎tooi;gueenhx⏎Addr;
+vni,macro	Tks thuo6c4⏎rem4,d9in1 	Tks thuo6c4⏎rẽm,đín 
+telex,macro	lt;cx Btw;dowtr< vn<⏎	lập trình;cx Btw;dơt v⏎
+telex,macro,autocaps	btw,cuwowmj<<.cx,ngheeux mail Vn.btw.	by the way,cư.cx,nghễu acct@example.com Việt Nam.btw.
+telex,macro,english	Hcm.k;trowpf;choachj<<.	Hcm.k;trowpf;choac.
+vni,macro	chuy5,giich5<.ie6c3;Btw.giec5.o6m2.	chụy,giich.ie6c3;Btw.giẹc.ồm.
+telex,macro	BTW,Dc<.BTW⏎ko.Addr;	BTW,D.BTW⏎không.Addr;
+telex,macro,autocaps	Toi⏎khoenx phinx;btww⏎timr;chaux⏎	Tôi⏎khoẽn phĩn;btww⏎tỉm;chãu⏎
+telex,macro,english	ms,giuwc tuyeetj;ko.guaatf 	ms,giuwc tuyeetj;ko.guaatf 
+vni,macro	mail hu7o7u2<..v,	acct@example.com hườ..v,
+telex,macro	ghooix<;dom.Toi 	ghỗ;dom.Toi 
+telex,macro,autocaps	bt<tw<,quawcr⏎xeemf;cuwa,	bt,quawcr⏎xềm;cưa,
+telex,macro,english	ddoopj.kos tron.	ddoopj.kos tron.
+vni,macro	dcs<⏎a gi1 nghye6u tooi 	được⏎a gí nghyêu tooi 
+telex,macro	nghuis;mail.koawcx.	nghúi;mail.koawcx.
+telex,macro,autocaps	ns buoongs<⏎nuaangf,moir⏎ms<s nghe<< paij 	nói buốn⏎nuầng,mỏi⏎millisecond ng pại 
+telex,macro,english	gows,bTw,btww< ngomx,	gows,bTw,btw ngomx,
+vni,macro	dau4,nghach4,kha8m3.	dãu,nghach4,khẳm.
+telex,macro	Tks duaanx Tks,Btw 	Tks duẫn Tks,Btw 
+telex,macro,autocaps	ko,Hcm,choachx quuaangr;	không,Hcm,choachx quuẩng;
+telex,macro,english	k⏎trunf,Toi Dc.	k⏎trunf,Toi Dc.
+vni,macro	pie6c1,BTW⏎bec nuc1,ngue6ch4 kos;ns⏎	piếc,BTW⏎bec núc,ngue6ch4 kos;ns⏎
+telex,macro	nhems noocf,khuyu,Lt;	nhém noocf,khuyu,Lt;
+telex,macro,autocaps	panh<<,VN ghownf,vawm 	pa,VN ghờn,văm 
+telex,macro,english	Tks chuwowcj;mieengf ngaats;	Tks chuwowcj;mieengf ngaats;
+vni,macro	Vn.moa8ng5;lt 	Vn.moặng;lt 
+telex,macro	vawts tks hcm 	vắt cảm ơn bạn nhiều Thành phố Hồ Chí Minh 
+telex,macro,autocaps	baangr chuwowngr;.v,	bẩng chưởng;.v,
+telex,macro,english	sueex.dc.Tks;vn gieeuj;Ko,	sueex.dc.Tks;vn gieeuj;Ko,
+vni,macro	ven3;ddi⏎ve6m5;lu7u5⏎ms<s.	vẻn;ddi⏎vệm;lựu⏎millisecond.
+telex,macro	heep,papr kieens⏎	hêp,pảp kiến⏎
+telex,macro,autocaps	bac;Ko<<;vaau,	bac;;vâu,
+telex,macro,english	chiax,nhoanj.nghuwownx⏎lt⏎nieepj.:);	chiax,nhoanj.nghuwownx⏎lt⏎nieepj.:);
+vni,macro	btW<<⏎goai4⏎a<a d9ue6ch1,Btw;nghuynh2,gho7t3 	b⏎goãi⏎anh đuếch,Btw;nghuỳnh,gho7t3 
+telex,macro	roawns.dc natr Vn,uwowcr.Addr;	roắn.dc natr Vn,uwowcr.Addr;
+telex,macro,autocaps	toi.vn<.nyeenr⏎:a;nghuyeen.nghuytx 	Tôi.v.nyển⏎hai chấm a;nghuyên.nghuytx 
+telex,macro,english	vuwt haatj.nuy laatf;giooc⏎	vuwt haatj.nuy laatf;giooc⏎
+vni,macro	ko7t,khau4;vnn< kho7p1 	kơt,khãu;vn khớp 
+telex,macro	:) xuw,hueechx;Tks dcs;ko⏎VN,	😀 vui xư,hueechx;Tks dcs;ko⏎VN,
+telex,macro,autocaps	khumx loanx.xieeps;Ko chuees⏎Hcm⏎	khũm loãn.xiếp;Ko chuế⏎Thành phố Hồ Chí Minh⏎
+telex,macro,english	oac,doang ns⏎ddi.nueenhx.minf⏎	oac,doang ns⏎ddi.nueenhx.minf⏎
+vni,macro	ta6u4;kuyt5 dc,ngin3.TOI,ms<s;ke6m4;	tẫu;kuỵt được,ngỉn.TOI,ms;kễm;
+telex,macro	btw⏎a,decs;ddowix 	by the way⏎a,déc;đỡi 
+telex,macro,autocaps	ngowi,vuootf⏎k.Btw.	ngơi,vuootf⏎không.Btw.
+telex,macro,english	moayf tooi;phyeenj vnn< gur toi 	moayf tooi;phyeenj Việt Nam gur Tôi 
+vni,macro	ngich2<<,nghua2 go7i5,dcs;	ngic,nghùa gợi,dcs;
+telex,macro	pichf.ducx;:a kuwa 	pichf.ducx;:a kưa 
+telex,macro,autocaps	luaay,vn kuwa etf Toi,Hcm 	luây,vn kưa etf Tôi,Hcm 
+telex,macro,english	.v baac.khuwowtr;hcm.	vân vân baac.khuwowtr;hcm.
+vni,macro	quue6ch1 VN<<.BTW;ra8p4,nha8ng1⏎kung3,	quuếch .BTW;rẵp,nhắng⏎kủng,
+telex,macro	vn<<⏎ms BTW⏎nau⏎btW⏎ddi ghoms,	⏎millisecond BTW⏎nau⏎btW⏎đi ghóm,
+telex,macro,autocaps	Addr⏎doongx thuees.towr⏎Ko k nghowif.	123 Nguyễn Huệ, Quận 1⏎dỗng thuế.tở⏎Không không nghời.
+telex,macro,english	k;lonj;nghooix< hieeng ruwowtf.	k;lonj;nghooi hieeng ruwowtf.
+vni,macro	lie6c2 to6i4,se6n5 so6t4⏎	lie6c2 tỗi,sện so6t4⏎
+telex,macro	BTW Tks :a.ns⏎.v,guyeenx.ns,	BTW Tks hai chấm a.ns⏎vân vân,guyễn.ns,
+telex,macro,autocaps	saaus<<,oayr,ns cowps.	s,oảy,ns cớp.
+telex,macro,english	toangj;sets ms<s,	toangj;sets ms,
+vni,macro	gio6i2.rua6y.nghye6n⏎he6nh5,su7o7t2,	giồi.ruây.nghyên⏎hệnh,su7o7t2,
+telex,macro	goanhs⏎kais;quuwowi;hcm,Addr gheepj<.xaanx;	goánh⏎kái;quươi;hcm,Addr ghệ.xẫn;
+telex,macro,autocaps	nghuoomx<;ddooif vieengs 	nghuỗ;đồi viếng 
+telex,macro,english	quawtf;gawnf⏎TOI.	quawtf;gawnf⏎TOI.
+vni,macro	nua6n1.tep4 chiu1;Hcm ngam2,dcs.	nuấn.tẽp chíu;Hcm ngàm,dcs.
+telex,macro	giuwngf hcm nguwuf⏎ddoanhj ruix.	giừng Thành phố Hồ Chí Minh ngừu⏎đoạnh rũi.
+telex,macro,autocaps	phiax⏎thaatx thinf.a ngaoj⏎poaj 	phĩa⏎thaatx thìn.a ngạo⏎pọa 
+telex,macro,english	guynhf.nghunj,ngoanh,saatr;btw,	guynhf.nghunj,ngoanh,saatr;btw,
+vni,macro	ghie6u2 sai;sie6m5;Toi chong5 hcm suo6m3<<.	ghiều sai;siệm;Toi chọng Thành phố Hồ Chí Minh su.
+telex,macro	Toi Btw;ngowpx.oatj⏎cocj nguaay.	Toi Btw;ngỡp.oạt⏎cọc nguây.
+telex,macro,autocaps	troomf,voongf.BTW oopj,tuyaj⏎ms<s⏎dc<,	trồm,vồng.BTW ộp,tuỵa⏎millisecond⏎d,
+telex,macro,english	dduwowu,btww< chyeetj⏎caac 	dduwowu,btw chyeetj⏎caac 
+vni,macro	Addr Vn toi<<.Dc⏎ca8m4⏎bin,TOI 	Addr Vn t.Dc⏎cẵm⏎bin,TOI 
+telex,macro	thuwcf⏎giecj mail⏎tyeenx 	thuwcf⏎giẹc acct@example.com⏎tyễn 
+telex,macro,autocaps	ddems<.oc.vnn< sai.ddoej,quyeets<< 	đé.oc.vn sai.đọe,quy 
+telex,macro,english	moawnr;kos,nghuaan,	moawnr;kos,nghuaan,
+vni,macro	a<a.bt<tw.go7m5 bam4,	anh.btw.gợm bãm,
+telex,macro	mail.:) boopr,	acct@example.com.:) bổp,
+telex,macro,autocaps	xungr,muwowij< soongs;	xủng,mượ sống;
+telex,macro,english	Vn xaauj ddoawnr< 	Vn xaauj ddoawn 
+vni,macro	ngen3 bu7o7m5<<.nhie6p5 	ngẻn bư.nhiệp 
+telex,macro	ddi,ddieecj ddi⏎sumf toi⏎dowis;	đi,điệc đi⏎sùm Tôi⏎dới;
+telex,macro,autocaps	ddi<.nghyeemf btw.lawcf.a<a.vn.	đ.nghyềm by the way.btwlawcf.a.vn.
+telex,macro,english	hoayf,TOI;buoonr Ko;	hoayf,TOI;buoonr Ko;
+vni,macro	a<<..v lt 	..v lập trình 
+telex,macro	nhoocf⏎vuwowngj;gin;vn cuwowng⏎ms.	nhoocf⏎vượng;gin;vn cương⏎millisecond.
+telex,macro,autocaps	thoayr,dduychr;btw.Toi,	thoảy,dduychr;btw.Toi,
+telex,macro,english	ghir.hoongx neetx<<;	ghir.hoongx nee;
+vni,macro	vn<;phuyu3<.cx⏎bt<tw,ddi;beo 	v;phủy.cx⏎by the way,ddi;beo 
+telex,macro	lit lt.loomr,dacx⏎	lit lập trình.lổm,dacx⏎
+telex,macro,autocaps	btW;duwowcs nupx 	btW;dước nũp 
+telex,macro,english	luya<⏎xuwowcj dc⏎hcm btw⏎	luy⏎xuwowcj dc⏎Thành phố Hồ Chí Minh btw⏎
+vni,macro	kho75⏎quoac2.triu4 	khợ⏎quoac2.trĩu 
+telex,macro	doopj⏎Toi tawcj;ghueenhj,ree 	dộp⏎Toi tặc;ghuệnh,rê 
+telex,macro,autocaps	giowtf,:),xooix vieeps x.	giowtf,:),xỗi viếp x.
+telex,macro,english	duwowt,BTW⏎trawng.ghutr<.hois 	duwowt,BTW⏎trawng.ghut.hois 
+vni,macro	btww.btW ma6u5;ua⏎cx,	btww.btW mậu;ua⏎cũng,
+telex,macro	rootj<< duwowpr,dc< ropr;hcm⏎Toi,	r dưởp,d rỏp;hcm⏎Toi,
+telex,macro,autocaps	boar;ms<s vn;nuyuf<<;btW⏎	bỏa;ms Việt Nam;nù;btW⏎
+telex,macro,english	phows Tks.suaangf Ko,gaat,Tks⏎VN;	phows Tks.suaangf Ko,gaat,Tks⏎VN;
+vni,macro	qua6ng4.bt<tw⏎dc;vn<⏎:) 	quẫng.btw⏎được;v⏎😀 vui 
+telex,macro	vuaf loonr,pecj<,giuwngj 	vùa lổn,pẹ,giựng 
+telex,macro,autocaps	nieengs btW.ruwowuf<,	niếng btW.rườ,
+telex,macro,english	buwts⏎a ddetj mail<<,	buwts⏎anh ddetj ma,
+vni,macro	phui2;ho7i5;hcm viu3<<,pu7o7ng,	phùi;hợi;hcm v,pương,
+telex,macro	kooif kotr< nhuwowngs pieepx.quuoots,btW;	kồi kot nhướng piễp.quuốt,btW;
+telex,macro,autocaps	secr< trownr⏎bt<tw⏎bTw;	sec trởn⏎by the way⏎bTw;
+telex,macro,english	saamx,trair x 	saamx,trair x 
+vni,macro	ba6u2.vn<;nhuye6n4 ghua6ng2 btW.chuyu5,	bầu.v;nhuyễn ghuầng btW.chuỵu,
+telex,macro	quuis⏎vyeemx⏎quutx ms,bangr 	quúi⏎vyễm⏎quutx millisecond,bảng 
+telex,macro,autocaps	Lt goangr⏎:a⏎teox.yeenx⏎Addr;nghuoonx.	Lập trình goảng⏎hai chấm a⏎tẽo.yễn⏎123 Nguyễn Huệ, Quận 1;nghuỗn.
+telex,macro,english	ryeems;vn< taam,leen,a 	ryeems;v taam,leen,a 
+vni,macro	nay4⏎bt<tw d9ie6u1⏎:) bTw;giinh1 	nãy⏎by the way điếu⏎😀 vui bTw;giinh1 
+telex,macro	ddaur<<⏎vn<;:)⏎uwcx ruwowif⏎coocs ko.	đ⏎v;:)⏎uwcx rười⏎cốc không.
+telex,macro,autocaps	x baangf;tooi;Ko.roes⏎nghitx,moaix 	x bầng;tôi;Ko.róe⏎nghitx,moãi 
+telex,macro,english	toi Addr kuynhj.Lt ko oongj 	Tôi Addr kuynhj.Lt không oongj 
+vni,macro	xen⏎va6m5<⏎cue6ch2 d9e6u2 guo6m2 lt.	xen⏎vậ⏎cue6ch2 đều guồm lập trình.
+telex,macro	doatj⏎ghoongx⏎Tks<<;btww tinhs⏎Btw<<⏎	doạt⏎ghỗng⏎T;btww tính⏎B⏎
+telex,macro,autocaps	truwng⏎Btw.ns⏎ddua.chuaats⏎xengs,cx;	trưng⏎By the way.ns⏎đua.chuất⏎xéng,cx;
+telex,macro,english	ddi VN⏎nghieenx<;lt;nhich,duwowngr.	ddi VN⏎nghieen;lt;nhich,duwowngr.
+vni,macro	d9ie6p1,coai⏎a<a ddi,	điếp,coai⏎anh ddi,
+telex,macro	boawns;vayx nghieets.BTW<<.suyeenj;Hcm 	boắn;vãy nghiết.B.suyện;Hcm 
+telex,macro,autocaps	Lt<<;vich,topj<.btw muwr;nghois⏎	;vich,tọ.btw mử;nghói⏎
+telex,macro,english	uwnr;btw apf⏎vn,ngeechs;xaaux<<;	uwnr;btw apf⏎vn,ngeechs;xaa;
+vni,macro	chin.loen1 troach nhu7c2 	chin.loén troach nhu7c2 
+telex,macro	dduaans.a lenx⏎quoij.nghuwtr⏎hcm<< 	đuấn.a lẽn⏎quọi.nghuwtr⏎h 
+telex,macro,autocaps	nhanf;ddi⏎BTW Tks,dowmj⏎ruwowms,thootj⏎	nhàn;đi⏎BY THE WAY Cảm ơn bạn nhiều,dợm⏎rướm,thột⏎
+telex,macro,english	bTw Addr<< ko,addr khoais goongf,ghar 	bTw Ad ko,addr khoais goongf,ghar 
+vni,macro	huy5 ddi,dem1;	hụy ddi,dém;
+telex,macro	truytf ddaor;nhownr,dcs Addr truaangr.	truytf đảo;nhởn,dcs Addr truẩng.
+telex,macro,autocaps	bt<tw vn⏎nuyeen,ngoopj⏎ms ddoix,	by the way Việt Nam⏎nuyên,ngộp⏎millisecond đõi,
+telex,macro,english	ueef.vnn< ngoats< 	ueef.vn ngoat 
+vni,macro	da6y4.giuynh5,tuo6n5,	dẫy.giuỵnh,tuộn,
+telex,macro	ghoongj TOI,VN,Addr 	ghộng TOI,VN,Addr 
+telex,macro,autocaps	phuootj.duwu.katf 	phuột.dưu.katf 
+telex,macro,english	nghocf<<⏎uwowpx⏎voayj,Lt a<a btW ghayr,	ngho⏎uwowpx⏎voayj,Lt anh btW ghayr,
+vni,macro	tks ceng3<<.bt<tw⏎btw ru7ng4 	cảm ơn bạn nhiều cẻ.btw⏎by the way rững 
+telex,macro	ieeu,rias,sooir,	iêu,ría,sổi,
+telex,macro,autocaps	lamj;toi,Hcm⏎dueechx⏎gocs⏎tieenr,lt,	lạm;toi,Hcm⏎dueechx⏎góc⏎tiển,lt,
+telex,macro,english	nghyx;Addr;voongj.thoocj 	nghyx;Addr;voongj.thoocj 
+vni,macro	luye6n1.e6p ko,Btw puo6m4;TOI⏎	luyến.êp không,Btw puỗm;TOI⏎
+telex,macro	trimf⏎ms<s toatj<⏎xoenx<<,riaf<,toi,Dc.	trìm⏎millisecond tọa⏎xõ,rì,toi,Dc.
+telex,macro,autocaps	ghuyj,thuyeetr<<,uynhr⏎tks ddi.btw a<a 	ghụy,thuyê,uỷnh⏎cảm ơn bạn nhiều đi.btw anh 
+telex,macro,english	dduyts<,pueej;nghawtx,gangj.lawp.btw.dcs<< 	dduyt,pueej;nghawtx,gangj.lawp.btw.d 
+vni,macro	btW TOI guy5.nu7c3,kos nuc1;	btW TOI gụy.nu7c3,kos núc;
+telex,macro	giacj btW,VN 	giạc btW,VN 
+telex,macro,autocaps	roopx⏎tuychs⏎xuwtf dduooi quaij⏎	rỗp⏎tuých⏎xuwtf đuôi quại⏎
+telex,macro,english	vn<⏎BTW;Toi btw⏎	v⏎BTW;Toi btw⏎
+vni,macro	roay toa8t2,dcs gioe2 	roay toa8t2,dcs giòe 
+telex,macro	quuaatx,gawns;doetx,vuwowuf;ms 	quuaatx,gắn;doetx,vườu;ms 
+telex,macro,autocaps	addr⏎satf kos;	123 Nguyễn Huệ, Quận 1⏎satf kó;
+telex,macro,english	Toi guoocf;suwowns,vn< bux.	Toi guoocf;suwowns,v bux.
+vni,macro	.v;reng3;kam2;toi a vnn<⏎treo3⏎	vân vân;rẻng;kàm;toi anh Việt Nam⏎trẻo⏎
+telex,macro	ms,ghuyeenx giuwownx trueej⏎bieets khoawts 	millisecond,ghuyễn giưỡn truệ⏎biết khoắt 
+telex,macro,autocaps	mail phawpj.ghieec thius<< 	acct@example.com phặp.ghiêc th 
+telex,macro,english	Lt<,Toi<.Addr Lt.nghangr,	L,To.Addr Lt.nghangr,
+vni,macro	bt<tw.Ko a<a ba8c1 Addr,	by the way.Ko anh bắc Addr,
+telex,macro	nuaangr giepr;khyeem,Toi.giieeu;nghun boej,	nuẩng giẻp;khyêm,Toi.giiêu;nghun bọe,
+telex,macro,autocaps	mail;mail.Addr;ms<s lus.vuootx bTw⏎	acct@example.com;mail.Addr;ms lú.vuootx bTw⏎
+telex,macro,english	ko VN.vn⏎poenj suif;a.	không VN.vn⏎poenj suif;a.
+vni,macro	:a;phoet4<;ui2,	hai chấm a;phoet;ùi,
+telex,macro	cit⏎caayj;ghoacf⏎ryf⏎ms⏎dc 	cit⏎cậy;ghoacf⏎rỳ⏎millisecond⏎dc 
+telex,macro,autocaps	mail⏎lt⏎dej btww.cyeenj.ngong;	acct@example.com⏎lt⏎dẹ btww.cyện.ngong;
+telex,macro,english	taat<<,Dc⏎uaatj.nipx;lt,Ko.	ta,Dc⏎uaatj.nipx;lt,Ko.
+vni,macro	git3⏎nu4<<.ut1.goay4,:a⏎	git3⏎.út.goãy,:a⏎
+telex,macro	kyeets.Hcm⏎hiu<<.TOI 	kyết.Hcm⏎h.TOI 
+telex,macro,autocaps	toi<,cuaangr,chyeeur⏎nghieets 	to,cuẩng,chyểu⏎nghiết 
+telex,macro,english	khoangr⏎kuyeenx.maauf< ghawnr raj.Vn⏎ddi⏎	khoangr⏎kuyeenx.maau ghawnr raj.Vn⏎ddi⏎
+vni,macro	ngoen4<,o63;sa8t5<;a;ddi,toi.ns;	ngõe,ổ;sặ;a;ddi,toi.ns;
+telex,macro	vn⏎vuwij,hoanhx,mail.	Việt Nam⏎vựi,hoãnh,mail.
+telex,macro,autocaps	addr .v,vuynhs;ms.	123 Nguyễn Huệ, Quận 1 vân vân,vuýnh;ms.
+telex,macro,english	Toi.trueenhj moawngs .v.ms<s⏎addr.	Toi.trueenhj moawngs .v.ms⏎addr.
+vni,macro	khuo71 vn<,sun5⏎ms<s.	khướ v,sụn⏎millisecond.

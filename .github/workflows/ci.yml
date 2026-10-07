@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Test the pure Swift targets (LiteKeyEngine, LiteKeyCore) on Linux.
+  # Package.swift hides LiteKeyPlatform and the app off macOS, so `swift test` builds.
+  linux-swift-tests:
+    runs-on: ubuntu-latest
+    container: swift:6.0-noble
+    steps:
+      - uses: actions/checkout@v4
+      - name: swift test
+        run: swift test --filter "LiteKeyEngineTests|LiteKeyCoreTests"
+
+  macos-build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tool versions
+        run: |
+          xcodebuild -version
+          swift --version
+      - name: swift test
+        run: swift test --filter "LiteKeyEngineTests|LiteKeyCoreTests"
+      # The engine must not allocate while typing (it runs in the tap callback). The count is only
+      # meaningful optimized, and the test skips in debug, so check its line was printed (not skipped).
+      - name: Engine allocations (release)
+        shell: bash
+        run: |
+          swift test -c release -Xswiftc -enable-testing --filter AllocationTests 2>&1 | tee allocations.log
+          grep "Engine allocations:" allocations.log
+      - name: swift build
+        run: swift build -c release --arch arm64
+      - name: Package .app (ad-hoc signed)
+        run: SIGN_ID=- ./build.sh
+      - name: Check LiteKey.app
+        run: ./scripts/check_app.sh build/LiteKey.app
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate LiteKey.xcodeproj
+        run: xcodegen
+      - name: xcodebuild (unsigned)
+        run: ./scripts/xcodebuild_check.sh
+
+  # Build with the latest stable Xcode on GitHub's `xcode-27` image (macOS 27, arm64, public preview).
+  # The QA artifact comes from this job: Liquid Glass needs the macOS 26+ SDK (glass code is gated by
+  # `#if compiler(>=6.2)`, so the Xcode 16 build in macos-build has none).
+  macos-latest-xcode:
+    runs-on: xcode-27
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select latest stable Xcode
+        run: |
+          ls -d /Applications/Xcode*.app
+          # Xcode_27.2.app may be a symlink to Xcode_27.2_beta.app -> filter on the real path
+          xcode=$(for x in /Applications/Xcode_*.app; do realpath "$x"; done | grep -v -i beta | sort -uV | tail -1)
+          echo "Using $xcode"
+          sudo xcode-select -s "$xcode/Contents/Developer"
+          sw_vers
+          xcodebuild -version
+          swift --version
+      - name: swift test
+        run: swift test --filter "LiteKeyEngineTests|LiteKeyCoreTests"
+      # Same check as in macos-build, with the toolchain that builds the QA app
+      - name: Engine allocations (release)
+        shell: bash
+        run: |
+          swift test -c release -Xswiftc -enable-testing --filter AllocationTests 2>&1 | tee allocations.log
+          grep "Engine allocations:" allocations.log
+      - name: Package .app (ad-hoc signed)
+        run: SIGN_ID=- ./build.sh
+      - name: Check LiteKey.app
+        run: ./scripts/check_app.sh build/LiteKey.app
+      - name: Zip LiteKey.app
+        run: ditto -c -k --keepParent build/LiteKey.app build/LiteKey.app.zip
+      # archive: false -> the download is LiteKey.app.zip itself, not wrapped in another zip
+      - uses: actions/upload-artifact@v7
+        with:
+          path: build/LiteKey.app.zip
+          archive: false
+          if-no-files-found: error
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate LiteKey.xcodeproj
+        run: xcodegen
+      - name: xcodebuild (unsigned)
+        run: ./scripts/xcodebuild_check.sh

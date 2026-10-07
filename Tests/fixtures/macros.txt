@@ -1,0 +1,19 @@
+;Compatible OpenKey Macro Data file for UniKey*** version=1 ***
+btw:by the way
+ms:millisecond
+vn:Việt Nam
+hcm:Thành phố Hồ Chí Minh
+dc:được
+ko:không
+cx:cũng
+tks:cảm ơn bạn nhiều
+k:không
+addr:123 Nguyễn Huệ, Quận 1
+:):😀 vui
+a:anh
+lt:lập trình
+.v:vân vân
+mail:acct@example.com
+ns:nói
+toi:Tôi
+:a:hai chấm a

@@ -1,0 +1,74 @@
+# UI snapshots: builds the debug app on macOS 27 (Liquid Glass) and macOS 15, renders the control panel, the
+# macro window, the excluded apps list and the menu bar menu, and clicks a few controls (see
+# Sources/LiteKey/Debug/UISnapshot.swift). Fails when a click check fails or the run hangs.
+# The PNGs are uploaded as an artifact and pushed to the `snapshots-<runner>` branch, so a session without a
+# Mac can `git fetch origin snapshots-xcode-27` and look at them. See docs/BUILDING.md.
+name: UI snapshots
+
+on:
+  push:
+    paths:
+      - 'Sources/LiteKey/**'
+      - '.github/workflows/ui-snapshots.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ui-snapshots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  snapshots:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [xcode-27, macos-15]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Output folder
+        run: echo "SHOTS=$RUNNER_TEMP/shots" >> "$GITHUB_ENV"
+      - name: Select latest stable Xcode
+        if: matrix.runner == 'xcode-27'
+        run: |
+          xcode=$(for x in /Applications/Xcode_*.app; do realpath "$x"; done | grep -v -i beta | sort -uV | tail -1)
+          sudo xcode-select -s "$xcode/Contents/Developer"
+      - name: Build (debug)
+        run: |
+          sw_vers
+          swift build --product LiteKey
+      - name: Render and click
+        run: |
+          LITEKEY_SNAPSHOT_DIR="$SHOTS" .build/debug/LiteKey &
+          pid=$!
+          # No timeout(1) on macOS runners: wait up to 3 minutes
+          for i in $(seq 1 180); do kill -0 $pid 2>/dev/null || break; sleep 1; done
+          if kill -0 $pid 2>/dev/null; then kill $pid; echo "::error::Snapshot run hung"; exit 1; fi
+          ls "$SHOTS"
+      - name: Click checks
+        run: |
+          cat "$SHOTS/checks.txt"
+          echo
+          cat "$SHOTS/menu.txt"
+          ! grep -q '^FAIL' "$SHOTS/checks.txt"
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ui-snapshots-${{ matrix.runner }}
+          path: ${{ runner.temp }}/shots
+          if-no-files-found: ignore
+      - name: Push to snapshots-${{ matrix.runner }}
+        if: always()
+        run: |
+          [ -d "$SHOTS" ] || exit 0
+          cd "$SHOTS"
+          printf '%s\n%s\n' "$GITHUB_SHA" "$GITHUB_REF_NAME" > SOURCE
+          git init -q -b snapshots-${{ matrix.runner }}
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -q -m "UI snapshots for $GITHUB_REF_NAME @ $GITHUB_SHA"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git" \
+            snapshots-${{ matrix.runner }}

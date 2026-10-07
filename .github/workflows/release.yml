@@ -1,0 +1,121 @@
+name: Release
+
+# Cut a release: Actions → Release → Run workflow (on main) and pick the version bump.
+# The next tag is computed from the latest vX.Y.Z tag; the workflow builds, tags and publishes a GitHub
+# Release with the zip. Pushing a `vX.Y.Z` tag works too. The app is ad-hoc signed, not notarized.
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Version bump relative to the latest tag
+        type: choice
+        options: [patch, minor, major]
+        default: patch
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+# Never cancel a run in progress: it may have created the tag before attaching the zip.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    # Xcode 27 (macOS 27 SDK): an Xcode 16 build has no Liquid Glass because the glass code is gated by
+    # `#if compiler(>=6.2)`. The app still runs on macOS 13+ (LSMinimumSystemVersion).
+    runs-on: xcode-27
+    steps:
+      # Pinned by SHA (v4.4.0) because this job can write to the repo; no token is persisted in .git/config
+      # while tests and build.sh run (gh uses GH_TOKEN; the workflow never git-pushes).
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0 # all tags are needed to compute the next version
+          persist-credentials: false
+      - name: Compute version
+        id: version
+        # Inputs go through env rather than ${{ }} interpolation to prevent script injection.
+        env:
+          BUMP: ${{ inputs.bump }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = push ]; then
+            # A pushed tag may only release a commit that is already on main, like a manual run.
+            if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+              echo "::error::Tag $GITHUB_REF_NAME points to a commit that is not on main"; exit 1
+            fi
+            version="${GITHUB_REF_NAME#v}"
+          else
+            if [ "$GITHUB_REF" != refs/heads/main ]; then
+              echo "::error::Releases run from main only (running on $GITHUB_REF)"; exit 1
+            fi
+            latest="$(git tag --list 'v*' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1 || true)"
+            if [ -z "$latest" ]; then
+              # First release: use the version declared in project.yml.
+              version="$(sed -n 's/^ *MARKETING_VERSION: *//p' project.yml)"
+            else
+              if [ "$(git rev-list -n 1 "$latest")" = "$GITHUB_SHA" ]; then
+                echo "::error::Commit $GITHUB_SHA was already released as $latest"; exit 1
+              fi
+              IFS=. read -r major minor patch <<< "${latest#v}"
+              case "$BUMP" in
+                major) version="$((major + 1)).0.0" ;;
+                minor) version="$major.$((minor + 1)).0" ;;
+                *) version="$major.$minor.$((patch + 1))" ;;
+              esac
+            fi
+          fi
+          # build.sh accepts N[.N[.N]], but release tags always have three components.
+          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid version: $version (expected vX.Y.Z)"; exit 1
+          fi
+          if gh release view "v$version" >/dev/null 2>&1; then
+            echo "::error::Release v$version already exists"; exit 1
+          fi
+          echo "Releasing v$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Select latest stable Xcode
+        run: |
+          set -euo pipefail
+          xcode=$(for x in /Applications/Xcode_*.app; do realpath "$x"; done | grep -v -i beta | sort -uV | tail -1)
+          echo "Using $xcode"
+          sudo xcode-select -s "$xcode/Contents/Developer"
+          xcodebuild -version
+          swift --version
+      - name: swift test
+        run: swift test --filter "LiteKeyEngineTests|LiteKeyCoreTests"
+      - name: Package .app (ad-hoc signed)
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: SIGN_ID=- ./build.sh
+      - name: Check LiteKey.app
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          ./scripts/check_app.sh build/LiteKey.app
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' build/LiteKey.app/Contents/Info.plist)" = "$VERSION"
+      - name: Zip LiteKey.app
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: ditto -c -k --keepParent build/LiteKey.app "build/LiteKey-$VERSION.zip"
+      - name: Create tag and GitHub Release
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          notes="Ad-hoc signed build, not notarized. After unzipping and moving it to Applications, run this once so macOS allows the app to open:
+
+          \`\`\`
+          xattr -dr com.apple.quarantine /Applications/LiteKey.app
+          \`\`\`"
+          args=("v$VERSION" "build/LiteKey-$VERSION.zip" --title "LiteKey $VERSION" --generate-notes --notes "$notes")
+          if [ "$GITHUB_EVENT_NAME" = push ]; then
+            args+=(--verify-tag)
+          else
+            args+=(--target "$GITHUB_SHA") # tag the commit that was built, not the current tip of main
+          fi
+          gh release create "${args[@]}"

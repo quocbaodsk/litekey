@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LiteKey</title>
+<meta name="description" content="LiteKey: bộ gõ tiếng Việt cho macOS, nhẹ, nhanh, gõ đúng từng dấu. Miễn phí, mã nguồn mở, không thu thập dữ liệu.">
+<link rel="icon" type="image/png" href="images/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a Mac keyboard deck. Aluminium ground, keycap objects for the things you press,
+   one live typing window as the hero; everything else stays flat and quiet. */
+:root {
+  --bg: #ecedf0;          /* aluminium */
+  --surface: #f9f9fb;     /* keycap */
+  --sunken: #e2e4e8;
+  --ink: #16171b;
+  --muted: #5b5f69;
+  --line: #d2d5db;
+  --accent: #e5421a;      /* icon red-orange */
+  --accent-deep: #b9300c;
+  --accent-text: #b9330f;
+  --on-accent: #ffffff;
+  --cap-edge: #c4c7ce;
+  --shadow: 0 1px 0 rgba(255,255,255,.7) inset, 0 18px 40px -22px rgba(22,23,27,.35);
+  --ok: #2f9e55;
+
+  --font-display: "Bricolage Grotesque", "Be Vietnam Pro", system-ui, sans-serif;
+  --font-body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --step-0: 1rem;
+  --step-1: 1.1875rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(1.75rem, 3.4vw, 2.5rem);
+  --step-4: clamp(2.5rem, 6.2vw, 4.5rem);
+  --wrap: 72rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151619; --surface: #212328; --sunken: #1b1c20; --ink: #eceef2; --muted: #9ea2ac;
+    --line: #30333a; --accent: #ff5a2c; --accent-deep: #c83a12; --accent-text: #ff8358;
+    --on-accent: #ffffff; --cap-edge: #0b0c0e;
+    --shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 18px 40px -20px rgba(0,0,0,.7);
+    --ok: #4cc472;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151619; --surface: #212328; --sunken: #1b1c20; --ink: #eceef2; --muted: #9ea2ac;
+  --line: #30333a; --accent: #ff5a2c; --accent-deep: #c83a12; --accent-text: #ff8358;
+  --on-accent: #ffffff; --cap-edge: #0b0c0e;
+  --shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 18px 40px -20px rgba(0,0,0,.7);
+  --ok: #4cc472;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 var(--step-0)/1.65 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--accent-text); text-underline-offset: .18em; }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px;
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+h2 { font-size: var(--step-3); font-weight: 800; line-height: 1.15; letter-spacing: -.01em; }
+h3 { font-size: var(--step-1); font-weight: 600; line-height: 1.3; font-family: var(--font-body); }
+p { margin: 0; }
+kbd {
+  font: 600 .85em/1 var(--font-mono);
+  display: inline-grid; place-items: center;
+  min-width: 1.9em; height: 1.75em; padding: 0 .4em;
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--line); border-bottom-width: 3px; border-bottom-color: var(--cap-edge);
+  border-radius: .4em; vertical-align: .05em;
+}
+code { font-family: var(--font-mono); font-size: .9em; }
+
+.wrap { max-width: var(--wrap); margin: 0 auto; padding-inline: 20px; }
+section { padding-block: clamp(3.5rem, 8vw, 6rem); }
+.eyebrow {
+  font: 600 .75rem/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted);
+}
+.lede { color: var(--muted); font-size: var(--step-1); max-width: 36rem; }
+.section-head { display: grid; gap: .9rem; margin-bottom: 2.5rem; max-width: 44rem; }
+
+/* Header */
+.top { padding-block: 1.1rem; }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: .6rem; color: var(--ink); text-decoration: none;
+  font: 800 1.25rem/1 var(--font-display); }
+.brand img { width: 32px; height: 32px; }
+.nav { display: flex; gap: 1.4rem; flex-wrap: wrap; font-size: .95rem; }
+.nav a { color: var(--muted); text-decoration: none; }
+.nav a:hover { color: var(--ink); }
+
+/* Keycap buttons */
+.cap {
+  --cap-bg: var(--surface); --cap-fg: var(--ink); --cap-bottom: var(--cap-edge);
+  display: inline-flex; align-items: center; gap: .55rem;
+  padding: .85rem 1.3rem; border-radius: 12px;
+  background: var(--cap-bg); color: var(--cap-fg); text-decoration: none;
+  font: 600 1rem/1 var(--font-body);
+  border: 1px solid var(--line); border-bottom: 4px solid var(--cap-bottom);
+  transition: transform .08s ease, border-bottom-width .08s ease;
+}
+.cap:hover { transform: translateY(1px); border-bottom-width: 3px; }
+.cap:active { transform: translateY(3px); border-bottom-width: 1px; }
+.cap.primary { --cap-bg: var(--accent); --cap-fg: var(--on-accent); --cap-bottom: var(--accent-deep); border-color: var(--accent-deep); }
+.cap svg { width: 18px; height: 18px; flex: none; }
+
+/* Hero */
+.hero { padding-block: clamp(2rem, 5vw, 4rem) clamp(3rem, 7vw, 5rem); }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+.hero-copy { display: grid; gap: 1.5rem; min-width: 0; }
+.hero h1 { font-size: var(--step-4); font-weight: 800; line-height: 1.12; letter-spacing: -.025em; }
+.hero h1 em { font-style: normal; color: var(--accent-text); }
+.actions { display: flex; flex-wrap: wrap; gap: .8rem; }
+.facts { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; color: var(--muted); font-size: .9rem; padding: 0; margin: 0; list-style: none; }
+.facts li { display: flex; align-items: center; gap: .45rem; }
+.facts li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+/* Typing demo */
+.demo {
+  min-width: 0;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.menubar {
+  display: flex; justify-content: flex-end; align-items: center; gap: .9rem;
+  padding: .4rem .9rem; background: var(--sunken); border-bottom: 1px solid var(--line);
+  font: 500 .78rem/1 var(--font-body); color: var(--muted);
+}
+.menubar .vbadge {
+  display: grid; place-items: center; width: 22px; height: 18px; border-radius: 4px;
+  background: var(--ink); color: var(--surface); font: 800 .72rem/1 var(--font-display);
+}
+.menubar time { font-variant-numeric: tabular-nums; }
+.demo-body { padding: 1.4rem 1.4rem 1.2rem; display: grid; gap: 1.2rem; }
+.out {
+  font: 600 clamp(1.6rem, 3.6vw, 2.25rem)/1.35 var(--font-body);
+  min-height: calc(2 * 1.35em); overflow-wrap: anywhere;
+}
+.caret { display: inline-block; width: 2px; height: 1.05em; margin-left: 2px; vertical-align: -.12em; background: var(--accent); animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.keys-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem; align-items: end; border-top: 1px dashed var(--line); padding-top: 1rem; }
+.keys-label { font: 600 .7rem/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: .45rem; }
+.stream { font: 400 .95rem/1.5 var(--font-mono); color: var(--muted); overflow-wrap: anywhere; min-height: 3em; }
+.stream b { font-weight: 600; color: var(--accent-text); }
+.bigkey {
+  width: 3.4rem; height: 3.4rem; display: grid; place-items: center;
+  font: 600 1.35rem/1 var(--font-mono); color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-bottom: 5px solid var(--cap-edge); border-radius: 12px;
+}
+.bigkey.press { animation: press .14s ease-out; }
+@keyframes press { 40% { transform: translateY(3px); border-bottom-width: 2px; } }
+.demo-foot { display: flex; justify-content: space-between; align-items: center; gap: .8rem; flex-wrap: wrap; }
+.seg { display: inline-flex; background: var(--sunken); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
+.seg button {
+  font: 600 .85rem/1 var(--font-body); color: var(--muted); background: transparent;
+  border: 0; border-radius: 7px; padding: .5rem .9rem; cursor: pointer;
+}
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.demo-note { font-size: .8rem; color: var(--muted); }
+
+/* Beta strip */
+.beta { border-block: 1px solid var(--line); padding-block: 1rem; }
+.beta .wrap { display: flex; gap: .8rem; align-items: baseline; flex-wrap: wrap; font-size: .95rem; color: var(--muted); }
+.pill { font: 600 .7rem/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--on-accent); background: var(--accent); padding: .35rem .55rem; border-radius: 999px; }
+
+/* Pillars */
+.pillars { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; }
+.pillar { display: grid; gap: .6rem; align-content: start; border-top: 2px solid var(--ink); padding-top: 1.1rem; }
+.pillar .figure { font: 800 var(--step-2)/1.1 var(--font-display); min-height: 2.5rem; display: flex; align-items: center; gap: .3rem; }
+.pillar .figure kbd { font-size: 1rem; }
+.pillar p { color: var(--muted); }
+
+/* Proof */
+.proof { background: var(--sunken); border-block: 1px solid var(--line); }
+.proof-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+.proof-copy { display: grid; gap: 1.2rem; min-width: 0; }
+.big-number { font: 800 clamp(3rem, 8vw, 5.5rem)/1 var(--font-display); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.tally { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; font-size: .95rem; }
+.tally li { display: flex; justify-content: space-between; gap: 1rem; padding-block: .45rem; border-bottom: 1px solid var(--line); }
+.tally span:last-child { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); }
+.table-box { min-width: 0; overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+th, td { text-align: left; padding: .7rem 1rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font: 600 .7rem/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+td.mode { color: var(--muted); font-size: .85rem; }
+td.keys { font-family: var(--font-mono); }
+td.res { font-weight: 600; }
+td.arrow { color: var(--accent-text); padding-inline: 0; }
+.table-cap { padding: .8rem 1rem; font-size: .82rem; color: var(--muted); border-top: 1px solid var(--line); }
+
+/* Features */
+.features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem 3rem; }
+.feature { display: grid; gap: .8rem; align-content: start; }
+.feature ul { margin: 0; padding: 0; list-style: none; display: grid; gap: .55rem; color: var(--muted); }
+.feature li { padding-left: 1.2rem; position: relative; }
+.feature li::before { content: ""; position: absolute; left: 0; top: .72em; width: .55rem; height: 2px; background: var(--accent); }
+.feature li strong { color: var(--ink); font-weight: 600; }
+
+/* Screenshot */
+.shot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+.shot figure { margin: 0; min-width: 0; }
+.shot img { width: 100%; max-width: 640px; margin-inline: auto; }
+.shot figcaption { text-align: center; font-size: .85rem; color: var(--muted); margin-top: .4rem; }
+.shot .copy { display: grid; gap: 1.1rem; min-width: 0; }
+.shot .copy p { color: var(--muted); }
+
+/* Install */
+.install { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.6rem; counter-reset: step; }
+.steps li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1rem; counter-increment: step; }
+.steps li::before {
+  content: counter(step);
+  width: 2.4rem; height: 2.4rem; display: grid; place-items: center;
+  font: 600 1rem/1 var(--font-mono); background: var(--surface);
+  border: 1px solid var(--line); border-bottom: 4px solid var(--cap-edge); border-radius: 10px;
+}
+.steps h3 { margin-bottom: .3rem; }
+.steps p { color: var(--muted); }
+.aside { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1.4rem; display: grid; gap: 1rem; }
+.aside ul { margin: 0; padding-left: 1.1rem; color: var(--muted); display: grid; gap: .35rem; }
+.aside .switch { padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .95rem; }
+
+/* Privacy */
+.privacy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+.privacy dl { margin: 0; display: grid; gap: 1.1rem; }
+.privacy dt { font-weight: 600; }
+.privacy dd { margin: .2rem 0 0; color: var(--muted); }
+
+/* FAQ */
+.faq { display: grid; gap: 0; max-width: 48rem; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq details:first-child { border-top: 1px solid var(--line); }
+.faq summary { cursor: pointer; list-style: none; padding: 1.1rem 2rem 1.1rem 0; font-weight: 600; position: relative; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; position: absolute; right: .2rem; top: .95rem; font: 400 1.4rem/1 var(--font-mono); color: var(--accent-text); }
+.faq details[open] summary::after { content: "−"; }
+.faq details p { padding-bottom: 1.2rem; color: var(--muted); max-width: 40rem; }
+
+/* CTA + footer */
+.cta { text-align: left; }
+.cta .wrap { display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap; }
+.cta-copy { display: flex; gap: 1.2rem; align-items: center; min-width: 0; }
+.cta-copy img { width: 72px; height: 72px; flex: none; }
+.foot { border-top: 1px solid var(--line); padding-block: 2rem 3rem; font-size: .88rem; color: var(--muted); }
+.foot .wrap { display: grid; gap: .6rem; }
+
+@media (max-width: 900px) {
+  .hero .wrap, .proof-grid, .shot, .install, .privacy { grid-template-columns: minmax(0, 1fr); }
+  .pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nav { display: none; }
+}
+@media (max-width: 560px) {
+  .pillars, .features { grid-template-columns: minmax(0, 1fr); }
+  .demo-body { padding: 1.1rem; }
+  .bigkey { width: 2.8rem; height: 2.8rem; font-size: 1.1rem; }
+  th, td { padding: .6rem .7rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .caret { animation: none; }
+  .bigkey.press { animation: none; }
+  .cap { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#">
+      <img src="images/icon.png" alt="" width="32" height="32">
+      LiteKey
+    </a>
+    <nav class="nav" aria-label="Mục lục">
+      <a href="#tinh-nang">Tính năng</a>
+      <a href="#cai-dat">Cài đặt</a>
+      <a href="#rieng-tu">Quyền riêng tư</a>
+      <a href="#hoi-dap">Hỏi đáp</a>
+      <a href="https://github.com/quocbaodsk/litekey">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <p class="eyebrow">Bộ gõ tiếng Việt cho macOS · Phiên bản 1.0.0</p>
+        <h1>Gõ tiếng Việt trên Mac, <em>đúng từng dấu.</em></h1>
+        <p class="lede">LiteKey nằm gọn trên thanh menu. Gõ Telex hay VNI đều đúng dấu, không mất chữ, kể cả khi bạn gõ thật nhanh trong trình duyệt, VS Code hay Terminal.</p>
+        <div class="actions">
+          <a class="cap primary" href="https://github.com/quocbaodsk/litekey/releases">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10M5.5 8.5 10 13l4.5-4.5M4 16.5h12"/></svg>
+            Tải về cho macOS
+          </a>
+          <a class="cap" href="https://github.com/quocbaodsk/litekey">Xem mã nguồn</a>
+        </div>
+        <ul class="facts">
+          <li>macOS 13 trở lên</li>
+          <li>Apple Silicon (M1 trở lên)</li>
+          <li>Miễn phí, GPL v3</li>
+        </ul>
+      </div>
+
+      <div class="demo" aria-label="Minh hoạ gõ tiếng Việt bằng LiteKey">
+        <div class="menubar" aria-hidden="true">
+          <span class="vbadge">V</span>
+          <span>ABC</span>
+          <time>9:41</time>
+        </div>
+        <div class="demo-body">
+          <div class="out" aria-live="off"><span id="out">Tôi đang gõ tiếng Việt</span><span class="caret" aria-hidden="true"></span></div>
+          <div class="keys-row">
+            <div>
+              <div class="keys-label">Phím bạn gõ</div>
+              <div class="stream" id="stream">Tooi ddang gox tieesng Vieejt</div>
+            </div>
+            <div class="bigkey" id="bigkey" aria-hidden="true">t</div>
+          </div>
+          <div class="demo-foot">
+            <div class="seg" role="group" aria-label="Kiểu gõ">
+              <button type="button" id="mode-telex" data-mode="telex" aria-pressed="true">Telex</button>
+              <button type="button" id="mode-vni" data-mode="vni" aria-pressed="false">VNI</button>
+            </div>
+            <span class="demo-note">Không gạch chân, không ô chọn chữ.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="beta">
+    <div class="wrap">
+      <span class="pill">Beta</span>
+      <span>LiteKey là dự án cá nhân, làm ra trước hết cho nhu cầu gõ hằng ngày của tác giả. Có thể còn lỗi, giao diện có thể đổi giữa các bản. Góp ý và báo lỗi qua <a href="https://github.com/quocbaodsk/litekey/issues">Issues</a>.</span>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Vì sao LiteKey</p>
+        <h2>Gọn nhẹ, chỉ giữ những gì bạn dùng mỗi ngày.</h2>
+      </div>
+      <div class="pillars">
+        <div class="pillar">
+          <span class="figure">Đúng dấu</span>
+          <h3>Gõ chính xác</h3>
+          <p>Gõ nhanh vẫn không mất chữ, không loạn dấu trong trình duyệt, VS Code, Slack, Messenger hay Terminal.</p>
+        </div>
+        <div class="pillar">
+          <span class="figure">&lt; 1 ms</span>
+          <h3>Nhẹ và nhanh</h3>
+          <p>Thiết kế để xử lý mỗi phím dưới 1 ms. Gần như không tốn tài nguyên khi bạn không gõ.</p>
+        </div>
+        <div class="pillar">
+          <span class="figure">0 kết nối</span>
+          <h3>Riêng tư</h3>
+          <p>Không kết nối mạng, không thu thập dữ liệu, không cần tài khoản. Chữ bạn gõ chỉ nằm trên máy bạn.</p>
+        </div>
+        <div class="pillar">
+          <span class="figure"><kbd>⌃</kbd> <kbd>⇧</kbd></span>
+          <h3>Quen tay ngay</h3>
+          <p>Telex, VNI, gõ tắt và phím chuyển quen thuộc. Nhập bảng gõ tắt có sẵn bằng một nút bấm.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="proof">
+    <div class="wrap proof-grid">
+      <div class="proof-copy">
+        <p class="eyebrow">Kiểm chứng bằng dữ liệu</p>
+        <h2>Kiểm thử trên từng ca gõ.</h2>
+        <p class="lede">Engine gõ viết bằng Swift. Mỗi bản build chạy lại toàn bộ bộ dữ liệu chuẩn và phải ra đúng từng ký tự.</p>
+        <div>
+          <div class="big-number">11.585</div>
+          <p class="eyebrow" style="margin-top:.5rem">ca kiểm thử chạy mỗi bản build</p>
+        </div>
+        <ul class="tally">
+          <li><span>Tuỳ chọn gõ</span><span>2.413</span></li>
+          <li><span>Âm tiết Telex</span><span>2.200</span></li>
+          <li><span>Âm tiết VNI</span><span>2.200</span></li>
+          <li><span>Từ tiếng Anh, tự khôi phục</span><span>1.397</span></li>
+          <li><span>Simple Telex</span><span>1.042</span></li>
+          <li><span>Gõ tắt</span><span>902</span></li>
+          <li><span>Sửa và xoá lùi</span><span>900</span></li>
+          <li><span>Câu dài</span><span>500</span></li>
+          <li><span>Viết tay</span><span>31</span></li>
+        </ul>
+      </div>
+      <div class="table-box">
+        <table>
+          <thead>
+            <tr><th>Kiểu gõ</th><th>Phím gõ</th><th aria-hidden="true"></th><th>Kết quả</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="mode">Telex</td><td class="keys">tieengs vieetj</td><td class="arrow" aria-hidden="true">→</td><td class="res">tiếng việt</td></tr>
+            <tr><td class="mode">Telex</td><td class="keys">dduowcj</td><td class="arrow" aria-hidden="true">→</td><td class="res">được</td></tr>
+            <tr><td class="mode">Telex</td><td class="keys">nguowif</td><td class="arrow" aria-hidden="true">→</td><td class="res">người</td></tr>
+            <tr><td class="mode">Telex</td><td class="keys">thuyr</td><td class="arrow" aria-hidden="true">→</td><td class="res">thủy</td></tr>
+            <tr><td class="mode">Telex, dấu kiểu mới</td><td class="keys">thuyr</td><td class="arrow" aria-hidden="true">→</td><td class="res">thuỷ</td></tr>
+            <tr><td class="mode">Telex</td><td class="keys">ass</td><td class="arrow" aria-hidden="true">→</td><td class="res">as</td></tr>
+            <tr><td class="mode">Telex</td><td class="keys">ww</td><td class="arrow" aria-hidden="true">→</td><td class="res">w</td></tr>
+            <tr><td class="mode">Telex</td><td class="keys">class</td><td class="arrow" aria-hidden="true">→</td><td class="res">class</td></tr>
+            <tr><td class="mode">VNI</td><td class="keys">d9u7o7c5</td><td class="arrow" aria-hidden="true">→</td><td class="res">được</td></tr>
+            <tr><td class="mode">VNI</td><td class="keys">tie61ng vie65t</td><td class="arrow" aria-hidden="true">→</td><td class="res">tiếng việt</td></tr>
+          </tbody>
+        </table>
+        <p class="table-cap">Trích từ <code>Tests/fixtures/handwritten.tsv</code>. Cột kết quả là đầu ra chuẩn mà engine phải khớp.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="tinh-nang">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Tính năng</p>
+        <h2>Những gì bạn cần để gõ, không thừa.</h2>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <h3>Kiểu gõ và chính tả</h3>
+          <ul>
+            <li>Telex, VNI, Simple Telex 1 và 2</li>
+            <li>Đặt dấu kiểu cũ (<strong>òa, úy</strong>) hoặc kiểu mới (<strong>oà, uý</strong>), bỏ dấu tự do</li>
+            <li>Kiểm tra chính tả và tự khôi phục từ tiếng Anh: gõ <code>class</code> vẫn ra <strong>class</strong></li>
+            <li>Gõ nhanh (<code>cc</code> → <strong>ch</strong>, <code>gg</code> → <strong>gi</strong>), gõ tắt phụ âm đầu và cuối, tự viết hoa đầu câu</li>
+          </ul>
+        </div>
+        <div class="feature">
+          <h3>Gõ tắt</h3>
+          <ul>
+            <li>Bảng gõ tắt riêng, tự viết hoa theo cách bạn gõ: <code>btw</code> → <strong>by the way</strong></li>
+            <li>Dùng được cả khi đang ở chế độ tiếng Anh</li>
+            <li>Nhập và xuất file gõ tắt tương thích UniKey</li>
+          </ul>
+        </div>
+        <div class="feature">
+          <h3>Theo từng ứng dụng</h3>
+          <ul>
+            <li>Nhớ chế độ Việt/Anh riêng cho từng app</li>
+            <li>Danh sách app luôn gõ tiếng Anh</li>
+            <li>Tự tạm dừng khi bạn chuyển sang bộ gõ hệ thống khác</li>
+          </ul>
+        </div>
+        <div class="feature">
+          <h3>Tiện ích</h3>
+          <ul>
+            <li>Chuyển Việt/Anh bằng <kbd>⌃</kbd><kbd>⇧</kbd>, <kbd>⌥</kbd><kbd>Z</kbd>, <kbd>⌃</kbd><kbd>⌥</kbd> hoặc <kbd>⌃</kbd><kbd>Space</kbd></li>
+            <li>Giữ <kbd>⌃</kbd> để tạm tắt kiểm tra chính tả, giữ <kbd>⌘</kbd> để tạm tắt bộ gõ</li>
+            <li>Cảnh báo khi ô mật khẩu đang giữ bàn phím hoặc khi có bộ gõ tiếng Việt khác chạy cùng</li>
+            <li>Khởi động cùng macOS, tuỳ chọn hiện trên Dock</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="proof">
+    <div class="wrap shot">
+      <div class="copy">
+        <p class="eyebrow">Bảng điều khiển</p>
+        <h2>Mọi tuỳ chọn trong một cửa sổ.</h2>
+        <p>Phía trên là Kiểu gõ, Phím chuyển, Chế độ gõ. Phía dưới là bốn tab Bộ gõ, Gõ tắt, Hệ thống, Thông tin. Bạn không phải học lại gì cả.</p>
+        <p>Đang dùng bộ gõ tiếng Việt khác? Thoát bộ gõ đó trước khi gõ để hai bộ gõ không xử lý phím chồng lên nhau.</p>
+      </div>
+      <figure>
+        <img src="images/main.png" width="1504" height="1330" alt="Bảng điều khiển LiteKey 1.0.1, tab Bộ gõ, với các tuỳ chọn Kiểm tra chính tả, Tự khôi phục phím với từ sai, Chuyển chế độ thông minh">
+        <figcaption>Bảng điều khiển, tab Bộ gõ</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="cai-dat">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Cài đặt</p>
+        <h2>Ba bước là gõ được.</h2>
+      </div>
+      <div class="install">
+        <ol class="steps">
+          <li>
+            <div>
+              <h3>Tải và kéo vào Applications</h3>
+              <p>Tải bản mới nhất ở trang <a href="https://github.com/quocbaodsk/litekey/releases">Releases</a>, giải nén rồi kéo LiteKey vào thư mục Applications. Chưa có bản phát hành phù hợp thì <a href="https://github.com/quocbaodsk/litekey/blob/main/docs/BUILDING.md">build từ mã nguồn</a>.</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Cấp quyền Trợ năng</h3>
+              <p>Mở LiteKey, bật công tắc LiteKey trong System Settings → Privacy &amp; Security → Accessibility. Quyền này cho phép bộ gõ đọc phím và thay bằng chữ có dấu.</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Bắt đầu gõ</h3>
+              <p>Biểu tượng <strong>V</strong> xuất hiện trên thanh menu. Bấm <kbd>⌃</kbd> <kbd>⇧</kbd> rồi thả để chuyển giữa tiếng Việt và tiếng Anh.</p>
+            </div>
+          </li>
+        </ol>
+        <aside class="aside">
+          <h3>Yêu cầu hệ thống</h3>
+          <ul>
+            <li>macOS 13 Ventura trở lên</li>
+            <li>Máy Mac chip Apple Silicon (M1 trở lên)</li>
+            <li>Quyền Trợ năng (Accessibility)</li>
+          </ul>
+          <p class="switch">Bộ gõ của macOS ở góc phải thanh menu nên để là <strong>ABC</strong>, và không chạy cùng bộ gõ tiếng Việt nào khác.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="rieng-tu" class="proof">
+    <div class="wrap privacy">
+      <div class="section-head">
+        <p class="eyebrow">Quyền riêng tư</p>
+        <h2>Những gì bạn gõ chỉ nằm trên máy bạn.</h2>
+        <p class="lede">Bộ gõ nào trên macOS cũng phải đọc phím bạn bấm. Vì vậy LiteKey công khai toàn bộ mã nguồn để ai cũng kiểm tra được.</p>
+      </div>
+      <dl>
+        <div><dt>Không kết nối mạng</dt><dd>Không có mã gửi dữ liệu ra ngoài, không analytics, không kiểm tra cập nhật ngầm.</dd></div>
+        <div><dt>Không lưu nội dung gõ</dt><dd>Phím được xử lý trong bộ nhớ rồi bỏ đi. Log chẩn đoán mặc định tắt, chỉ chạy khi bạn tự bật để gửi kèm báo lỗi.</dd></div>
+        <div><dt>Cài đặt lưu cục bộ</dt><dd>Mọi tuỳ chọn nằm trong UserDefaults của máy, không cần tài khoản.</dd></div>
+        <div><dt>Mã nguồn mở, GPL v3</dt><dd>Viết 100% bằng Swift, đọc được trên <a href="https://github.com/quocbaodsk/litekey">GitHub</a>.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="hoi-dap">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Hỏi đáp</p>
+        <h2>Câu hỏi thường gặp</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Gõ không ra dấu hoặc bị mất chữ?</summary>
+          <p>Kiểm tra bộ gõ của macOS (góc phải thanh menu) đang là ABC và không có bộ gõ tiếng Việt nào khác chạy cùng. Nếu có, LiteKey hiện ⚠︎ trên biểu tượng và ghi rõ tên bộ gõ cần tắt.</p>
+        </details>
+        <details>
+          <summary>macOS báo không mở được ứng dụng?</summary>
+          <p>Vào System Settings → Privacy &amp; Security, bấm Open Anyway ở dòng báo LiteKey.</p>
+        </details>
+        <details>
+          <summary>Đã cấp quyền Trợ năng nhưng vẫn không gõ được?</summary>
+          <p>Sau khi cập nhật LiteKey, macOS đôi khi giữ quyền của bản cũ. Xoá LiteKey khỏi danh sách Accessibility bằng nút −, mở lại LiteKey và cấp quyền lại.</p>
+        </details>
+        <details>
+          <summary>Máy Mac chip Intel có dùng được không?</summary>
+          <p>Bản phát hành chỉ dành cho Apple Silicon (M1 trở lên). Script <code>build.sh</code> có thể build bản universal với <code>ARCH="arm64 x86_64"</code>, nhưng bản chạy trên Intel chưa được kiểm thử.</p>
+        </details>
+        <details>
+          <summary>Gỡ LiteKey thế nào?</summary>
+          <p>Thoát LiteKey từ menu, xoá app trong Applications, rồi xoá LiteKey khỏi danh sách Accessibility.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta proof">
+    <div class="wrap">
+      <div class="cta-copy">
+        <img src="images/icon.png" alt="" width="72" height="72">
+        <div>
+          <h2>Thử LiteKey ngay hôm nay.</h2>
+          <p class="lede">Miễn phí, không quảng cáo, không tài khoản.</p>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="cap primary" href="https://github.com/quocbaodsk/litekey/releases">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10M5.5 8.5 10 13l4.5-4.5M4 16.5h12"/></svg>
+          Tải về cho macOS
+        </a>
+        <a class="cap" href="https://github.com/quocbaodsk/litekey/issues">Báo lỗi, góp ý</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>© 2026 LiteKey · <a href="https://github.com/quocbaodsk/litekey">Mã nguồn trên GitHub</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Từng phím và chữ hiện ra sau phím đó. Kết quả cuối khớp Tests/fixtures/handwritten.tsv.
+  var WORDS = {
+    telex: [
+      ["Tooi", ["T", "To", "Tô", "Tôi"]],
+      ["ddang", ["d", "đ", "đa", "đan", "đang"]],
+      ["gox", ["g", "go", "gõ"]],
+      ["tieesng", ["t", "ti", "tie", "tiê", "tiế", "tiến", "tiếng"]],
+      ["Vieejt", ["V", "Vi", "Vie", "Viê", "Việ", "Việt"]]
+    ],
+    vni: [
+      ["To6i", ["T", "To", "Tô", "Tôi"]],
+      ["d9ang", ["d", "đ", "đa", "đan", "đang"]],
+      ["go4", ["g", "go", "gõ"]],
+      ["tie61ng", ["t", "ti", "tie", "tiê", "tiế", "tiến", "tiếng"]],
+      ["Vie65t", ["V", "Vi", "Vie", "Viê", "Việ", "Việt"]]
+    ]
+  };
+
+  function steps(mode) {
+    var out = [], done = [], keys = "";
+    WORDS[mode].forEach(function (w, i) {
+      if (i > 0) {
+        keys += " ";
+        out.push({ key: "␣", keys: keys, text: done.join(" ") + " " });
+      }
+      for (var k = 0; k < w[0].length; k++) {
+        keys += w[0][k];
+        out.push({ key: w[0][k], keys: keys, text: (done.length ? done.join(" ") + " " : "") + w[1][k] });
+      }
+      done.push(w[1][w[1].length - 1]);
+    });
+    return out;
+  }
+
+  var outEl = document.getElementById("out");
+  var streamEl = document.getElementById("stream");
+  var keyEl = document.getElementById("bigkey");
+  var buttons = document.querySelectorAll(".seg button");
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var mode = "telex", timer = null;
+
+  function escapeHTML(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+
+  function render(s) {
+    outEl.textContent = s.text;
+    var head = s.keys.slice(0, -1), last = s.keys.slice(-1);
+    streamEl.innerHTML = escapeHTML(head) + "<b>" + escapeHTML(last === " " ? " " : last) + "</b>";
+    keyEl.textContent = s.key;
+    keyEl.classList.remove("press");
+    void keyEl.offsetWidth;
+    keyEl.classList.add("press");
+  }
+
+  function showFinal() {
+    var list = steps(mode), s = list[list.length - 1];
+    outEl.textContent = s.text;
+    streamEl.textContent = s.keys;
+    keyEl.textContent = s.key;
+  }
+
+  function play() {
+    clearTimeout(timer);
+    if (reduce) { showFinal(); return; }
+    var list = steps(mode), i = 0;
+    function tick() {
+      render(list[i]);
+      i++;
+      if (i < list.length) {
+        timer = setTimeout(tick, list[i].key === "␣" ? 260 : 110 + Math.random() * 90);
+      } else {
+        timer = setTimeout(function () { i = 0; tick(); }, 2600);
+      }
+    }
+    timer = setTimeout(tick, 900);
+  }
+
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () {
+      mode = b.getAttribute("data-mode");
+      buttons.forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+      showFinal();
+      play();
+    });
+  });
+
+  showFinal();
+  play();
+})();
+</script>
+</body>
+</html>
