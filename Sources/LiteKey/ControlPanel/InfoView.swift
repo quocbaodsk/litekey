@@ -23,8 +23,7 @@ struct InfoView: View {
             }
 
             // Copyright and no-warranty notice required in the UI by GPL v3 section 5(d)
-            Text("© 2026 Các tác giả LiteKey. "
-                 + "Phần mềm tự do theo GNU GPL v3, không kèm bất kỳ bảo hành nào.")
+            Text("© 2026 LiteKey.")
                 .font(.caption)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
