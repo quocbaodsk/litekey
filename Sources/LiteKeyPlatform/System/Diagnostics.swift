@@ -61,6 +61,19 @@ public final class Diagnostics {
         }
     }
 
+    /// One experimental AX edit: how long it took, how long the next key waited, and whether the app went
+    /// back to key events
+    public func axEdit(replaced: Bool, app: String?, nanoseconds: UInt64, waitedMicroseconds: UInt32, gaveUp: Bool) {
+        guard isEnabled else { return }
+        let ms = String(format: "%.3f", Double(nanoseconds) / 1_000_000)
+        logger.notice("AX edit \(replaced ? "replaced" : "failed, used key events", privacy: .public) in \(ms, privacy: .public)ms app=\(app ?? "?", privacy: .public) keyWaited=\(waitedMicroseconds, privacy: .public)µs\(gaveUp ? " (AX off for this app until relaunch)" : "", privacy: .public)")
+    }
+
+    /// An AX edit ran past its time limit and keys stopped waiting for it (always logged)
+    public func axEditStalled(app: String?) {
+        logger.error("AX edit ran past its time limit in \(app ?? "?", privacy: .public): keys no longer wait for it; AX off for this app until relaunch")
+    }
+
     /// Other Vietnamese input methods running alongside (always logged when present)
     public func otherInputMethods(_ names: [String]) {
         guard !names.isEmpty else { return }

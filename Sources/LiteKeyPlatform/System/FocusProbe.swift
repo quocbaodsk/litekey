@@ -2,15 +2,19 @@ import AppKit
 import ApplicationServices
 import LiteKeyCore
 
-/// Where keystrokes are going, measured with Accessibility. Only whether Spotlight is focused matters.
+/// Where keystrokes are going, measured with Accessibility: whether Spotlight is focused, and the process
+/// the experimental AX edit talks to.
 public struct FocusInfo: Equatable, Sendable {
     /// App owning the focused element (differs from the frontmost app while Spotlight is open); `nil` on AX failure
     public var bundleID: String?
+    /// Process owning the focused element; 0 on AX failure
+    public var pid: Int32 = 0
     /// The Spotlight field (or Raycast/Alfred, `AppRules.isOverlayLauncher`) is receiving keys
     public var isSpotlight = false
 
-    public init(bundleID: String? = nil) {
+    public init(bundleID: String? = nil, pid: Int32 = 0) {
         self.bundleID = bundleID
+        self.pid = pid
         self.isSpotlight = AppRules.isOverlayLauncher(bundleID)
     }
 
@@ -47,6 +51,7 @@ public final class FocusProbe: NSObject {
     private var overlayPolling = false
     private var lastProbeWasOverlay = false
     private var lastOverlayBundleID: String?
+    private var lastOverlayPID: Int32 = 0
     private var staleAnswers = 0
 
     /// Re-probe delays after a signal: a new window (Spotlight...) takes a moment to receive focus
@@ -149,19 +154,20 @@ public final class FocusProbe: NSObject {
             AXUIElementGetPid(value as! AXUIElement, &pid)
         }
         let bundle = pid > 0 ? NSRunningApplication(processIdentifier: pid)?.bundleIdentifier : nil
-        var info = FocusInfo(bundleID: bundle)
+        var info = FocusInfo(bundleID: bundle, pid: bundle == nil ? 0 : pid)
         // A busy Spotlight can time out (cannotComplete): keep the last answer, at most twice in a row, instead
         // of reporting it closed, which would look like a freshly opened field on the next probe
         let transient = error == .cannotComplete || error == .failure
         if transient, lastProbeWasOverlay, staleAnswers < 2 {
             staleAnswers += 1
-            info = FocusInfo(bundleID: lastOverlayBundleID)
+            info = FocusInfo(bundleID: lastOverlayBundleID, pid: lastOverlayPID)
         } else {
             staleAnswers = 0
             DispatchQueue.main.async { [weak self] in self?.publish(info) }
         }
         lastProbeWasOverlay = info.isSpotlight
         lastOverlayBundleID = info.isSpotlight ? info.bundleID : nil
+        lastOverlayPID = info.isSpotlight ? info.pid : 0
         // Spotlight (like Raycast and Alfred) posts no notification when it closes, so poll while it is open
         if info.isSpotlight && !overlayPolling {
             overlayPolling = true
