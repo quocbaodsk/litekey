@@ -1,0 +1,20 @@
+✓ Bật Tiếng Việt
+---
+  Kiểu gõ
+    ✓ Telex
+      VNI
+      Simple Telex 1
+      Simple Telex 2
+---
+✓ Loại trừ “Safari”  [Luôn gõ tiếng Anh trong ứng dụng này]
+  Ứng dụng loại trừ
+    ✓ Terminal  [Bấm để gỡ khỏi danh sách]
+    ✓ Safari  [Bấm để gỡ khỏi danh sách]
+    ---
+      Quản lý...
+---
+  Bảng điều khiển...
+  Gõ tắt...
+  Giới thiệu
+---
+  Thoát

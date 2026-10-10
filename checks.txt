@@ -1,0 +1,9 @@
+PASS panel window is key before clicking
+PASS click switch label turns it on
+PASS click switch label again turns it off
+PASS click ⌥ key adds option
+PASS click ⌥ key again removes option
+PASS click disabled label does nothing
+PASS click "Kêu beep" label turns it on
+PASS drag across Kiểu gõ selects the segment under the pointer
+PASS click tab selects it
