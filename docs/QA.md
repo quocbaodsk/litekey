@@ -107,9 +107,9 @@ grant the permission again.
 | U2 | ⌥-click the icon | Toggles Vietnamese without opening the menu |
 | U3 | Light/dark mode, modern menu bar icon on/off | Icon legible in both; off shows V/E |
 | U4 | Switch apps with smart switching on, open the menu | Icon and menu match each app's mode |
-| U5 | Control panel, every tab, light and dark | Labels intact, no truncated or clipped text (long labels wrap); both cards share edges; the window does not resize when switching tabs |
-| U6 | macOS 26+: control panel and permission window | Buttons, ⌃ ⌥ ⌘ ⇧ keys and status pill use glass (checked keys tinted); OK is the prominent button; tabs cross-fade |
-| U7 | macOS 13–15 | Classic appearance, no glitches |
+| U5 | Control panel, every sidebar page, light and dark | Labels intact, no truncated or clipped text (long labels wrap); cards and controls share the same left and right edges; the window does not resize when switching pages |
+| U6 | macOS 26+: control panel and permission window | Sidebar is a floating glass panel with the traffic lights on it, its selection slides between pages; buttons, ⌃ ⌥ ⌘ ⇧ keys and status pill use glass (checked keys tinted); OK is the prominent button; pages cross-fade |
+| U7 | macOS 13–15 | Classic appearance (full-height sidebar material with a divider), no glitches |
 | U8 | Hotkey field: click it, hold ⌃, press Space | Hotkey becomes ⌃Space, only ⌃ on; keys are not transformed while recording |
 | U9 | Hotkey ⌃⇧ + key: press Delete in the field. Then hotkey ⌥Z: press Delete | First: key removed, ⌃⇧ left. Second: beep, ⌥Z kept |
 | U10 | Hotkey ⌥Z: try to turn off ⌥ | Not allowed; typing `z` works normally |
@@ -132,6 +132,8 @@ grant the permission again.
 | U24 | TextEdit: type `vieet`, switch to Japanese input (or ABC ↔ another source) and type, switch back, type `j` | No old letters deleted |
 | U25 | Hotkey ⌃⇧: press ⌃⇧⌥ then release ⌥, ⇧, ⌃ one by one; also ⌃⇧A (some shortcut) releasing ⇧ before ⌃ | No toggle, no temporary spell-check off |
 | U26 | Japanese input source active, "Tắt tiếng Việt khi bộ gõ hệ thống khác tiếng Anh" on: press the hotkey | Menu icon does not change |
+| U27 | Hover, then click a "?" next to an option | Tooltip on hover; click opens a popover with the same text |
+| U28 | Revoke Accessibility, open the control panel | Red banner with "Thử lại" on every page instead of the green status pill |
 
 ## Permission and reliability
 

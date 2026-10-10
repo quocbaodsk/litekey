@@ -60,10 +60,11 @@ The `UI snapshots` workflow (`.github/workflows/ui-snapshots.yml`) runs on every
 and runs it with `LITEKEY_SNAPSHOT_DIR` set, which makes `Sources/LiteKey/Debug/UISnapshot.swift` take over
 instead of the input method:
 
-- screenshots of every control panel tab (light and dark), disabled options, the hotkey warning, a tab
+- screenshots of every control panel page (light and dark), disabled options, the hotkey warning, a page
   switch mid-animation, a hovered row, the macro window, the excluded apps list and the menu bar menu;
-  `<name>.png` comes from the window server (glass included, 1x), `<name>-2x.png` is drawn from the view;
-- click checks with real mouse events (switch labels, the ⌥ key, a disabled option, a tab) in `checks.txt`,
+  `<name>.png` comes from the window server (glass included, 1x), `<name>-2x.png` is drawn from the view
+  (no glass, so the macOS 26+ glass sidebar and anything on it are missing there);
+- click checks with real mouse events (switch labels, the ⌥ key, a disabled option, a sidebar item) in `checks.txt`,
   and the menu items in `menu.txt`. The job fails on any `FAIL` line or if the run hangs.
 
 Get the results from the run's artifacts, or with git (handy from a Linux container):

@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 
-/// Info tab: identity and features in the same two equal columns as the other tabs, notice centered below.
+/// "Thông tin" page: identity card, features card, notice below.
 struct InfoView: View {
     private static let sourceURL = URL(string: "https://github.com/quocbaodsk/litekey")!
     private static let licenseURL = URL(string: "https://www.gnu.org/licenses/gpl-3.0.html")!
@@ -15,13 +15,9 @@ struct InfoView: View {
     }
 
     var body: some View {
-        VStack(spacing: 12) {
-            TwoColumns {
-                identity
-            } right: {
-                features
-            }
-
+        VStack(spacing: PanelMetrics.cardSpacing) {
+            identity.panelCard()
+            features.panelCard()
             // Copyright and no-warranty notice required in the UI by GPL v3 section 5(d)
             Text("© 2026 LiteKey.")
                 .font(.caption)
@@ -30,46 +26,39 @@ struct InfoView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private var identity: some View {
-        VStack(spacing: 4) {
+        HStack(spacing: 14) {
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
-                .frame(width: 64, height: 64)
+                .frame(width: 52, height: 52)
                 .accessibilityHidden(true)
-            Text("LiteKey").font(.system(size: 20, weight: .semibold))
-            Text(version).font(.caption).foregroundColor(.secondary)
-            HStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: 3) {
+                Text("LiteKey").font(.system(size: 20, weight: .semibold))
+                Text(version).font(.callout).foregroundColor(.secondary)
+            }
+            Spacer(minLength: 12)
+            HStack(spacing: 14) {
                 Link("Mã nguồn", destination: Self.sourceURL)
                 Link("GPL v3", destination: Self.licenseURL)
             }
-            .font(.caption)
-            .padding(.top, 4)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private var features: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Bộ gõ tiếng Việt cho macOS").font(.headline)
+            PanelHeader("Bộ gõ tiếng Việt cho macOS")
             feature("Telex, VNI, Simple Telex, gõ tắt, nhớ chế độ theo ứng dụng", icon: "keyboard")
             feature("Gọn nhẹ, phản hồi tức thì, không cần thêm bộ gõ hệ thống", icon: "bolt")
             feature("Không thu thập dữ liệu, không kết nối mạng", icon: "lock.shield")
         }
-        .fixedSize(horizontal: false, vertical: true)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     }
 
-    /// Icon in a fixed-width column so every line of text starts at the same x
     private func feature(_ text: LocalizedStringKey, icon: String) -> some View {
-        HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Image(systemName: icon)
-                .foregroundColor(.secondary)
-                .frame(width: 20)
-                .accessibilityHidden(true)
-            Text(text)
+        HStack(spacing: 10) {
+            RowIcon(symbol: icon)
+            Text(text).fixedSize(horizontal: false, vertical: true)
         }
     }
 }

@@ -17,6 +17,24 @@ final class ControlPanelModel: ObservableObject {
             case .info: return "Thông tin"
             }
         }
+
+        var subtitle: String {
+            switch self {
+            case .typing: return "Thiết lập kiểu gõ và các tuỳ chọn cơ bản"
+            case .shortcuts: return "Gõ tắt và gõ nhanh phụ âm"
+            case .system: return "Khởi động, giao diện và tương thích ứng dụng"
+            case .info: return "Phiên bản, giấy phép và mã nguồn"
+            }
+        }
+
+        var symbol: String {
+            switch self {
+            case .typing: return "keyboard"
+            case .shortcuts: return "doc.text"
+            case .system: return "gearshape"
+            case .info: return "info.circle"
+            }
+        }
     }
 
     @Published var tab: Tab = .typing
@@ -48,32 +66,60 @@ final class ControlPanelModel: ObservableObject {
     }
 }
 
-/// Control Panel: control card on top, tab bar over the tab card (typing, shortcuts, system, info), and
-/// Quit / Defaults / OK buttons. Every row puts its label on the left and its control on the right.
+extension NSWindow {
+    /// Control Panel window: the sidebar runs under the transparent title bar, System Settings style.
+    /// The title stays set (hidden) for Mission Control and the Window menu.
+    static func controlPanel(model: ControlPanelModel, title: String) -> NSWindow {
+        let host = NSHostingController(rootView: ControlPanelView(model: model))
+        // Fixed size: the hosting controller would add the title bar inset on top of the view's own height
+        host.sizingOptions = []
+        let window = NSWindow(contentViewController: host)
+        window.setContentSize(ControlPanelView.size)
+        window.title = title
+        window.styleMask = [.titled, .closable, .miniaturizable, .fullSizeContentView]
+        window.titleVisibility = .hidden
+        window.titlebarAppearsTransparent = true
+        // Empty unified toolbar: moves the traffic lights to (19, 19), well inside the inset glass sidebar
+        // instead of on its rounded corner (they sit at (9, 9) with a plain title bar)
+        window.toolbar = NSToolbar(identifier: "ControlPanel")
+        window.toolbarStyle = .unified
+        return window
+    }
+}
+
+/// Control Panel: sidebar on the left; on the right the page title and status, the page, and the
+/// Defaults / Quit / OK buttons. The window keeps one size on every page; long pages scroll.
 struct ControlPanelView: View {
     @ObservedObject var model: ControlPanelModel
     @ObservedObject var prefs: PreferencesModel
     @State private var confirmDefaults = false
     @State private var confirmImport = false
 
-    /// Fixed so switching tabs never resizes the window
-    private static let tabHeight: CGFloat = 208
+    static let size = CGSize(width: 880, height: 560)
+    /// Leading/trailing padding of the header, page and footer
+    private static let margin: CGFloat = 20
+    /// All three footer buttons share one width
+    private static let buttonWidth: CGFloat = 96
 
     init(model: ControlPanelModel) {
         _model = ObservedObject(wrappedValue: model)
         _prefs = ObservedObject(wrappedValue: model.preferences)
     }
 
-    private var p: Binding<Preferences> { $prefs.preferences }
-
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            controlCard
-            tabCard
-            footer
+        HStack(spacing: 0) {
+            Sidebar(selection: $model.tab)
+            VStack(alignment: .leading, spacing: 0) {
+                header
+                page
+                footer
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .padding(20)
-        .frame(width: 640)
+        .frame(width: Self.size.width, height: Self.size.height)
+        // Explicit, so the 2x snapshots (drawn from the view, without the window) get it too
+        .background(Color(nsColor: .windowBackgroundColor))
+        .ignoresSafeArea()
         .alert("Bạn có chắc chắn muốn thiết lập lại cấu hình mặc định?", isPresented: $confirmDefaults) {
             Button("Có") { prefs.preferences = prefs.preferences.resetToDefaults() }
             Button("Không", role: .cancel) {}
@@ -89,200 +135,118 @@ struct ControlPanelView: View {
         }
     }
 
-    // MARK: Control card
+    // MARK: Header: page title, permission status
 
-    private var controlCard: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            PanelHeader("Điều khiển")
-            VStack(alignment: .leading, spacing: PanelMetrics.rowSpacing) {
-                PanelRow("Kiểu gõ:") {
-                    Picker("", selection: p.inputType) {
-                        Text("Telex").tag(InputType.telex)
-                        Text("VNI").tag(InputType.vni)
-                        Text("Simple Telex 1").tag(InputType.simpleTelex1)
-                        Text("Simple Telex 2").tag(InputType.simpleTelex2)
-                    }
-                    .labelsHidden()
-                    .frame(width: PanelMetrics.controlWidth)
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .center, spacing: 12) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(model.tab.title)
+                        .font(.system(size: 20, weight: .bold))
+                        .accessibilityAddTraits(.isHeader)
+                    Text(model.tab.subtitle)
+                        .font(.system(size: 12))
+                        .foregroundColor(.secondary)
                 }
-                PanelRow("Phím chuyển:") {
-                    HStack(spacing: 6) {
-                        modifierToggle("⌃", .control)
-                        modifierToggle("⌥", .option)
-                        modifierToggle("⌘", .command)
-                        modifierToggle("⇧", .shift)
-                        HotkeyRecorder(hotkey: p.hotkey, onRecording: model.onRecordingHotkey)
-                            .frame(width: 64, height: 22)
-                            .padding(.leading, 4)
-                        SwitchRow("Kêu beep", isOn: p.beepOnSwitch, fill: false)
-                            .padding(.leading, 10)
-                    }
-                }
-                if !prefs.preferences.hotkey.isUsable {
-                    // Old or imported settings: fewer than two keys is not usable
-                    Text("Phím chuyển cần ít nhất 2 phím, trong đó có một phím ⌃ ⌥ ⌘ ⇧")
-                        .font(.caption)
-                        .foregroundColor(.red)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                }
-                PanelRow("Chế độ gõ:") {
-                    Picker("", selection: p.vietnamese) {
-                        Text("Tiếng Việt").tag(true)
-                        Text("English").tag(false)
-                    }
-                    .pickerStyle(.segmented)
-                    .labelsHidden()
-                    .frame(width: PanelMetrics.controlWidth)
-                }
+                Spacer(minLength: 12)
+                if model.hasPermission { statusPill }
             }
-            .panelCard()
+            if !model.hasPermission { permissionBanner }
         }
-    }
-
-    private func modifierToggle(_ symbol: String, _ flag: ModifierFlags) -> some View {
-        let hotkey = prefs.preferences.hotkey
-        let isOn = hotkey.modifiers.contains(flag)
-        return KeycapToggle(symbol: symbol, isOn: Binding(
-            get: { prefs.preferences.hotkey.modifiers.contains(flag) },
-            set: { on in
-                var hotkey = prefs.preferences.hotkey
-                if on { hotkey.modifiers.insert(flag) } else if hotkey.canRemove(flag) { hotkey.modifiers.remove(flag) }
-                prefs.preferences.hotkey = hotkey
-            }))
-            // A hotkey keeps at least two keys (`Hotkey.minimumKeys`)
-            .disabled(isOn && !hotkey.canRemove(flag))
-    }
-
-    // MARK: Tab card
-
-    private var tabCard: some View {
-        // ZStack so the old and new tab cross-fade in place instead of stacking during the transition
-        ZStack(alignment: .topLeading) {
-            tabContent
-                .id(model.tab)
-                .transition(.opacity)
-        }
-        .frame(maxWidth: .infinity, minHeight: Self.tabHeight, maxHeight: Self.tabHeight, alignment: .topLeading)
-        .padding(.top, 14)  // room for the lower half of the tab bar
-        .panelCard()
-        .animation(.easeInOut(duration: 0.2), value: model.tab)
-        // The tab bar straddles the card's top border, NSTabView style.
-        .overlay(alignment: .top) {
-            TabBar(selection: $model.tab)
-                .padding(.horizontal, 16)
-                .alignmentGuide(.top) { $0[VerticalAlignment.center] }
-        }
-        .padding(.top, 10)  // room for the upper half of the tab bar
-    }
-
-    @ViewBuilder private var tabContent: some View {
-        switch model.tab {
-        case .typing: typingTab
-        case .shortcuts: shortcutsTab
-        case .system: systemTab
-        case .info: InfoView()
-        }
-    }
-
-    private var typingTab: some View {
-        TwoColumns {
-            SwitchRow("Đặt dấu oà, uý (thay vì òa, úy)", isOn: p.modernOrthography)
-            SwitchRow("Sửa lỗi gợi ý (trình duyệt, Excel,...)", isOn: p.fixRecommendBrowser)
-            SwitchRow("Viết Hoa chữ cái đầu câu", isOn: p.upperCaseFirstChar)
-            SwitchRow("Chuyển chế độ thông minh", isOn: p.rememberPerApp)
-            SwitchRow("Cho phép bỏ dấu tự do", isOn: p.freeMark)
-            SwitchRow("Tắt tiếng Việt khi bộ gõ hệ thống khác tiếng Anh", isOn: p.disableOnNonEnglishInputSource)
-        } right: {
-            SwitchRow("Kiểm tra chính tả", isOn: p.checkSpelling)
-            Group {
-                SwitchRow("Tự khôi phục phím với từ sai", isOn: p.restoreIfWrong)
-                SwitchRow("Cho phép \"z w j f\" làm phụ âm", isOn: p.allowConsonantZFWJ)
-                SwitchRow("Tạm tắt chính tả bằng phím ⌃", isOn: p.tempOffSpellingWithControl)
-            }
-            .disabled(!prefs.preferences.checkSpelling)
-            SwitchRow("Tạm tắt LiteKey bằng phím ⌘", isOn: p.tempOffEngineWithCommand)
-        }
-    }
-
-    private var shortcutsTab: some View {
-        TwoColumns {
-            SwitchRow("Cho phép gõ tắt", isOn: p.useMacro)
-            Group {
-                SwitchRow("Gõ tắt cả khi tắt gõ tiếng Việt", isOn: p.useMacroInEnglishMode)
-                SwitchRow("Tự động viết hoa theo phím tắt", isOn: p.autoCapsMacro)
-            }
-            .disabled(!prefs.preferences.useMacro)
-            ActionRow("Bảng gõ tắt...") { model.onOpenMacros() }
-        } right: {
-            SwitchRow("Gõ nhanh (cc=ch, gg=gi, kk=kh, nn=ng, qq=qu, pp=ph, tt=th)", isOn: p.quickTelex)
-            SwitchRow("Gõ tắt phụ âm đầu: f→ph, j→gi, w→qu", isOn: p.quickStartConsonant)
-            SwitchRow("Gõ tắt phụ âm cuối: g→ng, h→nh, k→ch", isOn: p.quickEndConsonant)
-        }
-    }
-
-    private var systemTab: some View {
-        TwoColumns {
-            SwitchRow("Hiện biểu tượng trên thanh Dock", isOn: p.showIconOnDock)
-            SwitchRow("Bật bảng này khi khởi động", isOn: p.showPanelOnStartup)
-            SwitchRow("Biểu tượng hiện đại trên thanh menu", isOn: p.modernMenuIcon)
-            SwitchRow("Khởi động cùng macOS", isOn: Binding(
-                get: { model.launchAtLogin }, set: { model.setLaunchAtLogin($0) }))
-            SwitchRow("Tương thích Telex trên các Layout khác (Dvorak, Colemak, ...)", isOn: p.layoutCompatibility)
-        } right: {
-            SwitchRow("Sửa lỗi trên Chromium", isOn: p.fixChromiumBrowser)
-                .disabled(!prefs.preferences.fixRecommendBrowser)
-            SwitchRow("Gửi từng phím (bật nếu bị lỗi)", isOn: p.sendKeyStepByStep)
-            SwitchRow("Sửa lỗi Spotlight, Raycast, Alfred", isOn: p.fixOverlayLauncher)
-            ActionRow("Ứng dụng loại trừ...") { model.showExcludedApps = true }
-            ActionRow("Nhập cài đặt từ OpenKey...") { confirmImport = true }
-                .disabled(!model.canImportOpenKey())
-        }
-    }
-
-    // MARK: Footer: permission status and buttons
-
-    /// Status pill on top, three equal-width buttons below.
-    private var footer: some View {
-        VStack(spacing: 12) {
-            statusPill
-            HStack(spacing: 10) {
-                footerButton("Kết thúc") { model.onQuit() }
-                    .glassButton()
-                footerButton("Mặc định") { confirmDefaults = true }
-                    .glassButton()
-                footerButton("OK") { model.onClose() }
-                    .keyboardShortcut(.defaultAction)
-                    .glassButton(prominent: true)
-            }
-            .controlSize(.large)
-        }
-        .frame(maxWidth: .infinity)
-    }
-
-    // The frame goes inside the label so the bezel grows; a frame outside Button does not widen it on macOS.
-    private func footerButton(_ title: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) { Text(title).frame(width: 96) }
+        .padding(.horizontal, Self.margin)
+        .padding(.top, 16)
+        .padding(.bottom, 12)
     }
 
     private var statusPill: some View {
         HStack(spacing: 6) {
             Circle()
-                .fill(model.hasPermission ? Color.green : Color.red)
-                .frame(width: 7, height: 7)
-            if model.hasPermission {
-                Text("Ứng dụng đang hoạt động")
-                    .foregroundColor(.secondary)
-            } else {
-                Text("Bạn chưa cấp quyền cho ứng dụng hoạt động!")
-                    .foregroundColor(.red)
-                Button("Thử lại") { model.onRetryPermission() }
-                    .buttonStyle(.link)
-            }
+                .fill(Color.green)
+                .frame(width: 6, height: 6)
+            Text("Ứng dụng đang hoạt động")
+                .foregroundColor(.secondary)
         }
-        .font(.callout)
-        .padding(.horizontal, 12)
+        .font(.system(size: 12))
+        .padding(.horizontal, 10)
         .padding(.vertical, 5)
         .glassCapsule()
+        .accessibilityElement(children: .combine)
+    }
+
+    /// Missing permission: nothing works until it is granted, so it gets a full-width banner on every page
+    private var permissionBanner: some View {
+        // Plain tinted fill, not glass: the glass "Thử lại" button would otherwise sit glass on glass
+        let shape = RoundedRectangle(cornerRadius: 10, style: .continuous)
+        return HStack(spacing: 8) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundColor(.red)
+                .accessibilityHidden(true)
+            Text("Bạn chưa cấp quyền cho ứng dụng hoạt động!")
+                .foregroundColor(.red)
+            Spacer(minLength: 12)
+            Button("Thử lại") { model.onRetryPermission() }
+                .controlSize(.small)
+                .glassButton()
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 7)
+        .background { shape.fill(Color.red.opacity(0.08)) }
+        .overlay { shape.strokeBorder(Color.red.opacity(0.25)) }
         .accessibilityElement(children: .contain)
+    }
+
+    // MARK: Page
+
+    private var page: some View {
+        // ZStack so the old and new page cross-fade in place instead of stacking during the transition.
+        // One ScrollView per page, so a new page never opens scrolled.
+        ZStack(alignment: .topLeading) {
+            ScrollView {
+                pageContent
+                    .padding(.horizontal, Self.margin)
+                    .padding(.bottom, 6)
+            }
+            .id(model.tab)
+            .transition(.opacity)
+        }
+        .frame(maxHeight: .infinity)
+        .animation(.easeInOut(duration: 0.2), value: model.tab)
+    }
+
+    @ViewBuilder private var pageContent: some View {
+        switch model.tab {
+        case .typing: TypingPage(model: model, prefs: prefs)
+        case .shortcuts: ShortcutsPage(model: model, prefs: prefs)
+        case .system: SystemPage(model: model, prefs: prefs) { confirmImport = true }
+        case .info: InfoView()
+        }
+    }
+
+    // MARK: Footer
+
+    /// Defaults on the left (resets settings), Quit and OK on the right
+    private var footer: some View {
+        HStack(spacing: 10) {
+            Button { confirmDefaults = true } label: {
+                Label("Mặc định", systemImage: "arrow.counterclockwise")
+                    .frame(width: Self.buttonWidth)
+            }
+            .glassButton()
+            Spacer(minLength: 12)
+            footerButton("Kết thúc") { model.onQuit() }
+                .glassButton()
+            footerButton("OK") { model.onClose() }
+                .keyboardShortcut(.defaultAction)
+                .glassButton(prominent: true)
+        }
+        .controlSize(.large)
+        .padding(.horizontal, Self.margin)
+        .padding(.top, 10)
+        .padding(.bottom, 16)
+    }
+
+    // The frame goes inside the label so the bezel grows; a frame outside Button does not widen it on macOS.
+    private func footerButton(_ title: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) { Text(title).frame(width: Self.buttonWidth) }
     }
 }

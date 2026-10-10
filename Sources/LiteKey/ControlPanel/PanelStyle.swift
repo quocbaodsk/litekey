@@ -1,30 +1,46 @@
+import AppKit
 import SwiftUI
 
-/// Control Panel building blocks, System Settings style: rounded cards, label on the left and control on
-/// the right, the same row height and spacing everywhere. Cards are content, so they get no glass.
+/// Control Panel building blocks, System Settings style: rounded cards, the same row height and spacing
+/// everywhere. Cards are content, so they get no glass. Colors come from the system (accent, labels).
 enum PanelMetrics {
     static let cornerRadius: CGFloat = 12
     static let cardPadding: CGFloat = 14
     static let rowHeight: CGFloat = 24
-    static let rowSpacing: CGFloat = 10
-    static let columnSpacing: CGFloat = 20
-    /// Right-hand controls in the control card share this width so their edges line up
-    static let controlWidth: CGFloat = 180
+    static let rowSpacing: CGFloat = 8
+    static let columnSpacing: CGFloat = 16
+    /// Between cards on a page
+    static let cardSpacing: CGFloat = 12
+    /// Labels in the control card share this width so the controls start on one line and run to the
+    /// card's right edge, like the option columns below
+    static let labelWidth: CGFloat = 96
+    static let iconSize: CGFloat = 20
+}
+
+enum PanelColors {
+    /// White cards on the light window background; a faint lift in dark mode
+    static let card = Color(nsColor: NSColor(name: nil) { appearance in
+        appearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
+            ? NSColor.white.withAlphaComponent(0.05) : NSColor.white.withAlphaComponent(0.85)
+    })
 }
 
 extension View {
-    /// Content card: faint fill and a hairline border, like a grouped Form section
+    /// Content card: light fill, hairline border and a soft shadow, like a grouped Form section
     func panelCard() -> some View {
         let shape = RoundedRectangle(cornerRadius: PanelMetrics.cornerRadius, style: .continuous)
         return self
             .padding(PanelMetrics.cardPadding)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background { shape.fill(Color.primary.opacity(0.04)) }
+            .background {
+                shape.fill(PanelColors.card)
+                    .shadow(color: .black.opacity(0.05), radius: 2, y: 1)
+            }
             .overlay { shape.strokeBorder(Color.primary.opacity(0.08)) }
     }
 }
 
-/// Section title above a card, aligned with the labels inside it
+/// Section title inside a card, above its rows
 struct PanelHeader: View {
     let title: LocalizedStringKey
 
@@ -35,12 +51,11 @@ struct PanelHeader: View {
     var body: some View {
         Text(title)
             .font(.system(size: 13, weight: .semibold))
-            .foregroundColor(.secondary)
-            .padding(.leading, PanelMetrics.cardPadding)
+            .accessibilityAddTraits(.isHeader)
     }
 }
 
-/// Label on the left, any control on the right
+/// Fixed-width label on the left, any control after it
 struct PanelRow<Content: View>: View {
     let title: LocalizedStringKey
     let content: Content
@@ -53,29 +68,78 @@ struct PanelRow<Content: View>: View {
     var body: some View {
         HStack(spacing: 12) {
             Text(title)
-            Spacer(minLength: 12)
+                .frame(width: PanelMetrics.labelWidth, alignment: .leading)
             content
+            Spacer(minLength: 0)
         }
-        .frame(minHeight: PanelMetrics.rowHeight)
+        .frame(minHeight: PanelMetrics.rowHeight + 4)
     }
 }
 
-/// On/off option: label on the left (wraps when long), small switch on the right
+/// SF Symbol in a small rounded tile at the start of a row
+struct RowIcon: View {
+    let symbol: String
+    @Environment(\.isEnabled) private var isEnabled
+
+    var body: some View {
+        Image(systemName: symbol)
+            .font(.system(size: 11, weight: .medium))
+            .foregroundStyle(.secondary)
+            .frame(width: PanelMetrics.iconSize, height: PanelMetrics.iconSize)
+            .background {
+                RoundedRectangle(cornerRadius: 5, style: .continuous).fill(Color.primary.opacity(0.06))
+            }
+            .opacity(isEnabled ? 1 : 0.5)
+            .accessibilityHidden(true)
+    }
+}
+
+/// "?" next to an option: hover shows the explanation as a tooltip, click shows it in a popover
+struct HelpButton: View {
+    let text: LocalizedStringKey
+    @State private var shown = false
+
+    var body: some View {
+        Button { shown.toggle() } label: {
+            Image(systemName: "questionmark.circle")
+                .font(.system(size: 12))
+                .foregroundStyle(.secondary)
+        }
+        .buttonStyle(.plain)
+        .help(Text(text))
+        .accessibilityLabel(Text("Trợ giúp"))
+        .accessibilityHint(Text(text))
+        .popover(isPresented: $shown, arrowEdge: .bottom) {
+            Text(text)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(width: 240, alignment: .leading)
+                .padding(12)
+        }
+    }
+}
+
+/// On/off option: optional icon, label (wraps when long), optional help, small switch on the right
 struct SwitchRow: View {
     let title: LocalizedStringKey
     @Binding var isOn: Bool
     /// false: label and switch sit together at their natural width (inline use)
     var fill = true
+    var icon: String?
+    var help: LocalizedStringKey?
     @Environment(\.isEnabled) private var isEnabled
 
-    init(_ title: LocalizedStringKey, isOn: Binding<Bool>, fill: Bool = true) {
+    init(_ title: LocalizedStringKey, isOn: Binding<Bool>, fill: Bool = true, icon: String? = nil,
+         help: LocalizedStringKey? = nil) {
         self.title = title
         _isOn = isOn
         self.fill = fill
+        self.icon = icon
+        self.help = help
     }
 
     var body: some View {
-        HStack(spacing: fill ? 12 : 8) {
+        HStack(spacing: fill ? 10 : 8) {
+            if let icon { RowIcon(symbol: icon) }
             BalancedWrap {
                 Text(title)
                     .foregroundColor(isEnabled ? .primary : .secondary)
@@ -88,6 +152,7 @@ struct SwitchRow: View {
             .onTapGesture { if isEnabled { isOn.toggle() } }
             // The switch below carries the same label for VoiceOver
             .accessibilityHidden(true)
+            if let help { HelpButton(text: help) }
             Toggle(title, isOn: $isOn)
                 .toggleStyle(.switch)
                 .labelsHidden()
@@ -100,18 +165,21 @@ struct SwitchRow: View {
 /// Row that opens a window, sheet or dialog: title on the left, chevron on the right, the whole row clickable
 struct ActionRow: View {
     let title: LocalizedStringKey
+    var icon: String?
     let action: () -> Void
     @Environment(\.isEnabled) private var isEnabled
     @State private var hovered = false
 
-    init(_ title: LocalizedStringKey, action: @escaping () -> Void) {
+    init(_ title: LocalizedStringKey, icon: String? = nil, action: @escaping () -> Void) {
         self.title = title
+        self.icon = icon
         self.action = action
     }
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 12) {
+            HStack(spacing: 10) {
+                if let icon { RowIcon(symbol: icon) }
                 Text(title)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Image(systemName: "chevron.right")

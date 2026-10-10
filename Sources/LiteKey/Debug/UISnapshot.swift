@@ -39,9 +39,7 @@ final class UISnapshot: NSObject, NSApplicationDelegate {
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         UserDefaults.standard.removePersistentDomain(forName: suite)
         model = ControlPanelModel(preferences: PreferencesModel(store: store))
-        window = NSWindow(contentViewController: NSHostingController(rootView: ControlPanelView(model: model)))
-        window.title = "LiteKey 1.0.2 -Bộ gõ Tiếng Việt"
-        window.styleMask = [.titled, .closable, .miniaturizable]
+        window = NSWindow.controlPanel(model: model, title: "LiteKey 1.0.2 - Bộ gõ Tiếng Việt")
         window.center()
         window.makeKeyAndOrderFront(nil)
 
@@ -102,38 +100,44 @@ final class UISnapshot: NSObject, NSApplicationDelegate {
                 show(.aqua, .typing)
                 prefs.preferences = Preferences()
                 model.hasPermission = true
+                // Clicks on a background window only activate it, so take focus back first
+                NSApp.activate(ignoringOtherApps: true)
+                window.makeKeyAndOrderFront(nil)
             },
-            Step(delay: 0.6) { [unowned self] in click(90, 392) },  // label "Cho phép bỏ dấu tự do"
+            Step(delay: 0.6) { [unowned self] in
+                check("panel window is key before clicking", window.isKeyWindow)
+                click(325, 397)  // label "Cho phép bỏ dấu tự do"
+            },
             Step(delay: 0.6) { [unowned self] in
                 check("click switch label turns it on", prefs.preferences.freeMark)
-                click(90, 392)
+                click(325, 397)
             },
             Step(delay: 0.6) { [unowned self] in
                 check("click switch label again turns it off", !prefs.preferences.freeMark)
-                click(322, 130)  // ⌥ key
+                click(395, 134)  // ⌥ key
             },
             Step(delay: 0.6) { [unowned self] in
                 check("click ⌥ key adds option", prefs.preferences.hotkey.modifiers.contains(.option))
-                click(322, 130)
+                click(395, 134)
             },
             Step(delay: 0.6) { [unowned self] in
                 check("click ⌥ key again removes option", !prefs.preferences.hotkey.modifiers.contains(.option))
                 prefs.preferences.checkSpelling = false
             },
-            Step(delay: 0.6) { [unowned self] in click(430, 324) },  // disabled label "Cho phép "z w j f""
+            Step(delay: 0.6) { [unowned self] in click(675, 326) },  // disabled label "Cho phép "z w j f""
             Step(delay: 0.6) { [unowned self] in
                 check("click disabled label does nothing", !prefs.preferences.allowConsonantZFWJ)
-                click(530, 130)  // label "Kêu beep"
+                click(692, 134)  // label "Kêu beep"
             },
             Step(delay: 0.6) { [unowned self] in
                 check("click \"Kêu beep\" label turns it on", prefs.preferences.beepOnSwitch)
-                click(249, 216)  // tab "Gõ tắt"
+                click(75, 185)  // sidebar item "Gõ tắt"
             },
             Step(delay: 0.6) { [unowned self] in
                 check("click tab selects it", model.tab == .shortcuts)
                 model.tab = .system
             },
-            Step(delay: 0.6) { [unowned self] in hover(420, 324) },  // row "Ứng dụng loại trừ..."
+            Step(delay: 0.6) { [unowned self] in hover(320, 347) },  // row "Ứng dụng loại trừ..."
             Step(shot: "light-8-hover", delay: 0) {},
         ]
     }
