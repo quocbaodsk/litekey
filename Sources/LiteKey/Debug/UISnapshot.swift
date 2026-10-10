@@ -39,7 +39,7 @@ final class UISnapshot: NSObject, NSApplicationDelegate {
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         UserDefaults.standard.removePersistentDomain(forName: suite)
         model = ControlPanelModel(preferences: PreferencesModel(store: store))
-        window = NSWindow.controlPanel(model: model, title: "LiteKey 1.0.2 - Bộ gõ Tiếng Việt")
+        window = NSWindow.controlPanel(model: model, title: "LiteKey 1.0.3 - Bộ gõ Tiếng Việt")
         window.center()
         window.makeKeyAndOrderFront(nil)
 
