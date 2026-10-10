@@ -31,8 +31,7 @@
 ---
 
 > [!IMPORTANT]
-> LiteKey is in beta. It's a personal project that I use every day and share in case it's useful to
-> someone else. Expect bugs and changes between releases.
+> LiteKey is in beta. It's a personal project that I use every day and share in case it's useful to someone else. Expect bugs and changes between releases.
 > Bug reports are welcome in [Issues](https://github.com/quocbaodsk/litekey/issues).
 
 ## Overview

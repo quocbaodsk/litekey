@@ -31,8 +31,7 @@
 ---
 
 > [!IMPORTANT]
-> LiteKey đang ở giai đoạn beta. Đây là dự án cá nhân mình dùng hằng ngày và chia sẻ để ai cần thì dùng.
-> Có thể còn lỗi và thay đổi giữa các bản phát hành.
+> LiteKey có thể còn lỗi và thay đổi giữa các bản phát hành.
 > Báo lỗi xin gửi ở [Issues](https://github.com/quocbaodsk/litekey/issues).
 
 ## Giới thiệu

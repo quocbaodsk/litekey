@@ -10,7 +10,7 @@
 #   SIGN_ID         signing identity. Defaults to the first "Developer ID Application", then
 #                   "Apple Development"; falls back to ad-hoc. SIGN_ID=- forces ad-hoc signing.
 #   NOTARY_PROFILE  (default litekey) notarytool profile saved via `xcrun notarytool store-credentials`
-#   VERSION         (default 1.0.3)
+#   VERSION         (default 1.1.1)
 #   ARCH            (default arm64; use "arm64 x86_64" for a universal build)
 #
 # Exit codes: 0 success, 1 build/sign/notarize failure, 2 invalid usage or environment.
@@ -19,7 +19,7 @@ cd -- "$(dirname -- "$0")"
 
 APP_NAME="LiteKey"
 BUNDLE_ID="${BUNDLE_ID:-com.litekey.app}"
-VERSION="${VERSION:-1.0.3}"
+VERSION="${VERSION:-1.1.1}"
 ARCH="${ARCH:-arm64}"
 OUT="build/${APP_NAME}.app"
 DEV_ID_PREFIX="Developer ID Application"
