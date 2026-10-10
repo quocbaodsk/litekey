@@ -361,7 +361,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         panelModel.launchAtLogin = LoginItem.isEnabled
         panelModel.hasPermission = pipeline.isRunning
         if panelWindow == nil {
-            let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+            let version = Bundle.main.shortVersion ?? ""
             let window = NSWindow.controlPanel(model: panelModel, title: "LiteKey \(version) - Bộ gõ Tiếng Việt")
             window.isReleasedWhenClosed = false
             window.center()

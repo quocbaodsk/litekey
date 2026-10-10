@@ -7,13 +7,35 @@ import SwiftUI
 /// Control Panel state and actions (provided by AppDelegate).
 final class ControlPanelModel: ObservableObject {
     enum Tab: Int, CaseIterable {
-        case typing, shortcuts, system, info
+        case typing, shortcuts, system, feedback, info
+
+        /// Sidebar group, shown under its own heading
+        enum Section: CaseIterable {
+            case settings, support
+
+            var title: String {
+                switch self {
+                case .settings: return "Cài đặt"
+                case .support: return "Hỗ trợ"
+                }
+            }
+
+            var tabs: [Tab] { Tab.allCases.filter { $0.section == self } }
+        }
+
+        var section: Section {
+            switch self {
+            case .typing, .shortcuts, .system: return .settings
+            case .feedback, .info: return .support
+            }
+        }
 
         var title: String {
             switch self {
             case .typing: return "Bộ gõ"
             case .shortcuts: return "Gõ tắt"
             case .system: return "Hệ thống"
+            case .feedback: return "Báo lỗi"
             case .info: return "Thông tin"
             }
         }
@@ -23,6 +45,7 @@ final class ControlPanelModel: ObservableObject {
             case .typing: return "Thiết lập kiểu gõ và các tuỳ chọn cơ bản"
             case .shortcuts: return "Gõ tắt và gõ nhanh phụ âm"
             case .system: return "Khởi động, giao diện và tương thích ứng dụng"
+            case .feedback: return "Gửi phản hồi và báo lỗi cho LiteKey"
             case .info: return "Phiên bản, giấy phép và mã nguồn"
             }
         }
@@ -32,6 +55,7 @@ final class ControlPanelModel: ObservableObject {
             case .typing: return "keyboard"
             case .shortcuts: return "doc.text"
             case .system: return "gearshape"
+            case .feedback: return "ladybug"
             case .info: return "info.circle"
             }
         }
@@ -66,6 +90,13 @@ final class ControlPanelModel: ObservableObject {
     }
 }
 
+extension Bundle {
+    /// "1.0.2" from Info.plist; nil when running outside the app bundle (`swift build` debug binary)
+    var shortVersion: String? {
+        infoDictionary?["CFBundleShortVersionString"] as? String
+    }
+}
+
 extension NSWindow {
     /// Control Panel window: the sidebar runs under the transparent title bar, System Settings style.
     /// The title stays set (hidden) for Mission Control and the Window menu.
@@ -88,18 +119,21 @@ extension NSWindow {
 }
 
 /// Control Panel: sidebar on the left; on the right the page title and status, the page, and the
-/// Defaults / Quit / OK buttons. The window keeps one size on every page; long pages scroll.
+/// Defaults / Quit / Close buttons. The window keeps one size on every page and is tall enough for the
+/// Bộ gõ page with the permission banner and the hotkey warning both showing; other pages scroll if needed.
 struct ControlPanelView: View {
     @ObservedObject var model: ControlPanelModel
     @ObservedObject var prefs: PreferencesModel
     @State private var confirmDefaults = false
     @State private var confirmImport = false
 
-    static let size = CGSize(width: 880, height: 560)
+    static let size = CGSize(width: 880, height: 570)
     /// Leading/trailing padding of the header, page and footer
     private static let margin: CGFloat = 20
     /// All three footer buttons share one width
     private static let buttonWidth: CGFloat = 96
+    /// Page switch: the title and the page cross-fade together
+    private static let pageAnimation = Animation.easeInOut(duration: 0.2)
 
     init(model: ControlPanelModel) {
         _model = ObservedObject(wrappedValue: model)
@@ -140,14 +174,20 @@ struct ControlPanelView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .center, spacing: 12) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(model.tab.title)
-                        .font(.system(size: 20, weight: .bold))
-                        .accessibilityAddTraits(.isHeader)
-                    Text(model.tab.subtitle)
-                        .font(.system(size: 12))
-                        .foregroundColor(.secondary)
+                // Cross-fades with the page below, in place (ZStack) so the old and new titles don't stack
+                ZStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(model.tab.title)
+                            .font(.system(size: 20, weight: .bold))
+                            .accessibilityAddTraits(.isHeader)
+                        Text(model.tab.subtitle)
+                            .font(.system(size: 12))
+                            .foregroundColor(.secondary)
+                    }
+                    .id(model.tab)
+                    .transition(.opacity)
                 }
+                .animation(Self.pageAnimation, value: model.tab)
                 Spacer(minLength: 12)
                 if model.hasPermission { statusPill }
             }
@@ -204,13 +244,15 @@ struct ControlPanelView: View {
             ScrollView {
                 pageContent
                     .padding(.horizontal, Self.margin)
-                    .padding(.bottom, 6)
+                    // Just enough for the card shadow; the window height has no slack left (see `size`)
+                    .padding(.bottom, 2)
             }
+            .bouncesOnlyWhenScrollable()
             .id(model.tab)
             .transition(.opacity)
         }
         .frame(maxHeight: .infinity)
-        .animation(.easeInOut(duration: 0.2), value: model.tab)
+        .animation(Self.pageAnimation, value: model.tab)
     }
 
     @ViewBuilder private var pageContent: some View {
@@ -218,13 +260,14 @@ struct ControlPanelView: View {
         case .typing: TypingPage(model: model, prefs: prefs)
         case .shortcuts: ShortcutsPage(model: model, prefs: prefs)
         case .system: SystemPage(model: model, prefs: prefs) { confirmImport = true }
+        case .feedback: FeedbackPage()
         case .info: InfoView()
         }
     }
 
     // MARK: Footer
 
-    /// Defaults on the left (resets settings), Quit and OK on the right
+    /// Defaults on the left (resets settings), Quit and Close on the right
     private var footer: some View {
         HStack(spacing: 10) {
             Button { confirmDefaults = true } label: {
@@ -235,14 +278,14 @@ struct ControlPanelView: View {
             Spacer(minLength: 12)
             footerButton("Kết thúc") { model.onQuit() }
                 .glassButton()
-            footerButton("OK") { model.onClose() }
+            footerButton("Đóng") { model.onClose() }
                 .keyboardShortcut(.defaultAction)
                 .glassButton(prominent: true)
         }
         .controlSize(.large)
         .padding(.horizontal, Self.margin)
-        .padding(.top, 10)
-        .padding(.bottom, 16)
+        .padding(.top, 6)
+        .padding(.bottom, 14)
     }
 
     // The frame goes inside the label so the bezel grows; a frame outside Button does not widen it on macOS.

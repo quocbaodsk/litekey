@@ -7,7 +7,7 @@ enum PanelMetrics {
     static let cornerRadius: CGFloat = 12
     static let cardPadding: CGFloat = 14
     static let rowHeight: CGFloat = 24
-    static let rowSpacing: CGFloat = 8
+    static let rowSpacing: CGFloat = 6
     static let columnSpacing: CGFloat = 16
     /// Between cards on a page
     static let cardSpacing: CGFloat = 12
@@ -38,6 +38,15 @@ extension View {
             }
             .overlay { shape.strokeBorder(Color.primary.opacity(0.08)) }
     }
+
+    /// A page that fits the window doesn't rubber-band; only one that really scrolls does
+    @ViewBuilder func bouncesOnlyWhenScrollable() -> some View {
+        if #available(macOS 13.3, *) {
+            self.scrollBounceBehavior(.basedOnSize)
+        } else {
+            self
+        }
+    }
 }
 
 /// Section title inside a card, above its rows
@@ -55,7 +64,7 @@ struct PanelHeader: View {
     }
 }
 
-/// Fixed-width label on the left, any control after it
+/// Fixed-width label on the left, the control after it filling the rest of the row up to the card's right edge
 struct PanelRow<Content: View>: View {
     let title: LocalizedStringKey
     let content: Content
@@ -69,8 +78,9 @@ struct PanelRow<Content: View>: View {
         HStack(spacing: 12) {
             Text(title)
                 .frame(width: PanelMetrics.labelWidth, alignment: .leading)
-            content
-            Spacer(minLength: 0)
+            // A frame, not a trailing Spacer: the stack's spacing before a Spacer cut 12 pt off the right edge
+            HStack(spacing: 0) { content }
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(minHeight: PanelMetrics.rowHeight + 4)
     }
@@ -204,27 +214,23 @@ struct ActionRow: View {
     }
 }
 
-/// Two equal columns split by a full-height divider
-struct TwoColumns<Left: View, Right: View>: View {
-    let left: Left
-    let right: Right
+/// Two equal columns of `GridRow`s split by a full-height hairline. Rows line up across the columns: a
+/// two-line label on one side keeps its neighbour on the other side centered beside it.
+struct OptionGrid<Content: View>: View {
+    let content: Content
 
-    init(@ViewBuilder left: () -> Left, @ViewBuilder right: () -> Right) {
-        self.left = left()
-        self.right = right()
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
     }
 
     var body: some View {
-        HStack(alignment: .top, spacing: PanelMetrics.columnSpacing) {
-            column(left)
-            Divider()
-            column(right)
+        Grid(alignment: .leading, horizontalSpacing: PanelMetrics.columnSpacing * 2 + 1,
+             verticalSpacing: PanelMetrics.rowSpacing) {
+            content
         }
-    }
-
-    private func column<Content: View>(_ content: Content) -> some View {
-        VStack(alignment: .leading, spacing: PanelMetrics.rowSpacing) { content }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .overlay {
+            Rectangle().fill(Color(nsColor: .separatorColor)).frame(width: 1)
+        }
     }
 }
 
@@ -247,12 +253,17 @@ struct KeycapToggle: View {
 }
 
 /// Wraps a long label into lines of similar length ("Gõ tắt phụ âm đầu: f→ph,\nj→gi, w→qu" instead of
-/// leaving "w→qu" alone on the second line). Keeps the line count; only narrows the text.
+/// leaving "w→qu" alone on the second line). Keeps the line count; only narrows the text. Reports the
+/// narrowed width, so a centered parent centers the balanced lines.
 struct BalancedWrap: Layout {
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         guard let text = subviews.first else { return .zero }
-        let size = text.sizeThatFits(ProposedViewSize(width: proposal.width, height: nil))
-        return CGSize(width: proposal.width.map { min($0, size.width) } ?? size.width, height: size.height)
+        guard let maxWidth = proposal.width, maxWidth.isFinite else {
+            return text.sizeThatFits(ProposedViewSize(width: proposal.width, height: nil))
+        }
+        let width = balancedWidth(text, maxWidth: maxWidth)
+        let size = text.sizeThatFits(ProposedViewSize(width: width, height: nil))
+        return CGSize(width: min(width, size.width), height: size.height)
     }
 
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {

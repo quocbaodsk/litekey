@@ -14,9 +14,17 @@ struct ExcludedAppsView: View {
             Text("Ứng dụng luôn gõ tiếng Anh").font(.headline)
             List(selection: $selected) {
                 ForEach(prefs.preferences.excludedApps, id: \.self) { bundle in
-                    Text(Self.appName(bundle)).tag(bundle)
+                    HStack(spacing: 8) {
+                        Image(nsImage: Self.appIcon(bundle))
+                            .resizable()
+                            .frame(width: 18, height: 18)
+                            .accessibilityHidden(true)
+                        Text(Self.appName(bundle))
+                    }
+                    .tag(bundle)
                 }
             }
+            .listStyle(.bordered(alternatesRowBackgrounds: true))
             .frame(minHeight: 160)
             HStack {
                 Button("Thêm...") { addApps() }
@@ -43,6 +51,14 @@ struct ExcludedAppsView: View {
         }
         guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundle) else { return bundle }
         return FileManager.default.displayName(atPath: url.path).replacingOccurrences(of: ".app", with: "")
+    }
+
+    /// The app's own icon; a generic app icon when it is no longer installed
+    static func appIcon(_ bundle: String) -> NSImage {
+        guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundle) else {
+            return NSWorkspace.shared.icon(for: .application)
+        }
+        return NSWorkspace.shared.icon(forFile: url.path)
     }
 
     private func addApps() {

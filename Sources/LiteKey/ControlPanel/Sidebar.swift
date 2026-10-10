@@ -1,7 +1,8 @@
 import AppKit
 import SwiftUI
 
-/// Control Panel sidebar: app identity on top, then one row per page. No ⌘1...⌘4 shortcuts: they would
+/// Control Panel sidebar: app identity on top, then one row per page, grouped under headings (Cài đặt, Hỗ
+/// trợ; `Tab.Section`). No ⌘1...⌘5 shortcuts: they would
 /// reach the window before the hotkey recorder, so a ⌘+digit hotkey could not be recorded.
 /// macOS 26+: a floating glass panel inset from the window edges, the traffic lights sitting on it.
 /// Older versions: the classic full-height sidebar material with a divider.
@@ -12,10 +13,6 @@ struct Sidebar: View {
     static let width: CGFloat = 184
     /// Gap between the floating glass panel and the window edges
     static let inset: CGFloat = 8
-
-    private var version: String {
-        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-    }
 
     var body: some View {
         if LiquidGlass.isAvailable {
@@ -39,10 +36,15 @@ struct Sidebar: View {
             identity
                 .padding(.top, 44)  // below the traffic lights (bottom edge at y 33)
                 .padding(.bottom, 16)
-            VStack(spacing: 2) {
-                ForEach(ControlPanelModel.Tab.allCases, id: \.self) { tab in
-                    SidebarItem(tab: tab, isSelected: selection == tab, pill: pill) {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) { selection = tab }
+            VStack(alignment: .leading, spacing: 14) {
+                ForEach(ControlPanelModel.Tab.Section.allCases, id: \.self) { section in
+                    VStack(alignment: .leading, spacing: 2) {
+                        SidebarHeading(title: section.title)
+                        ForEach(section.tabs, id: \.self) { tab in
+                            SidebarItem(tab: tab, isSelected: selection == tab, pill: pill) {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.85)) { selection = tab }
+                            }
+                        }
                     }
                 }
             }
@@ -59,8 +61,19 @@ struct Sidebar: View {
                 .resizable()
                 .frame(width: 44, height: 44)
                 .accessibilityHidden(true)
-            Text("LiteKey \(version)")
-                .font(.system(size: 13, weight: .semibold))
+            HStack(spacing: 5) {
+                Text("LiteKey")
+                    .font(.system(size: 13, weight: .semibold))
+                // Badge right after the name; hidden when there is no bundle version (debug binary)
+                if let version = Bundle.main.shortVersion {
+                    Text("v\(version)")
+                        .font(.system(size: 10, weight: .semibold).monospacedDigit())
+                        .foregroundColor(.accentColor)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Capsule().fill(Color.accentColor.opacity(0.15)))
+                }
+            }
             Text("Bộ gõ Tiếng Việt cho macOS")
                 .font(.system(size: 10))
                 .foregroundColor(.secondary)
@@ -68,6 +81,20 @@ struct Sidebar: View {
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .combine)
+    }
+}
+
+/// Group title above its rows, lined up with the row icons
+private struct SidebarHeading: View {
+    let title: String
+
+    var body: some View {
+        Text(title)
+            .font(.system(size: 11, weight: .semibold))
+            .foregroundColor(.secondary)
+            .padding(.horizontal, 8)
+            .padding(.bottom, 2)
+            .accessibilityAddTraits(.isHeader)
     }
 }
 
