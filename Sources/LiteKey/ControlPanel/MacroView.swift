@@ -15,6 +15,8 @@ struct MacroView: View {
     @State private var message: String?
     @State private var pendingFile: String?
 
+    private static let textWidth: CGFloat = 140
+
     init(macros: MacroModel, prefs: PreferencesModel) {
         _macros = ObservedObject(wrappedValue: macros)
         _prefs = ObservedObject(wrappedValue: prefs)
@@ -25,7 +27,7 @@ struct MacroView: View {
             HStack(alignment: .bottom, spacing: 10) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Từ gõ tắt")
-                    TextField("", text: $text).frame(width: 140)
+                    TextField("", text: $text).frame(width: Self.textWidth)
                 }
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Nội dung đầy đủ")
@@ -39,7 +41,9 @@ struct MacroView: View {
             }
 
             Table(macros.table.macros, selection: $selection) {
-                TableColumn("Từ gõ tắt", value: \.text).width(min: 80, ideal: 120)
+                // Narrower than the field above by the table's row insets, so the column divider falls in the
+                // gap between the two fields
+                TableColumn("Từ gõ tắt", value: \.text).width(Self.textWidth - 20)
                 TableColumn("Nội dung đầy đủ", value: \.content)
             }
             .frame(minHeight: 260)

@@ -39,9 +39,7 @@ final class UISnapshot: NSObject, NSApplicationDelegate {
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         UserDefaults.standard.removePersistentDomain(forName: suite)
         model = ControlPanelModel(preferences: PreferencesModel(store: store))
-        window = NSWindow(contentViewController: NSHostingController(rootView: ControlPanelView(model: model)))
-        window.title = "LiteKey 1.0.2 -Bộ gõ Tiếng Việt"
-        window.styleMask = [.titled, .closable, .miniaturizable]
+        window = NSWindow.controlPanel(model: model, title: "LiteKey 1.0.3 - Bộ gõ Tiếng Việt")
         window.center()
         window.makeKeyAndOrderFront(nil)
 
@@ -74,9 +72,11 @@ final class UISnapshot: NSObject, NSApplicationDelegate {
                 })
             }
         }
-        // Dependent options disabled, unusable hotkey warning
+        // Dependent options disabled, unusable hotkey warning, permission banner: the tallest Bộ gõ page,
+        // which must still fit without scrolling
         steps.append(Step(shot: "light-4-disabled") { [unowned self] in
             show(.aqua, .typing)
+            model.hasPermission = false
             prefs.preferences.checkSpelling = false
             prefs.preferences.hotkey = Hotkey(modifiers: [], keyCode: KeyCode.z)
         })
@@ -102,38 +102,54 @@ final class UISnapshot: NSObject, NSApplicationDelegate {
                 show(.aqua, .typing)
                 prefs.preferences = Preferences()
                 model.hasPermission = true
+                // Clicks on a background window only activate it, so take focus back first
+                NSApp.activate(ignoringOtherApps: true)
+                window.makeKeyAndOrderFront(nil)
             },
-            Step(delay: 0.6) { [unowned self] in click(90, 392) },  // label "Cho phép bỏ dấu tự do"
+            // A label click right after another label click waits 1 s: at 0.6 s the second click was
+            // sometimes lost, close to the 0.5 s double-click interval
+            Step(delay: 1.0) { [unowned self] in
+                check("panel window is key before clicking", window.isKeyWindow)
+                click(325, 383)  // label "Cho phép bỏ dấu tự do"
+            },
             Step(delay: 0.6) { [unowned self] in
                 check("click switch label turns it on", prefs.preferences.freeMark)
-                click(90, 392)
+                click(325, 383)
             },
             Step(delay: 0.6) { [unowned self] in
                 check("click switch label again turns it off", !prefs.preferences.freeMark)
-                click(322, 130)  // ⌥ key
+                click(395, 131)  // ⌥ key
             },
             Step(delay: 0.6) { [unowned self] in
                 check("click ⌥ key adds option", prefs.preferences.hotkey.modifiers.contains(.option))
-                click(322, 130)
+                click(395, 131)
             },
             Step(delay: 0.6) { [unowned self] in
                 check("click ⌥ key again removes option", !prefs.preferences.hotkey.modifiers.contains(.option))
                 prefs.preferences.checkSpelling = false
             },
-            Step(delay: 0.6) { [unowned self] in click(430, 324) },  // disabled label "Cho phép "z w j f""
+            Step(delay: 0.6) { [unowned self] in click(675, 323) },  // disabled label "Cho phép "z w j f""
             Step(delay: 0.6) { [unowned self] in
                 check("click disabled label does nothing", !prefs.preferences.allowConsonantZFWJ)
-                click(530, 130)  // label "Kêu beep"
+                click(777, 131)  // label "Kêu beep"
             },
             Step(delay: 0.6) { [unowned self] in
                 check("click \"Kêu beep\" label turns it on", prefs.preferences.beepOnSwitch)
-                click(249, 216)  // tab "Gõ tắt"
+                drag(402, 655, y: 97)  // Kiểu gõ: press on Telex, drag to Simple Telex 1
+            },
+            Step(delay: 0.6) { [unowned self] in
+                // Only the macOS 26+ glass segments are ours; older versions use the native picker
+                if LiquidGlass.isAvailable {
+                    check("drag across Kiểu gõ selects the segment under the pointer",
+                          prefs.preferences.inputType == .simpleTelex1)
+                }
+                click(75, 211)  // sidebar item "Gõ tắt"
             },
             Step(delay: 0.6) { [unowned self] in
                 check("click tab selects it", model.tab == .shortcuts)
                 model.tab = .system
             },
-            Step(delay: 0.6) { [unowned self] in hover(420, 324) },  // row "Ứng dụng loại trừ..."
+            Step(delay: 0.6) { [unowned self] in hover(320, 351) },  // row "Ứng dụng loại trừ..."
             Step(shot: "light-8-hover", delay: 0) {},
         ]
     }
@@ -147,15 +163,24 @@ final class UISnapshot: NSObject, NSApplicationDelegate {
         NSPoint(x: x, y: window.frame.height - y)
     }
 
+    private func mouseEvent(_ type: NSEvent.EventType, _ x: CGFloat, _ y: CGFloat) -> NSEvent? {
+        NSEvent.mouseEvent(with: type, location: windowPoint(x, y), modifierFlags: [],
+                           timestamp: ProcessInfo.processInfo.systemUptime, windowNumber: window.windowNumber,
+                           context: nil, eventNumber: 0, clickCount: 1, pressure: type == .leftMouseUp ? 0 : 1)
+    }
+
     private func click(_ x: CGFloat, _ y: CGFloat) {
-        let point = windowPoint(x, y)
-        func event(_ type: NSEvent.EventType) -> NSEvent? {
-            NSEvent.mouseEvent(with: type, location: point, modifierFlags: [], timestamp: ProcessInfo.processInfo.systemUptime,
-                               windowNumber: window.windowNumber, context: nil, eventNumber: 0,
-                               clickCount: 1, pressure: type == .leftMouseDown ? 1 : 0)
-        }
-        guard let down = event(.leftMouseDown), let up = event(.leftMouseUp) else { return }
+        guard let down = mouseEvent(.leftMouseDown, x, y), let up = mouseEvent(.leftMouseUp, x, y) else { return }
         // Queue the mouseUp first: controls that track the mouse (macOS 15) wait for it in the event queue
+        NSApp.postEvent(up, atStart: false)
+        window.sendEvent(down)
+    }
+
+    /// Press at `x0`, drag to `x1` and release there, on one row
+    private func drag(_ x0: CGFloat, _ x1: CGFloat, y: CGFloat) {
+        guard let down = mouseEvent(.leftMouseDown, x0, y), let moved = mouseEvent(.leftMouseDragged, x1, y),
+              let up = mouseEvent(.leftMouseUp, x1, y) else { return }
+        NSApp.postEvent(moved, atStart: false)
         NSApp.postEvent(up, atStart: false)
         window.sendEvent(down)
     }

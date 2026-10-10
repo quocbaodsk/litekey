@@ -107,9 +107,9 @@ grant the permission again.
 | U2 | ⌥-click the icon | Toggles Vietnamese without opening the menu |
 | U3 | Light/dark mode, modern menu bar icon on/off | Icon legible in both; off shows V/E |
 | U4 | Switch apps with smart switching on, open the menu | Icon and menu match each app's mode |
-| U5 | Control panel, every tab, light and dark | Labels intact, no truncated or clipped text (long labels wrap); both cards share edges; the window does not resize when switching tabs |
-| U6 | macOS 26+: control panel and permission window | Buttons, ⌃ ⌥ ⌘ ⇧ keys and status pill use glass (checked keys tinted); OK is the prominent button; tabs cross-fade |
-| U7 | macOS 13–15 | Classic appearance, no glitches |
+| U5 | Control panel, every sidebar page, light and dark | Labels intact, no truncated or clipped text (long labels wrap); cards and controls share the same left and right edges (segmented pickers and "Kêu beep" end where the switches end); two-column options have no empty cell; the window does not resize when switching pages; a page that fits does not bounce when scrolled (macOS 13.3+); the sidebar shows "Cài đặt" (Bộ gõ, Gõ tắt, Hệ thống) and "Hỗ trợ" (Báo lỗi, Thông tin) headings; Báo lỗi shows the "Sắp ra mắt" placeholder |
+| U6 | macOS 26+: control panel and permission window | Sidebar is a floating glass panel with the traffic lights on it, its selection slides between pages; buttons, ⌃ ⌥ ⌘ ⇧ keys and status pill use glass (checked keys tinted); Đóng is the prominent button; the page and its title cross-fade together; Kiểu gõ and Chế độ gõ show a glass pill that slides to the clicked segment, and pressing then dragging sideways moves it segment by segment (macOS 13–15: native segmented picker); with Full Keyboard Access on, Tab reaches them and ←/→ change the choice; VoiceOver reads each segment and can adjust it |
+| U7 | macOS 13–15 | Classic appearance (full-height sidebar material with a divider), no glitches |
 | U8 | Hotkey field: click it, hold ⌃, press Space | Hotkey becomes ⌃Space, only ⌃ on; keys are not transformed while recording |
 | U9 | Hotkey ⌃⇧ + key: press Delete in the field. Then hotkey ⌥Z: press Delete | First: key removed, ⌃⇧ left. Second: beep, ⌥Z kept |
 | U10 | Hotkey ⌥Z: try to turn off ⌥ | Not allowed; typing `z` works normally |
@@ -117,9 +117,9 @@ grant the permission again.
 | U12 | Open LiteKey (control panel shows), click nothing, type `tieengs Vieejt` in TextEdit | `tiếng Việt` |
 | U13 | Click the hotkey field, switch to another app without pressing keys, type `as` | `á` (recording stops when the window loses focus) |
 | U14 | Mặc định → Có | Defaults restored; Vietnamese/English mode and excluded apps kept |
-| U15 | Kết thúc / OK | Quits / closes the window |
+| U15 | Kết thúc / Đóng (or Return) | Quits / closes the window |
 | U16 | "Bật bảng này khi khởi động", "Hiện biểu tượng trên thanh Dock" | Panel opens at launch; Dock icon present and opens the panel |
-| U17 | Excluded apps: add/remove an app | Listed apps always type English |
+| U17 | Excluded apps: add/remove an app | Each app is listed with its icon; listed apps always type English |
 | U17a | In Safari, menu → Loại trừ “Safari” | Checked; Safari types English right away; the item shows ✓ next time |
 | U17b | Menu → Ứng dụng loại trừ ▸ → click Safari | Removed; Safari types Vietnamese again |
 | U17c | Menu → Ứng dụng loại trừ ▸ → Quản lý... | Control panel opens on Hệ thống with the excluded apps list |
@@ -132,6 +132,9 @@ grant the permission again.
 | U24 | TextEdit: type `vieet`, switch to Japanese input (or ABC ↔ another source) and type, switch back, type `j` | No old letters deleted |
 | U25 | Hotkey ⌃⇧: press ⌃⇧⌥ then release ⌥, ⇧, ⌃ one by one; also ⌃⇧A (some shortcut) releasing ⇧ before ⌃ | No toggle, no temporary spell-check off |
 | U26 | Japanese input source active, "Tắt tiếng Việt khi bộ gõ hệ thống khác tiếng Anh" on: press the hotkey | Menu icon does not change |
+| U27 | Hover, then click a "?" next to an option | Tooltip on hover; click opens a popover with the same text |
+| U28 | Revoke Accessibility, open the control panel | Red banner with "Thử lại" on every page instead of the green status pill |
+| U29 | Thông tin: click Trang chủ, Mã nguồn, GPL v3 | The browser opens litekey.quocbao.dev, the GitHub repository and the GPL v3 text |
 
 ## Permission and reliability
 
