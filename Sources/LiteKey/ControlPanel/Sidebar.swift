@@ -61,19 +61,8 @@ struct Sidebar: View {
                 .resizable()
                 .frame(width: 44, height: 44)
                 .accessibilityHidden(true)
-            HStack(spacing: 5) {
-                Text("LiteKey")
-                    .font(.system(size: 13, weight: .semibold))
-                // Badge right after the name; hidden when there is no bundle version (debug binary)
-                if let version = Bundle.main.shortVersion {
-                    Text("v\(version)")
-                        .font(.system(size: 10, weight: .semibold).monospacedDigit())
-                        .foregroundColor(.accentColor)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(Capsule().fill(Color.accentColor.opacity(0.15)))
-                }
-            }
+            Text("LiteKey")
+                .font(.system(size: 13, weight: .semibold))
             Text("Bộ gõ Tiếng Việt cho macOS")
                 .font(.system(size: 10))
                 .foregroundColor(.secondary)
