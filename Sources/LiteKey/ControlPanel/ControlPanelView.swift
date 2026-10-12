@@ -91,7 +91,7 @@ final class ControlPanelModel: ObservableObject {
 }
 
 extension Bundle {
-    /// "1.0.2" from Info.plist; nil when running outside the app bundle (`swift build` debug binary)
+    /// "1.1.3" from Info.plist; nil when running outside the app bundle (`swift build` debug binary)
     var shortVersion: String? {
         infoDictionary?["CFBundleShortVersionString"] as? String
     }
