@@ -3,9 +3,52 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <title>LiteKey</title>
-        <meta name="description" content="LiteKey: bộ gõ tiếng Việt cho macOS, nhẹ, nhanh, gõ đúng từng dấu. Miễn phí, mã nguồn mở, không thu thập dữ liệu." />
+        <title>LiteKey – Bộ gõ tiếng Việt cho macOS, Telex và VNI miễn phí</title>
+        <meta
+            name="description"
+            content="Bộ gõ tiếng Việt cho Mac Apple Silicon: gõ Telex, VNI đúng dấu, không mất chữ trong Chrome, VS Code, Terminal. Miễn phí, mã nguồn mở, không thu thập dữ liệu."
+        />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://litekey.quocbao.dev/" />
+        <meta name="theme-color" content="#ecedf0" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#151619" media="(prefers-color-scheme: dark)" />
         <link rel="icon" type="image/png" href="images/icon.png" />
+        <link rel="apple-touch-icon" href="images/icon.png" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="LiteKey" />
+        <meta property="og:locale" content="vi_VN" />
+        <meta property="og:url" content="https://litekey.quocbao.dev/" />
+        <meta property="og:title" content="LiteKey – Bộ gõ tiếng Việt cho macOS" />
+        <meta property="og:description" content="Gõ Telex, VNI đúng từng dấu trên Mac. Nhẹ, nhanh, miễn phí, mã nguồn mở, không thu thập dữ liệu." />
+        <meta property="og:image" content="https://litekey.quocbao.dev/images/control-panel.png" />
+        <meta property="og:image:width" content="1984" />
+        <meta property="og:image:height" content="1364" />
+        <meta property="og:image:alt" content="Bảng điều khiển LiteKey trên macOS" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="LiteKey – Bộ gõ tiếng Việt cho macOS" />
+        <meta name="twitter:description" content="Gõ Telex, VNI đúng từng dấu trên Mac. Nhẹ, nhanh, miễn phí, mã nguồn mở, không thu thập dữ liệu." />
+        <meta name="twitter:image" content="https://litekey.quocbao.dev/images/control-panel.png" />
+
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "LiteKey",
+                "description": "Bộ gõ tiếng Việt cho macOS, hỗ trợ Telex, VNI, Simple Telex và gõ tắt.",
+                "url": "https://litekey.quocbao.dev/",
+                "image": "https://litekey.quocbao.dev/images/icon.png",
+                "screenshot": "https://litekey.quocbao.dev/images/control-panel.png",
+                "applicationCategory": "UtilitiesApplication",
+                "operatingSystem": "macOS 13 or later (Apple Silicon)",
+                "inLanguage": "vi",
+                "isAccessibleForFree": true,
+                "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+                "downloadUrl": "https://github.com/quocbaodsk/litekey/releases",
+                "sameAs": "https://github.com/quocbaodsk/litekey",
+                "offers": { "@type": "Offer", "price": "0", "priceCurrency": "VND" }
+            }
+        </script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -439,29 +482,6 @@
                 color: var(--muted);
             }
 
-            /* Beta strip */
-            .beta {
-                border-block: 1px solid var(--line);
-                padding-block: 1rem;
-            }
-            .beta .wrap {
-                display: flex;
-                gap: 0.8rem;
-                align-items: baseline;
-                flex-wrap: wrap;
-                font-size: 0.95rem;
-                color: var(--muted);
-            }
-            .pill {
-                font: 600 0.7rem/1 var(--font-mono);
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-                color: var(--on-accent);
-                background: var(--accent);
-                padding: 0.35rem 0.55rem;
-                border-radius: 999px;
-            }
-
             /* Pillars */
             .pillars {
                 display: grid;
@@ -867,7 +887,7 @@
             <section class="hero">
                 <div class="wrap">
                     <div class="hero-copy">
-                        <p class="eyebrow">Bộ gõ tiếng Việt cho macOS · Phiên bản 1.1.2</p>
+                        <p class="eyebrow">Bộ gõ tiếng Việt cho macOS · Phiên bản 1.1.3</p>
                         <h1>Gõ tiếng Việt trên Mac, <em>đúng từng dấu.</em></h1>
                         <p class="lede">
                             LiteKey nằm gọn trên thanh menu. Gõ Telex hay VNI đều đúng dấu, không mất chữ, kể cả khi bạn gõ thật nhanh trong trình duyệt, VS
@@ -923,16 +943,6 @@
                     </div>
                 </div>
             </section>
-
-            <div class="beta">
-                <div class="wrap">
-                    <span class="pill">Beta</span>
-                    <span
-                        >LiteKey là dự án cá nhân, làm ra trước hết cho nhu cầu gõ hằng ngày của tác giả. Có thể còn lỗi, giao diện có thể đổi giữa các bản. Góp
-                        ý và báo lỗi qua <a href="https://github.com/quocbaodsk/litekey/issues">Issues</a>.</span
-                    >
-                </div>
-            </div>
 
             <section>
                 <div class="wrap">
@@ -1129,9 +1139,9 @@
                     <figure>
                         <img
                             src="images/control-panel.png"
-                            width="1504"
-                            height="1330"
-                            alt="Bảng điều khiển LiteKey 1.0.1, tab Bộ gõ, với các tuỳ chọn Kiểm tra chính tả, Tự khôi phục phím với từ sai, Chuyển chế độ thông minh"
+                            width="1984"
+                            height="1364"
+                            alt="Bảng điều khiển LiteKey 1.1.3, tab Bộ gõ, với các tuỳ chọn Kiểm tra chính tả, Tự khôi phục phím với từ sai, Chuyển chế độ thông minh"
                         />
                         <figcaption>Bảng điều khiển, tab Bộ gõ</figcaption>
                     </figure>

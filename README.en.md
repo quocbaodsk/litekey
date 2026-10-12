@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/icon.png" width="128" alt="LiteKey icon">
+  <a href="https://litekey.quocbao.dev/"><img src="docs/images/icon.png" width="128" alt="LiteKey icon"></a>
 </p>
 
 <h1 align="center">LiteKey</h1>

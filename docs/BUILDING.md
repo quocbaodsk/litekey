@@ -34,7 +34,7 @@ For a release (Developer ID + notarization):
 # 2. Store notarization credentials once (create an app-specific password at account.apple.com)
 xcrun notarytool store-credentials litekey --apple-id "you@example.com" --team-id "TEAMID" --password "xxxx-xxxx-xxxx-xxxx"
 # 3. Build, sign, notarize, staple
-BUNDLE_ID=com.yourname.litekey VERSION=1.0.0 ./build.sh --notarize
+BUNDLE_ID=com.yourname.litekey VERSION=1.1.3 ./build.sh --notarize
 ```
 
 The result is `build/LiteKey-<version>.zip`, which opens on other Macs without Gatekeeper warnings.
