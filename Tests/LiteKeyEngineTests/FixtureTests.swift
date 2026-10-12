@@ -17,6 +17,12 @@ final class FixtureTests: XCTestCase {
             XCTAssertNotEqual(row.expected, value, key)
             XCTAssertTrue(row.keys.contains("<"), key)
         }
+        for (key, value) in FixtureExceptions.standaloneHornKeepsHorn {
+            let row = try XCTUnwrap(byKey[key], key)
+            XCTAssertNotEqual(row.expected, value, key)
+            XCTAssertTrue(row.keys.hasPrefix("w"), key)
+            XCTAssertNil(FixtureExceptions.restoreAfterDeletingIntoPreviousWord[key], key)
+        }
     }
 
     private func check<E: TypingEngine>(_ engine: E, file: StaticString = #filePath, line: UInt = #line) throws {

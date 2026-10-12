@@ -28,18 +28,96 @@ final class CircumflexRedrawTests: XCTestCase {
         XCTAssertEqual(type("toot"), "tôt")
     }
 
-    func testStandaloneHornKeepsFixtureBehavior() {
-        // options.tsv rows: a standalone ư before "oo"/"aa" is not redrawn
-        var config = EngineConfig()
-        config.quickStartConsonant = true
-        XCTAssertEqual(type("woong ", config), "ưông ")
-        XCTAssertEqual(type("waat ", config), "ưât ")
-    }
-
     func testVNI() {
         let vni = EngineConfig(inputType: .vni)
         XCTAssertEqual(type("nguo7i6 ", vni), "nguôi ")
         XCTAssertEqual(type("nguo7i2 ", vni), "người ")
+    }
+}
+
+/// A standalone ư (typed with w) keeps its horn when a circumflex is added next to it. It used to lose the
+/// horn in the buffer, and when the tone moved onto the circumflex it vanished from the screen ("wfaa" gave "ầ").
+final class StandaloneHornCircumflexTests: XCTestCase {
+    func testStandaloneHornIsNotLost() {
+        XCTAssertEqual(type("wfaa"), "ưầ")
+        XCTAssertEqual(type("wsaa"), "ưấ")
+        XCTAssertEqual(type("Wfaa"), "Ưầ")
+        XCTAssertEqual(type("WFAA"), "ƯẦ")
+        XCTAssertEqual(type("wfoo"), "ưồ")
+        XCTAssertEqual(type("wjoo"), "ưộ")
+        XCTAssertEqual(type("wfee"), "ưề")
+        XCTAssertEqual(type("waa"), "ưâ")
+        XCTAssertEqual(type("woo"), "ưô")
+    }
+
+    func testBackspaceMatchesScreen() {
+        // The buffer used to hold a plain u that the screen never showed
+        XCTAssertEqual(type("wfaa<"), "ư")
+        XCTAssertEqual(type("wfoo<"), "ư")
+        XCTAssertEqual(type("wfaa<<"), "")
+        XCTAssertEqual(type("wfaa<n"), "ưn")
+    }
+
+    func testRestoreOnSpace() {
+        // "ưâ" is not Vietnamese, so restore-if-wrong gives back the keys; the next word is unaffected
+        XCTAssertEqual(type("wfaa "), "wfaa ")
+        XCTAssertEqual(type("wfaa tooi "), "wfaa tôi ")
+        var config = EngineConfig()
+        config.restoreIfWrong = false
+        XCTAssertEqual(type("wfaa ", config), "ưầ ")
+        XCTAssertEqual(type("woong ", config), "ưông ")
+    }
+
+    func testWAfterCircumflexKeepsHorn() {
+        // w turns â back into a and keeps the ư, as with a regular horn ("tuwaaw" → "tưa")
+        XCTAssertEqual(type("waaw"), "ưa")
+        XCTAssertEqual(type("waaws "), "ứa ")
+        XCTAssertEqual(type("wfaaw"), "ừa")
+        XCTAssertEqual(type("wfaaw<"), "ừ")
+        XCTAssertEqual(type("tuwaaw"), "tưa")
+        XCTAssertEqual(type("woow "), "ươ ")
+        // The letters before the ư used to vanish ("tương")
+        XCTAssertEqual(type("thwoowng "), "thương ")
+        XCTAssertEqual(type("thwoows "), "thướ ")
+        // A w on an already horned word still undoes the horn
+        XCTAssertEqual(type("waw "), "uaw ")
+        XCTAssertEqual(type("uwaw "), "uaw ")
+    }
+
+    func testThirdVowelUndoesCircumflex() {
+        // Same as "ddd": the third key cancels the circumflex and is left out of the restore
+        XCTAssertEqual(type("wfaaa"), "ừaa")
+        XCTAssertEqual(type("wfaaa<<"), "ừ")
+        XCTAssertEqual(type("waaa "), "waa ")
+    }
+
+    func testQuickStartConsonantRows() {
+        // Some of the options.tsv rows listed in FixtureExceptions.standaloneHornKeepsHorn
+        var config = EngineConfig()
+        config.quickStartConsonant = true
+        XCTAssertEqual(type("woong ", config), "woong ")
+        XCTAssertEqual(type("wooj ", config), "wooj ")
+        XCTAssertEqual(type("weens ", config), "weens ")
+    }
+
+    func testRegularHornStillGivesWayToCircumflex() {
+        // A horn typed after u (not standalone) is still replaced by the circumflex
+        XCTAssertEqual(type("tuwfaan "), "tuần ")
+        XCTAssertEqual(type("tuwaan "), "tuân ")
+        XCTAssertEqual(type("muwfaa"), "muầ")
+        XCTAssertEqual(type("luwaaj"), "luậ")
+        XCTAssertEqual(type("uwfee"), "uề")
+        XCTAssertEqual(type("uwfee<"), "u")
+        XCTAssertEqual(type("thuwoo"), "thuô")
+        XCTAssertEqual(type("cuwowio"), "cuôi")
+        XCTAssertEqual(type("huwowngr "), "hưởng ")
+    }
+
+    func testVNI() {
+        let vni = EngineConfig(inputType: .vni)
+        XCTAssertEqual(type("u72a6", vni), "uầ")
+        XCTAssertEqual(type("u7a6", vni), "uâ")
+        XCTAssertEqual(type("nguo7i6 ", vni), "nguôi ")
     }
 }
 

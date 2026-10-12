@@ -58,8 +58,37 @@ enum FixtureExceptions {
         "editing.tsv:898": "puôs ",
     ]
 
+    /// A standalone ư (typed with w) before a double vowel. The fixtures strip its horn; when the tone moves
+    /// they redraw it as nothing, so it vanishes ("wooj" gives "ộ"). The engine keeps the ư, so the word reads
+    /// "ưộ", which is not Vietnamese and is restored to the typed keys on space.
+    static let standaloneHornKeepsHorn: [String: String] = [
+        "options.tsv:238": "wooj ",
+        "options.tsv:239": "wooj ",
+        "options.tsv:422": "woong ",
+        "options.tsv:423": "woong ",
+        "options.tsv:438": "woomj ",
+        "options.tsv:439": "woomj ",
+        "options.tsv:520": "waat ",
+        "options.tsv:521": "waat ",
+        "options.tsv:568": "waanj ",
+        "options.tsv:569": "waanj ",
+        "options.tsv:654": "wyeenf ",
+        "options.tsv:655": "wyeenf ",
+        "options.tsv:698": "wyeetj ",
+        "options.tsv:699": "wyeetj ",
+        "options.tsv:778": "weens ",
+        "options.tsv:779": "weens ",
+        "options.tsv:938": "waap ",
+        "options.tsv:939": "waap ",
+        "options.tsv:984": "weenr ",
+        "options.tsv:985": "weenr ",
+        "options.tsv:1044": "waacs ",
+        "options.tsv:1045": "waacs ",
+    ]
+
     /// The expected result for a row, if it is an exception
     static func expected(file: String, line: Int) -> String? {
-        restoreAfterDeletingIntoPreviousWord["\(file):\(line)"]
+        let key = "\(file):\(line)"
+        return restoreAfterDeletingIntoPreviousWord[key] ?? standaloneHornKeepsHorn[key]
     }
 }

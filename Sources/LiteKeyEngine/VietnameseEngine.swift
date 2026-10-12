@@ -1157,7 +1157,11 @@ public struct VietnameseEngine: TypingEngine {
             if TW(ii) & M.toneW != 0 && TW(ii) & M.standalone == 0 && ii < firstUnhorned {
                 firstUnhorned = ii
             }
-            setTW(ii, TW(ii) & ~M.toneW)
+            // A standalone ư keeps its horn: without it the code table has no character for it, so a later
+            // redraw (the tone moving onto the circumflex) sent nothing and the ư vanished ("wfaa" gave "ầ").
+            if TW(ii) & M.standalone == 0 {
+                setTW(ii, TW(ii) & ~M.toneW)
+            }
             ii += 1
         }
 
@@ -1185,7 +1189,7 @@ public struct VietnameseEngine: TypingEngine {
                     setHData(_index - 1 - ii, getCharacterCode(TW(ii)))
                     // Vowels before the target lost their horn above but the loop stops here, so the screen
                     // kept "ngưôi" while the buffer held "nguôi". Redraw them too.
-                    // A standalone ư is left as the fixtures expect (options.tsv "woong" → "ưông").
+                    // A standalone ư kept its horn above, so it needs no redraw ("woong" → "ưông").
                     var q = ii - 1
                     while q >= firstUnhorned {
                         hBPC += 1
@@ -1208,8 +1212,10 @@ public struct VietnameseEngine: TypingEngine {
         findAndCalculateVowel()
 
         // remove ^ tone
+        var removedCircumflex = false
         ii = VSI
         while ii <= VEI {
+            if TW(ii) & M.tone != 0 { removedCircumflex = true }
             setTW(ii, TW(ii) & ~M.tone)
             ii += 1
         }
@@ -1218,21 +1224,25 @@ public struct VietnameseEngine: TypingEngine {
             hBPC = _index - VSI
             hNCC = hBPC
 
-            if ((TW(VSI) & M.toneW) != 0 && (TW(VSI + 1) & M.toneW) != 0) ||
+            // A w that turned â back into a keeps the standalone ư's horn ("waaw" → "ưa", like "tuwaaw" → "tưa");
+            // only a w on an already horned word undoes the horn
+            if !removedCircumflex && (((TW(VSI) & M.toneW) != 0 && (TW(VSI + 1) & M.toneW) != 0) ||
                 ((TW(VSI) & M.toneW) != 0 && CHR(VSI + 1) == K.i) ||
                 ((TW(VSI) & M.toneW) != 0 && CHR(VSI + 1) == K.a) ||
                 // iơ, oă and thuơ carry the horn on the second vowel only; without these a second w
                 // was swallowed instead of undoing
                 ((TW(VSI + 1) & M.toneW) != 0 && CHR(VSI) == K.i) ||
                 ((TW(VSI + 1) & M.toneW) != 0 && CHR(VSI) == K.o && CHR(VSI + 1) == K.a) ||
-                ((TW(VSI + 1) & M.toneW) != 0 && CHR(VSI) == K.u && CHR(VSI + 1) == K.o) {
+                ((TW(VSI + 1) & M.toneW) != 0 && CHR(VSI) == K.u && CHR(VSI + 1) == K.o)) {
                 // restore and disable temporary
                 hCode = HookCode.restore
 
                 ii = VSI
                 while ii < _index {
-                    setTW(ii, TW(ii) & ~M.toneW)
-                    setHData(_index - 1 - ii, getCharacterCode(TW(ii)) & ~M.standalone)
+                    // The screen shows a plain u for an unhorned standalone ư; keep the buffer the same, or a
+                    // later redraw sends nothing for it ("wfaawf" lost the u)
+                    setTW(ii, TW(ii) & ~M.toneW & ~M.standalone)
+                    setHData(_index - 1 - ii, getCharacterCode(TW(ii)))
                     ii += 1
                 }
                 isRestoredW = true
