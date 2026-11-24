@@ -22,6 +22,9 @@ enum EngineMasks {
     static let pureCharacter: UInt32 = 0x80000000
     static let endConsonant: UInt32 = 0x4000
     static let consonantAllow: UInt32 = 0x8000
+    /// On a stored special character: it ended a sentence, decided when typed (`caps` is also set by Caps Lock,
+    /// which doesn't turn "1" into "!")
+    static let sentenceEnd: UInt32 = 0x4000000
 }
 
 /// macOS virtual key codes (kVK_*) used by the engine.
@@ -1392,9 +1395,9 @@ public struct VietnameseEngine: TypingEngine {
         insertKey(data, isCaps)
     }
 
-    /// ".", or "!" and "?" typed with Shift (key code with `M.caps`, as stored for special characters)
-    private static func endsSentence(_ code: UInt32) -> Bool {
-        code & ~M.caps == K.dot || code == K.k1 | M.caps || code == K.slash | M.caps
+    /// ".", or "!" and "?" (Shift+1, Shift+/)
+    private static func endsSentence(_ data: UInt32, _ capsStatus: Int) -> Bool {
+        data == K.dot || (capsStatus == 1 && (data == K.k1 || data == K.slash))
     }
 
     /// Only typed keys set `_upperCaseStatus`, so after Delete it described deleted text ("xin. T", Delete, "t"
@@ -1404,10 +1407,10 @@ public struct VietnameseEngine: TypingEngine {
         if _index > 0 {
             _upperCaseStatus = 0 // inside a word
         } else if let last = _specialChar.last {
-            _upperCaseStatus = Self.endsSentence(last) ? 1 : 0
+            _upperCaseStatus = last & M.sentenceEnd != 0 ? 1 : 0
         } else if let entry = _typingStates.lastEntryFirstAndLast {
             // Spaces after a special character entry (classified as in `restoreLastTypingState`)
-            let afterSentenceEnd = Self.charKeyCode.contains(entry.first & M.char) && Self.endsSentence(entry.last)
+            let afterSentenceEnd = Self.charKeyCode.contains(entry.first & M.char) && entry.last & M.sentenceEnd != 0
             _upperCaseStatus = _spaceCount > 0 && afterSentenceEnd ? 2 : 0
         } else {
             _upperCaseStatus = _lineStartUpperCaseStatus // only spaces, or nothing, since the history start
@@ -1846,7 +1849,8 @@ public struct VietnameseEngine: TypingEngine {
                 } else {
                     saveWord()
                 }
-                _specialChar.append(data | (_isCaps ? M.caps : 0))
+                let sentenceEnd = Self.endsSentence(data, capsStatus) ? M.sentenceEnd : 0
+                _specialChar.append(data | (_isCaps ? M.caps : 0) | sentenceEnd)
                 hExt = 3 // normal word
             }
 
@@ -1868,7 +1872,7 @@ public struct VietnameseEngine: TypingEngine {
             }
 
             if vUpperCaseFirstChar != 0 {
-                if Self.endsSentence(data | (capsStatus == 1 ? M.caps : 0)) {
+                if Self.endsSentence(data, capsStatus) {
                     _upperCaseStatus = 1
                 } else if data == K.enter || data == K.returnKey {
                     _upperCaseStatus = 2

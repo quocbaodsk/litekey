@@ -215,4 +215,18 @@ final class SentenceEndCapitalizeTests: XCTestCase {
         XCTAssertEqual(typeKeys("xin⏎ t<tooi", "telex,upperfirst"), "xin⏎ Tôi")
         XCTAssertEqual(typeKeys("xin⏎ <tooi", "telex,upperfirst"), "xin⏎Tôi")
     }
+
+    func testCapsLockDigitOrSlashDoesNotEndASentence() {
+        // "⇪" toggles Caps Lock; "1" and "/" typed with it are not "!" and "?"
+        XCTAssertEqual(typeKeys("⇪1 ⇪x<an", "telex,upperfirst"), "1 an")
+        XCTAssertEqual(typeKeys("⇪km/ ⇪x<an", "telex,upperfirst"), "KM/ an")
+        XCTAssertEqual(typeKeys("⇪1 ⇪an", "telex,upperfirst"), "1 an")
+    }
+
+    func testTrimmedHistoryForgetsTheLineStart() {
+        // 65 "a " push the word history past its limit, which drops its oldest entries. Deleting back to
+        // the oldest kept entry is mid-line, so the next letter stays lowercase.
+        let keys = "xin⏎" + String(repeating: "a ", count: 65) + String(repeating: "<", count: 66) + "a"
+        XCTAssertEqual(typeKeys(keys, "telex,upperfirst"), "xin⏎A " + String(repeating: "a ", count: 31) + "a")
+    }
 }
