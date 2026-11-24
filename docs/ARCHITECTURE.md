@@ -201,6 +201,7 @@ no heap allocations in an optimized build (`AllocationTests`).
 | A circumflex on "ươ" ("nguwowio") also redraws the ư that lost its horn. A standalone ư is not redrawn. | The screen showed "ngưôi" while the buffer held "nguôi". No fixture row changes. |
 | A second `w` on iơ, oă and thuơ undoes the horn ("hoaww" → "hoaw"). | The key was swallowed and "hoă" stayed. No fixture row changes. |
 | With "capitalize the first letter of a sentence" on, `!` and `?` end a sentence like `.`. | "xin chào! ban" kept a lowercase letter. No fixture row types `!` or `?` with the option on. |
+| With that option on, Delete recomputes the sentence state from the text the engine knows is before the caret. | Only typed keys set it: "xin. T", Delete, "t" gave "t", and deleting a `.` kept the capital. Deleting past a line break keeps the line start, since in chat apps Return empties the field and extra Deletes delete nothing; in an editor, joining two lines that way capitalizes the next word ("xin⏎tooi", Delete ×4, " a" gives "xin A"). Deletions the engine can't follow (a selection, ⌥/⌘+Delete) leave it off. No fixture row changes. |
 
 Macros: `MacroTable` supports adding/editing/removing, the UniKey-compatible text file format and the
 binary `macroData` format used for importing (byte for byte). LiteKey itself stores macros as JSON in UserDefaults (`Macros` key).

@@ -22,6 +22,9 @@ enum EngineMasks {
     static let pureCharacter: UInt32 = 0x80000000
     static let endConsonant: UInt32 = 0x4000
     static let consonantAllow: UInt32 = 0x8000
+    /// On a stored special character: it ended a sentence, decided when typed (`caps` is also set by Caps Lock,
+    /// which doesn't turn "1" into "!")
+    static let sentenceEnd: UInt32 = 0x4000000
 }
 
 /// macOS virtual key codes (kVK_*) used by the engine.
@@ -149,6 +152,8 @@ public struct VietnameseEngine: TypingEngine {
     var _hasHandledMacro = false
     private var upperCaseStatus8: UInt8 = 0
     var _upperCaseStatus: Int { get { Int(upperCaseStatus8) } set { upperCaseStatus8 = UInt8(truncatingIfNeeded: newValue) } }
+    /// `_upperCaseStatus` where the word history starts (2 after Return, 0 after a click, Tab, arrow...)
+    var _lineStartUpperCaseStatus = 0
     var _isCharKeyCode = false
     var _specialChar: [UInt32] = []
     var _useSpellCheckingBefore = false
@@ -663,6 +668,7 @@ public struct VietnameseEngine: TypingEngine {
         _typingStates.append(_typingStatesData)
         if _typingStates.count > Self.maxTypingStates {
             _typingStates.removeFirst(Self.maxTypingStates / 2)
+            _lineStartUpperCaseStatus = 0 // what came before the dropped entries is unknown
         }
     }
 
@@ -1389,6 +1395,28 @@ public struct VietnameseEngine: TypingEngine {
         insertKey(data, isCaps)
     }
 
+    /// ".", or "!" and "?" (Shift+1, Shift+/)
+    private static func endsSentence(_ data: UInt32, _ capsStatus: Int) -> Bool {
+        data == K.dot || (capsStatus == 1 && (data == K.k1 || data == K.slash))
+    }
+
+    /// Only typed keys set `_upperCaseStatus`, so after Delete it described deleted text ("xin. T", Delete, "t"
+    /// gave "t"; deleting a "." kept the capital). Recompute it from what the engine knows is before the caret,
+    /// as if that text had just been typed.
+    private mutating func updateUpperCaseStatusAfterDelete() {
+        if _index > 0 {
+            _upperCaseStatus = 0 // inside a word
+        } else if let last = _specialChar.last {
+            _upperCaseStatus = last & M.sentenceEnd != 0 ? 1 : 0
+        } else if let entry = _typingStates.lastEntryFirstAndLast {
+            // Spaces after a special character entry (classified as in `restoreLastTypingState`)
+            let afterSentenceEnd = Self.charKeyCode.contains(entry.first & M.char) && entry.last & M.sentenceEnd != 0
+            _upperCaseStatus = _spaceCount > 0 && afterSentenceEnd ? 2 : 0
+        } else {
+            _upperCaseStatus = _lineStartUpperCaseStatus // only spaces, or nothing, since the history start
+        }
+    }
+
     private mutating func upperCaseFirstCharacter() {
         if TypingWord[0] & M.caps == 0 {
             hCode = HookCode.willProcess
@@ -1821,7 +1849,8 @@ public struct VietnameseEngine: TypingEngine {
                 } else {
                     saveWord()
                 }
-                _specialChar.append(data | (_isCaps ? M.caps : 0))
+                let sentenceEnd = Self.endsSentence(data, capsStatus) ? M.sentenceEnd : 0
+                _specialChar.append(data | (_isCaps ? M.caps : 0) | sentenceEnd)
                 hExt = 3 // normal word
             }
 
@@ -1843,13 +1872,15 @@ public struct VietnameseEngine: TypingEngine {
             }
 
             if vUpperCaseFirstChar != 0 {
-                // "!" and "?" (Shift+1, Shift+/) end a sentence too
-                if data == K.dot || (capsStatus == 1 && (data == K.k1 || data == K.slash)) {
+                if Self.endsSentence(data, capsStatus) {
                     _upperCaseStatus = 1
                 } else if data == K.enter || data == K.returnKey {
                     _upperCaseStatus = 2
                 } else {
                     _upperCaseStatus = 0
+                }
+                if !_isCharKeyCode { // the word history was cleared above
+                    _lineStartUpperCaseStatus = _upperCaseStatus
                 }
             }
         } else if data == K.space {
@@ -1935,6 +1966,9 @@ public struct VietnameseEngine: TypingEngine {
                 } else { // keep checking grammar
                     checkGrammar(1)
                 }
+            }
+            if vUpperCaseFirstChar != 0 {
+                updateUpperCaseStatusAfterDelete()
             }
         } else { // START AND CHECK KEY
             if _willTempOffEngine {

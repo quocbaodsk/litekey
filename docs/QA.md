@@ -44,6 +44,7 @@ grant the permission again.
 | T11 | Quick Telex on: `ccaf` | `chà` |
 | T12 | Quick consonants on, spell checking off: `fas `, `cag ` | `phá `, `cang ` |
 | T13 | Auto-capitalize on: `xin chaof. toio`, `xin chaof! toio`, `xin chaof? toio` | First letter of each sentence capitalized |
+| T13b | Auto-capitalize on. TextEdit: `xin chaof. t`, Delete, `tooi`. Zalo or Messenger: send a message with Enter, type `tooi`, hold Delete until the field is empty and a bit longer, type `tooi` | `Tôi` every time |
 | T14 | "Temporarily disable spell checking with ⌃" on: `thuowng`, press and release ⌃, keep typing | Spell checking is off for the rest of the word |
 | T15 | "Temporarily disable LiteKey with ⌘" on: press and release ⌘, type `aa ` | `aa ` |
 | T16 | Dvorak layout + layout compatibility on: type `tieengs` by Dvorak labels | `tiếng` |

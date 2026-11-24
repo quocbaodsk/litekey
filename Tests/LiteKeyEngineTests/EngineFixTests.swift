@@ -152,7 +152,7 @@ final class SecondWUndoTests: XCTestCase {
     }
 }
 
-/// "Capitalize the first letter of a sentence" after "!" and "?" as well as ".".
+/// "Capitalize the first letter of a sentence" after "!" and "?" as well as ".", and after Delete.
 final class SentenceEndCapitalizeTests: XCTestCase {
     /// Uses the fixture keyboard, which has Shift symbols such as "!" and "?"
     private func typeKeys(_ keys: String, _ config: String) -> String {
@@ -175,5 +175,65 @@ final class SentenceEndCapitalizeTests: XCTestCase {
 
     func testOptionOff() {
         XCTAssertEqual(typeKeys("xin chaof! ban ", "telex"), "xin chào! ban ")
+        XCTAssertEqual(typeKeys("xin. t<tooi", "telex"), "xin. tôi")
+    }
+
+    // Delete used to leave the sentence state as it was: deleting the first letter of a sentence lost the
+    // capital for the retyped word, and deleting a "." or a line break kept one.
+
+    func testDeletingTheFirstWordOfASentenceKeepsTheCapital() {
+        XCTAssertEqual(typeKeys("xin. t<tooi", "telex,upperfirst"), "xin. Tôi")
+        XCTAssertEqual(typeKeys("xin⏎t<tooi", "telex,upperfirst"), "xin⏎Tôi")
+        XCTAssertEqual(typeKeys("xin! t<tooi", "telex,upperfirst"), "xin! Tôi")
+        XCTAssertEqual(typeKeys("xin? t<tooi", "telex,upperfirst"), "xin? Tôi")
+        XCTAssertEqual(typeKeys("xin. tooi<<<tooi", "telex,upperfirst"), "xin. Tôi")
+    }
+
+    func testDeletingSeveralWordsBackToTheSentenceStart() {
+        XCTAssertEqual(typeKeys("xin. tooi ddi<<<<<<tooi", "telex,upperfirst"), "xin. Tôi")
+        XCTAssertEqual(typeKeys("xin⏎tooi ddi<<<<<<tooi", "telex,upperfirst"), "xin⏎Tôi")
+    }
+
+    func testMidSentenceWordStaysLowercaseAfterDelete() {
+        XCTAssertEqual(typeKeys("xin. tooi an<<an", "telex,upperfirst"), "xin. Tôi an")
+        XCTAssertEqual(typeKeys("xin. tooi an<<<an", "telex,upperfirst"), "xin. Tôian")
+    }
+
+    func testDeletingPastTheSentenceStart() {
+        // The space after "." is gone: like typing "xin.a"
+        XCTAssertEqual(typeKeys("xin. <a", "telex,upperfirst"), "xin.a")
+        XCTAssertEqual(typeKeys("xin. tooi<<<<tooi", "telex,upperfirst"), "xin.tôi")
+        // The "." is gone: like typing "xin a"
+        XCTAssertEqual(typeKeys("xin.< a", "telex,upperfirst"), "xin a")
+    }
+
+    func testExtraDeletesAfterReturnKeepTheCapital() {
+        // Chat apps send on Return and empty the field, so holding Delete over the next word usually sends
+        // more Deletes than there are letters. The engine can't tell those from deleting the line break in
+        // an editor, so both keep the line start: joining two lines in an editor capitalizes the next word.
+        XCTAssertEqual(typeKeys("⏎tooi<<<<tooi", "telex,upperfirst"), "Tôi")
+        XCTAssertEqual(typeKeys("⏎tooi<<<<<<tooi", "telex,upperfirst"), "Tôi")
+        XCTAssertEqual(typeKeys("⏎ tooi<<<<<<tooi", "telex,upperfirst"), "Tôi")
+        XCTAssertEqual(typeKeys("xin⏎<a", "telex,upperfirst"), "xinA")
+        XCTAssertEqual(typeKeys("xin⏎tooi<<<< a", "telex,upperfirst"), "xin A")
+    }
+
+    func testSpacesAtTheStartOfALine() {
+        XCTAssertEqual(typeKeys("xin⏎ t<tooi", "telex,upperfirst"), "xin⏎ Tôi")
+        XCTAssertEqual(typeKeys("xin⏎ <tooi", "telex,upperfirst"), "xin⏎Tôi")
+    }
+
+    func testCapsLockDigitOrSlashDoesNotEndASentence() {
+        // "⇪" toggles Caps Lock; "1" and "/" typed with it are not "!" and "?"
+        XCTAssertEqual(typeKeys("⇪1 ⇪x<an", "telex,upperfirst"), "1 an")
+        XCTAssertEqual(typeKeys("⇪km/ ⇪x<an", "telex,upperfirst"), "KM/ an")
+        XCTAssertEqual(typeKeys("⇪1 ⇪an", "telex,upperfirst"), "1 an")
+    }
+
+    func testTrimmedHistoryForgetsTheLineStart() {
+        // 65 "a " push the word history past its limit, which drops its oldest entries. Deleting back to
+        // the oldest kept entry is mid-line, so the next letter stays lowercase.
+        let keys = "xin⏎" + String(repeating: "a ", count: 65) + String(repeating: "<", count: 66) + "a"
+        XCTAssertEqual(typeKeys(keys, "telex,upperfirst"), "xin⏎A " + String(repeating: "a ", count: 31) + "a")
     }
 }

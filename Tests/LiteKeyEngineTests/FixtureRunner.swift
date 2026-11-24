@@ -71,7 +71,8 @@ struct FixtureRunner<Engine: TypingEngine> {
     }
 
     mutating func type(_ row: Row) -> String {
-        let (config, capsLock) = Self.parse(row.config)
+        let (config, rowCapsLock) = Self.parse(row.config)
+        var capsLock = rowCapsLock
         let english = row.config.split(separator: ",").contains("english")
         if row.config != lastConfig {
             engine.configure(config)
@@ -83,6 +84,7 @@ struct FixtureRunner<Engine: TypingEngine> {
         for ch in row.keys {
             if ch == "⌃" { engine.tempOffSpellChecking(); continue }
             if ch == "⌘" { engine.tempOffEngine(); continue }
+            if ch == "⇪" { capsLock.toggle(); continue } // only in unit tests; no fixture row has it
             guard let key = FixtureKeys.table[ch] else { fatalError("Unknown key \(ch) at \(row.file):\(row.line)") }
             let caps: CapsState = key.shift ? .shift : (capsLock ? .capsLock : .none)
             if english {
