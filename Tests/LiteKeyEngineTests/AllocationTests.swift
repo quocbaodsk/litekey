@@ -35,7 +35,9 @@ final class AllocationTests: XCTestCase {
         // Words, punctuation, backspacing into the previous word and a word longer than the 32-slot buffer
         let sentence = "xin chaof, tooi laf nguwowif vieetj nam. dduowcj khoong <<<s supercalifragilisticexpialidociousxx "
         let keys = sentence.map { FixtureKeys.table[$0]! }
-        var engine = VietnameseEngine()
+        var config = EngineConfig()
+        config.upperCaseFirstChar = true // also runs the sentence state recompute on Delete
+        var engine = VietnameseEngine(config: config)
         var output = EngineOutput()
         func typeSentence(times: Int) {
             for _ in 0..<times {

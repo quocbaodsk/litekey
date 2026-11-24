@@ -205,10 +205,17 @@ final class SentenceEndCapitalizeTests: XCTestCase {
         XCTAssertEqual(typeKeys("xin. tooi<<<<tooi", "telex,upperfirst"), "xin.tôi")
         // The "." is gone: like typing "xin a"
         XCTAssertEqual(typeKeys("xin.< a", "telex,upperfirst"), "xin a")
-        // The line break is gone: the caret is back at the end of "xin"
-        XCTAssertEqual(typeKeys("xin⏎<a", "telex,upperfirst"), "xina")
-        XCTAssertEqual(typeKeys("xin⏎t<<a", "telex,upperfirst"), "xina")
-        XCTAssertEqual(typeKeys("xin⏎ <<a", "telex,upperfirst"), "xina")
+    }
+
+    func testExtraDeletesAfterReturnKeepTheCapital() {
+        // Chat apps send on Return and empty the field, so holding Delete over the next word usually sends
+        // more Deletes than there are letters. The engine can't tell those from deleting the line break in
+        // an editor, so both keep the line start: joining two lines in an editor capitalizes the next word.
+        XCTAssertEqual(typeKeys("⏎tooi<<<<tooi", "telex,upperfirst"), "Tôi")
+        XCTAssertEqual(typeKeys("⏎tooi<<<<<<tooi", "telex,upperfirst"), "Tôi")
+        XCTAssertEqual(typeKeys("⏎ tooi<<<<<<tooi", "telex,upperfirst"), "Tôi")
+        XCTAssertEqual(typeKeys("xin⏎<a", "telex,upperfirst"), "xinA")
+        XCTAssertEqual(typeKeys("xin⏎tooi<<<< a", "telex,upperfirst"), "xin A")
     }
 
     func testSpacesAtTheStartOfALine() {

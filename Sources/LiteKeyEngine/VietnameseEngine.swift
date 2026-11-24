@@ -1933,9 +1933,6 @@ public struct VietnameseEngine: TypingEngine {
                     restoreLastTypingState()
                 }
             } else {
-                if _index == 0 && _typingStates.count == 0 { // deleting text typed before the word history
-                    _lineStartUpperCaseStatus = 0
-                }
                 if _stateIndex > 0 {
                     _stateIndex -= 1
                 }
