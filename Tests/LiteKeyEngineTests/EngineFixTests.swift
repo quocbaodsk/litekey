@@ -152,7 +152,7 @@ final class SecondWUndoTests: XCTestCase {
     }
 }
 
-/// "Capitalize the first letter of a sentence" after "!" and "?" as well as ".".
+/// "Capitalize the first letter of a sentence" after "!" and "?" as well as ".", and after Delete.
 final class SentenceEndCapitalizeTests: XCTestCase {
     /// Uses the fixture keyboard, which has Shift symbols such as "!" and "?"
     private func typeKeys(_ keys: String, _ config: String) -> String {
@@ -175,5 +175,44 @@ final class SentenceEndCapitalizeTests: XCTestCase {
 
     func testOptionOff() {
         XCTAssertEqual(typeKeys("xin chaof! ban ", "telex"), "xin chào! ban ")
+        XCTAssertEqual(typeKeys("xin. t<tooi", "telex"), "xin. tôi")
+    }
+
+    // Delete used to leave the sentence state as it was: deleting the first letter of a sentence lost the
+    // capital for the retyped word, and deleting a "." or a line break kept one.
+
+    func testDeletingTheFirstWordOfASentenceKeepsTheCapital() {
+        XCTAssertEqual(typeKeys("xin. t<tooi", "telex,upperfirst"), "xin. Tôi")
+        XCTAssertEqual(typeKeys("xin⏎t<tooi", "telex,upperfirst"), "xin⏎Tôi")
+        XCTAssertEqual(typeKeys("xin! t<tooi", "telex,upperfirst"), "xin! Tôi")
+        XCTAssertEqual(typeKeys("xin? t<tooi", "telex,upperfirst"), "xin? Tôi")
+        XCTAssertEqual(typeKeys("xin. tooi<<<tooi", "telex,upperfirst"), "xin. Tôi")
+    }
+
+    func testDeletingSeveralWordsBackToTheSentenceStart() {
+        XCTAssertEqual(typeKeys("xin. tooi ddi<<<<<<tooi", "telex,upperfirst"), "xin. Tôi")
+        XCTAssertEqual(typeKeys("xin⏎tooi ddi<<<<<<tooi", "telex,upperfirst"), "xin⏎Tôi")
+    }
+
+    func testMidSentenceWordStaysLowercaseAfterDelete() {
+        XCTAssertEqual(typeKeys("xin. tooi an<<an", "telex,upperfirst"), "xin. Tôi an")
+        XCTAssertEqual(typeKeys("xin. tooi an<<<an", "telex,upperfirst"), "xin. Tôian")
+    }
+
+    func testDeletingPastTheSentenceStart() {
+        // The space after "." is gone: like typing "xin.a"
+        XCTAssertEqual(typeKeys("xin. <a", "telex,upperfirst"), "xin.a")
+        XCTAssertEqual(typeKeys("xin. tooi<<<<tooi", "telex,upperfirst"), "xin.tôi")
+        // The "." is gone: like typing "xin a"
+        XCTAssertEqual(typeKeys("xin.< a", "telex,upperfirst"), "xin a")
+        // The line break is gone: the caret is back at the end of "xin"
+        XCTAssertEqual(typeKeys("xin⏎<a", "telex,upperfirst"), "xina")
+        XCTAssertEqual(typeKeys("xin⏎t<<a", "telex,upperfirst"), "xina")
+        XCTAssertEqual(typeKeys("xin⏎ <<a", "telex,upperfirst"), "xina")
+    }
+
+    func testSpacesAtTheStartOfALine() {
+        XCTAssertEqual(typeKeys("xin⏎ t<tooi", "telex,upperfirst"), "xin⏎ Tôi")
+        XCTAssertEqual(typeKeys("xin⏎ <tooi", "telex,upperfirst"), "xin⏎Tôi")
     }
 }

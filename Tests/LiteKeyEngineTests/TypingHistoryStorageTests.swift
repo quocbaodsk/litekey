@@ -39,6 +39,25 @@ final class TypingHistoryStorageTests: XCTestCase {
         XCTAssertEqual(history.count, 0)
     }
 
+    func testLastEntryFirstAndLast() {
+        var history = TypingHistory(entries: 4, elementsPerEntry: 2)
+        XCTAssertNil(history.lastEntryFirstAndLast)
+        history.append([1, 2, 3])
+        XCTAssertEqual(history.lastEntryFirstAndLast?.first, 1)
+        XCTAssertEqual(history.lastEntryFirstAndLast?.last, 3)
+        history.append([4])
+        XCTAssertEqual(history.lastEntryFirstAndLast?.first, 4)
+        XCTAssertEqual(history.lastEntryFirstAndLast?.last, 4)
+        history.append([])
+        XCTAssertNil(history.lastEntryFirstAndLast)
+        var entry: [UInt32] = []
+        history.removeLast(into: &entry)
+        history.removeLast(into: &entry)
+        XCTAssertEqual(history.lastEntryFirstAndLast?.last, 3)
+        history.removeFirst(1)
+        XCTAssertNil(history.lastEntryFirstAndLast)
+    }
+
     func testRemoveAll() {
         var history = TypingHistory(entries: 4, elementsPerEntry: 2)
         history.append([1])

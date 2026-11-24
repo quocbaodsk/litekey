@@ -149,6 +149,8 @@ public struct VietnameseEngine: TypingEngine {
     var _hasHandledMacro = false
     private var upperCaseStatus8: UInt8 = 0
     var _upperCaseStatus: Int { get { Int(upperCaseStatus8) } set { upperCaseStatus8 = UInt8(truncatingIfNeeded: newValue) } }
+    /// `_upperCaseStatus` where the word history starts (2 after Return, 0 after a click, Tab, arrow...)
+    var _lineStartUpperCaseStatus = 0
     var _isCharKeyCode = false
     var _specialChar: [UInt32] = []
     var _useSpellCheckingBefore = false
@@ -663,6 +665,7 @@ public struct VietnameseEngine: TypingEngine {
         _typingStates.append(_typingStatesData)
         if _typingStates.count > Self.maxTypingStates {
             _typingStates.removeFirst(Self.maxTypingStates / 2)
+            _lineStartUpperCaseStatus = 0 // what came before the dropped entries is unknown
         }
     }
 
@@ -1389,6 +1392,28 @@ public struct VietnameseEngine: TypingEngine {
         insertKey(data, isCaps)
     }
 
+    /// ".", or "!" and "?" typed with Shift (key code with `M.caps`, as stored for special characters)
+    private static func endsSentence(_ code: UInt32) -> Bool {
+        code & ~M.caps == K.dot || code == K.k1 | M.caps || code == K.slash | M.caps
+    }
+
+    /// Only typed keys set `_upperCaseStatus`, so after Delete it described deleted text ("xin. T", Delete, "t"
+    /// gave "t"; deleting a "." kept the capital). Recompute it from what the engine knows is before the caret,
+    /// as if that text had just been typed.
+    private mutating func updateUpperCaseStatusAfterDelete() {
+        if _index > 0 {
+            _upperCaseStatus = 0 // inside a word
+        } else if let last = _specialChar.last {
+            _upperCaseStatus = Self.endsSentence(last) ? 1 : 0
+        } else if let entry = _typingStates.lastEntryFirstAndLast {
+            // Spaces after a special character entry (classified as in `restoreLastTypingState`)
+            let afterSentenceEnd = Self.charKeyCode.contains(entry.first & M.char) && Self.endsSentence(entry.last)
+            _upperCaseStatus = _spaceCount > 0 && afterSentenceEnd ? 2 : 0
+        } else {
+            _upperCaseStatus = _lineStartUpperCaseStatus // only spaces, or nothing, since the history start
+        }
+    }
+
     private mutating func upperCaseFirstCharacter() {
         if TypingWord[0] & M.caps == 0 {
             hCode = HookCode.willProcess
@@ -1843,13 +1868,15 @@ public struct VietnameseEngine: TypingEngine {
             }
 
             if vUpperCaseFirstChar != 0 {
-                // "!" and "?" (Shift+1, Shift+/) end a sentence too
-                if data == K.dot || (capsStatus == 1 && (data == K.k1 || data == K.slash)) {
+                if Self.endsSentence(data | (capsStatus == 1 ? M.caps : 0)) {
                     _upperCaseStatus = 1
                 } else if data == K.enter || data == K.returnKey {
                     _upperCaseStatus = 2
                 } else {
                     _upperCaseStatus = 0
+                }
+                if !_isCharKeyCode { // the word history was cleared above
+                    _lineStartUpperCaseStatus = _upperCaseStatus
                 }
             }
         } else if data == K.space {
@@ -1902,6 +1929,9 @@ public struct VietnameseEngine: TypingEngine {
                     restoreLastTypingState()
                 }
             } else {
+                if _index == 0 && _typingStates.count == 0 { // deleting text typed before the word history
+                    _lineStartUpperCaseStatus = 0
+                }
                 if _stateIndex > 0 {
                     _stateIndex -= 1
                 }
@@ -1935,6 +1965,9 @@ public struct VietnameseEngine: TypingEngine {
                 } else { // keep checking grammar
                     checkGrammar(1)
                 }
+            }
+            if vUpperCaseFirstChar != 0 {
+                updateUpperCaseStatusAfterDelete()
             }
         } else { // START AND CHECK KEY
             if _willTempOffEngine {

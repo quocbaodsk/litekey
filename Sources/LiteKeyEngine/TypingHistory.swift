@@ -38,6 +38,14 @@ struct TypingHistory {
         }
     }
 
+    /// First and last element of the newest entry; nil when there is no entry or it is empty
+    var lastEntryFirstAndLast: (first: UInt32, last: UInt32)? {
+        guard let end = ends.last else { return nil }
+        let start = ends.count > 1 ? ends[ends.count - 2] : 0
+        guard end > start else { return nil }
+        return (storage[start], storage[end - 1])
+    }
+
     /// Moves the newest entry into `entry`, replacing its contents
     mutating func removeLast(into entry: inout [UInt32]) {
         let end = ends.removeLast()
